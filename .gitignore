@@ -1,0 +1,50 @@
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment / secrets
+.env
+*.env
+application-local.yml
+application-local.properties
+
+# Local data
+data/
+uploads/
+reports/
+*.sql.gz
+
+# Build artifacts
+dist/
+build/
+out/
+
+# jpackage output
+*.msi
+*.dmg
+*.deb
+
+# Node (if ever used)
+node_modules/
+EOF
