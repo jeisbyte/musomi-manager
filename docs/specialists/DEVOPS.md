@@ -9,6 +9,7 @@ You are the **DevOps Engineer** on Musomi Manager.
 You set up the school server, deploy the system, keep it running, and back it up. You work alongside the Database role (same person in a small team) — this document covers the **ops** side. Database has its own document.
 
 You work alongside:
+
 - **Backend Lead** — packages the JAR you deploy
 - **JavaFX Developer** — packages the .msi you distribute
 - **Web Developer** — templates are served by the backend you run
@@ -42,45 +43,45 @@ You own the servers, deployment, backups, and monitoring. You don't edit backend
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                  SCHOOL SERVER (Ubuntu 22.04)                │
-│                                                              │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │  Spring Boot App (JAR)                              │    │
-│  │  - systemd service: musomi.service                  │    │
-│  │  - Port 8080                                        │    │
-│  │  - Heap: 2 GB                                       │    │
-│  │  - User: musomi                                     │    │
-│  └─────────────────────────────────────────────────────┘    │
-│                                                              │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │  PostgreSQL 15/16                                   │    │
-│  │  - Port 5432                                        │    │
-│  │  - Data dir: /var/lib/postgresql/16/main            │    │
-│  │  - User: musomi                                     │    │
-│  │  - Database: musomi_manager                         │    │
-│  └─────────────────────────────────────────────────────┘    │
-│                                                              │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │  Cloudflare Tunnel (cloudflared)                    │    │
-│  │  - Outbound to Cloudflare edge                      │    │
-│  │  - Exposes localhost:8080 as https://school.app.com │    │
-│  │  - No port forwarding, no public IP needed          │    │
-│  └─────────────────────────────────────────────────────┘    │
-│                                                              │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │  Backup Script (cron)                               │    │
-│  │  - Daily pg_dump at 2 AM                            │    │
-│  │  - Copy to /mnt/backup (external drive)             │    │
-│  │  - Retention: 30 days                               │    │
-│  └─────────────────────────────────────────────────────┘    │
-│                                                              │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │  Monitoring (cron + logs)                           │    │
-│  │  - Uptime check every 5 minutes                     │    │
-│  │  - Disk space check every hour                      │    │
-│  │  - Log rotation via logrotate                       │    │
-│  └─────────────────────────────────────────────────────┘    │
-│                                                              │
+│ SCHOOL SERVER (Ubuntu 22.04)                                │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │ Spring Boot App (JAR)                               │   │
+│  │ - systemd service: musomi.service                   │   │
+│  │ - Port 8080                                         │   │
+│  │ - Heap: 2 GB                                        │   │
+│  │ - User: musomi                                      │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │ PostgreSQL 15/16                                    │   │
+│  │ - Port 5432                                         │   │
+│  │ - Data dir: /var/lib/postgresql/16/main             │   │
+│  │ - User: musomi                                      │   │
+│  │ - Database: musomi_manager                          │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │ Cloudflare Tunnel (cloudflared)                     │   │
+│  │ - Outbound to Cloudflare edge                       │   │
+│  │ - Exposes localhost:8080 as https://school.app.com  │   │
+│  │ - No port forwarding, no public IP needed           │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │ Backup Script (cron)                                │   │
+│  │ - Daily pg_dump at 2 AM                             │   │
+│  │ - Copy to /mnt/backup (external drive)              │   │
+│  │ - Retention: 30 days                                │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │ Monitoring (cron + logs)                            │   │
+│  │ - Uptime check every 5 minutes                      │   │
+│  │ - Disk space check every hour                       │   │
+│  │ - Log rotation via logrotate                        │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -93,14 +94,14 @@ You own the servers, deployment, backups, and monitoring. You don't edit backend
 ```
 /opt/musomi/
 ├── app/
-│   ├── musomi-manager.jar            ← the Spring Boot app
-│   └── application-prod.yml          ← production config
+│   ├── musomi-manager.jar        ← the Spring Boot app
+│   └── application-prod.yml      ← production config
 │
 ├── logs/
 │   ├── app.log
 │   └── app-error.log
 │
-├── backups/                          ← local backup staging
+├── backups/                       ← local backup staging
 │   ├── musomi_20260924.sql.gz
 │   └── ...
 │
@@ -114,10 +115,10 @@ You own the servers, deployment, backups, and monitoring. You don't edit backend
     └── cloudflared.yml
 
 /etc/systemd/system/
-├── musomi.service                    ← Spring Boot service
-└── cloudflared.service               ← Tunnel service
+├── musomi.service                 ← Spring Boot service
+└── cloudflared.service            ← Tunnel service
 
-/mnt/backup/                          ← external drive mount
+/mnt/backup/                       ← external drive mount
 └── musomi/
     ├── musomi_20260924.sql.gz
     └── ...
@@ -148,7 +149,7 @@ sudo usermod -aG sudo musomi
 
 ```bash
 sudo ufw allow OpenSSH
-sudo ufw allow 8080/tcp       # only from LAN, block from internet
+sudo ufw allow 8080/tcp   # only from LAN, block from internet
 sudo ufw enable
 sudo ufw status
 ```
@@ -220,15 +221,12 @@ Type=simple
 User=musomi
 Group=musomi
 WorkingDirectory=/opt/musomi/app
-
 Environment="SPRING_PROFILES_ACTIVE=prod"
 EnvironmentFile=/opt/musomi/config/app.env
-
 ExecStart=/usr/bin/java \
-    -Xms512m -Xmx2048m \
-    -XX:+UseG1GC \
-    -jar /opt/musomi/app/musomi-manager.jar
-
+  -Xms512m -Xmx2048m \
+  -XX:+UseG1GC \
+  -jar /opt/musomi/app/musomi-manager.jar
 SuccessExitStatus=143
 Restart=on-failure
 RestartSec=10
@@ -386,6 +384,7 @@ jobs:
 ```
 
 Rules:
+
 - Every push to `main` runs CI
 - Every PR runs CI
 - Red build blocks merge
@@ -459,8 +458,8 @@ Runs daily at 2 AM.
 set -e
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <backup-file.sql.gz>"
-    exit 1
+  echo "Usage: $0 <backup-file.sql.gz>"
+  exit 1
 fi
 
 BACKUP_FILE="$1"
@@ -502,8 +501,8 @@ set -e
 JAR_FILE="$1"
 
 if [ ! -f "$JAR_FILE" ]; then
-    echo "JAR not found: $JAR_FILE"
-    exit 1
+  echo "JAR not found: $JAR_FILE"
+  exit 1
 fi
 
 echo "[$(date)] Deploying $JAR_FILE"
@@ -526,14 +525,14 @@ sleep 10
 
 # Health check
 if curl -sf http://localhost:8080/actuator/health > /dev/null; then
-    echo "Deployment successful"
-    rm /opt/musomi/app/musomi-manager.jar.bak
+  echo "Deployment successful"
+  rm /opt/musomi/app/musomi-manager.jar.bak
 else
-    echo "Health check failed, rolling back"
-    sudo systemctl stop musomi.service
-    mv /opt/musomi/app/musomi-manager.jar.bak /opt/musomi/app/musomi-manager.jar
-    sudo systemctl start musomi.service
-    exit 1
+  echo "Health check failed, rolling back"
+  sudo systemctl stop musomi.service
+  mv /opt/musomi/app/musomi-manager.jar.bak /opt/musomi/app/musomi-manager.jar
+  sudo systemctl start musomi.service
+  exit 1
 fi
 ```
 
@@ -555,32 +554,32 @@ ssh musomi@school-server "sudo /opt/musomi/scripts/deploy.sh /tmp/musomi-manager
 
 # Backend health
 if curl -sf http://localhost:8080/actuator/health > /dev/null; then
-    echo "Backend: OK"
+  echo "Backend: OK"
 else
-    echo "Backend: DOWN"
-    # Log and optionally alert
+  echo "Backend: DOWN"
+  # Log and optionally alert
 fi
 
 # Disk space
 DISK_USAGE=$(df / | tail -1 | awk '{print $5}' | sed 's/%//')
 if [ "$DISK_USAGE" -gt 85 ]; then
-    echo "Disk: WARNING ($DISK_USAGE%)"
+  echo "Disk: WARNING ($DISK_USAGE%)"
 else
-    echo "Disk: OK ($DISK_USAGE%)"
+  echo "Disk: OK ($DISK_USAGE%)"
 fi
 
 # PostgreSQL
 if pg_isready -h localhost -U musomi > /dev/null 2>&1; then
-    echo "PostgreSQL: OK"
+  echo "PostgreSQL: OK"
 else
-    echo "PostgreSQL: DOWN"
+  echo "PostgreSQL: DOWN"
 fi
 
 # Tunnel
 if systemctl is-active --quiet cloudflared; then
-    echo "Tunnel: OK"
+  echo "Tunnel: OK"
 else
-    echo "Tunnel: DOWN"
+  echo "Tunnel: DOWN"
 fi
 ```
 
@@ -615,15 +614,16 @@ Rotate with logrotate — `/etc/logrotate.d/musomi`:
 ### System logs
 
 ```bash
-sudo journalctl -u musomi.service -f        # app logs
-sudo journalctl -u cloudflared -f           # tunnel logs
-sudo tail -f /opt/musomi/logs/backup.log    # backup logs
-sudo tail -f /opt/musomi/logs/health.log    # health logs
+sudo journalctl -u musomi.service -f      # app logs
+sudo journalctl -u cloudflared -f         # tunnel logs
+sudo tail -f /opt/musomi/logs/backup.log  # backup logs
+sudo tail -f /opt/musomi/logs/health.log  # health logs
 ```
 
 ### Uptime monitoring (external, optional)
 
 Use a free external service like:
+
 - UptimeRobot — pings `https://school1.musomi.app/actuator/health` every 5 min
 - Alerts via email/SMS on downtime
 
@@ -684,6 +684,7 @@ Return the commands and config.
 
 ```
 Context: DEVOPS.md
+
 Error: [paste]
 Logs: [paste]
 
@@ -697,7 +698,6 @@ Context: DEVOPS.md
 
 Write a runbook for "[procedure name]" — e.g., "Restore from backup",
 "Deploy a new version", "Add a new school".
-
 Include: prerequisites, steps, verification, rollback.
 Follow the format in DEVOPS.md.
 ```
@@ -780,5 +780,3 @@ Before the pilot school goes live:
 ## The One-Sentence Summary
 
 **You are the DevOps Engineer on Musomi Manager. You set up the school server (Ubuntu + PostgreSQL + Java + Spring Boot + Cloudflare Tunnel), keep it running, back it up daily, and deploy new versions. One server, one database, no containers, no orchestration. Paste MASTER.md and DEVOPS.md into every AI session.**
-
-
