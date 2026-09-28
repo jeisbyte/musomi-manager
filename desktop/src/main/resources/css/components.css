@@ -1,0 +1,264 @@
+/* =============================================================================
+   components.css — Musomi Manager Desktop Component Stylesheet
+   UI Components & Badges matching DESIGN_SYSTEM.md
+   ============================================================================= */
+
+/* Cards */
+.card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12px;
+    -fx-padding: 24px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 4, 0, 0, 1);
+}
+
+/* Primary Button */
+.btn-primary {
+    -fx-background-color: #4F46E5;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-padding: 10 20;
+    -fx-font-weight: 600;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #4338CA;
+}
+
+.btn-primary:disabled {
+    -fx-opacity: 0.5;
+}
+
+/* Secondary Button */
+.btn-secondary {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #0F172A;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #F8FAFC;
+}
+
+/* Ghost Button */
+.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: #475569;
+    -fx-background-radius: 8px;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.btn-ghost:hover {
+    -fx-background-color: #F8FAFC;
+}
+
+/* Danger Button */
+.btn-danger {
+    -fx-background-color: #DC2626;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-padding: 10 20;
+    -fx-font-weight: 600;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #B91C1C;
+}
+
+/* Text Inputs & Validation */
+.input {
+    -fx-pref-height: 40px;
+    -fx-padding: 10 12;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #0F172A;
+    -fx-font-size: 14px;
+}
+
+.input:focused {
+    -fx-border-color: #4F46E5;
+}
+
+.input-error {
+    -fx-border-color: #DC2626;
+}
+
+.error-label {
+    -fx-text-fill: #DC2626;
+    -fx-font-size: 12px;
+}
+
+/* Status Badges */
+.badge-draft {
+    -fx-background-color: #FFFBEB;
+    -fx-text-fill: #B45309;
+    -fx-padding: 4 10;
+    -fx-background-radius: 999px;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.badge-published {
+    -fx-background-color: #ECFDF5;
+    -fx-text-fill: #047857;
+    -fx-padding: 4 10;
+    -fx-background-radius: 999px;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.badge-active {
+    -fx-background-color: #ECFDF5;
+    -fx-text-fill: #047857;
+    -fx-padding: 4 10;
+    -fx-background-radius: 999px;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.badge-inactive {
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #64748B;
+    -fx-padding: 4 10;
+    -fx-background-radius: 999px;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+/* Grade Badges */
+.grade-a {
+    -fx-background-color: #ECFDF5;
+    -fx-text-fill: #047857;
+    -fx-font-family: "JetBrains Mono", "Courier New", monospace;
+    -fx-background-radius: 999px;
+    -fx-padding: 4 10;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.grade-b {
+    -fx-background-color: #EFF6FF;
+    -fx-text-fill: #1D4ED8;
+    -fx-font-family: "JetBrains Mono", "Courier New", monospace;
+    -fx-background-radius: 999px;
+    -fx-padding: 4 10;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.grade-c {
+    -fx-background-color: #FFFBEB;
+    -fx-text-fill: #B45309;
+    -fx-font-family: "JetBrains Mono", "Courier New", monospace;
+    -fx-background-radius: 999px;
+    -fx-padding: 4 10;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.grade-d {
+    -fx-background-color: #FFF7ED;
+    -fx-text-fill: #C2410C;
+    -fx-font-family: "JetBrains Mono", "Courier New", monospace;
+    -fx-background-radius: 999px;
+    -fx-padding: 4 10;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.grade-e {
+    -fx-background-color: #FEF2F2;
+    -fx-text-fill: #B91C1C;
+    -fx-font-family: "JetBrains Mono", "Courier New", monospace;
+    -fx-background-radius: 999px;
+    -fx-padding: 4 10;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.grade-f {
+    -fx-background-color: #FEE2E2;
+    -fx-text-fill: #991B1B;
+    -fx-font-family: "JetBrains Mono", "Courier New", monospace;
+    -fx-background-radius: 999px;
+    -fx-padding: 4 10;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+/* Toast Notifications */
+.toast {
+    -fx-background-radius: 8px;
+    -fx-padding: 12 16;
+    -fx-font-size: 14px;
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0, 0, 4);
+}
+
+.toast-success {
+    -fx-background-color: #059669;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-padding: 12 16;
+}
+
+.toast-error {
+    -fx-background-color: #DC2626;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-padding: 12 16;
+}
+
+.toast-info {
+    -fx-background-color: #2563EB;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-padding: 12 16;
+}
+
+.toast-warning {
+    -fx-background-color: #F59E0B;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-padding: 12 16;
+}
+
+/* =========================================================================
+   Login Screen Components
+   ========================================================================= */
+
+/* Logo icon placeholder (indigo panel, top-left) */
+.logo-placeholder {
+    -fx-background-color: rgba(255, 255, 255, 0.25);
+    -fx-background-radius: 10px;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+}
+
+/* "Musomi Manager" wordmark text beside the logo */
+.logo-text {
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Login form card — extends .card with a fixed min-width */
+.login-card {
+    -fx-min-width: 360px;
+}
