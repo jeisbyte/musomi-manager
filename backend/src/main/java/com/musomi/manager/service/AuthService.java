@@ -64,7 +64,7 @@ public class AuthService {
                 user.getUsername(),
                 user.getFullName(),
                 user.getRole().name(),
-                user.getSchoolId()
+                user.getSchool().getId()
         );
 
         return new LoginResponse(token, expiresAt, summary);
