@@ -69,4 +69,16 @@ public class AuthService {
 
         return new LoginResponse(token, expiresAt, summary);
     }
+
+    public UserSummary getUserSummary(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AuthenticationException(ErrorCode.SESSION_EXPIRED));
+        return new UserSummary(
+                user.getId(),
+                user.getUsername(),
+                user.getFullName(),
+                user.getRole().name(),
+                user.getSchool().getId()
+        );
+    }
 }
