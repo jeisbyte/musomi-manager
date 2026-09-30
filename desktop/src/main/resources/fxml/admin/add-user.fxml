@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.musomi.desktop.controller.admin.AddUserController"
+      spacing="15.0"
+      prefWidth="500.0"
+      prefHeight="560.0"
+      styleClass="dialog-container">
+
+    <Label text="Add User"
+           styleClass="page-title"/>
+
+    <Label text="Create a new system user"
+           styleClass="page-subtitle"/>
+
+    <VBox spacing="6.0">
+        <Label text="Full Name"/>
+        <TextField promptText="Enter full name"/>
+    </VBox>
+
+    <VBox spacing="6.0">
+        <Label text="Username"/>
+        <TextField promptText="Enter username"/>
+    </VBox>
+
+    <VBox spacing="6.0">
+        <Label text="Password"/>
+        <PasswordField promptText="Enter password"/>
+    </VBox>
+
+    <VBox spacing="6.0">
+        <Label text="Role"/>
+
+        <ComboBox fx:id="roleComboBox"
+                  promptText="Select role"
+                  maxWidth="Infinity"/>
+    </VBox>
+
+    <HBox spacing="10.0">
+        <Button text="Cancel"
+                onAction="#handleCancel"/>
+
+        <Button text="Create User"
+                styleClass="primary-button"/>
+    </HBox>
+
+</VBox>

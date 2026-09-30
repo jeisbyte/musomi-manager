@@ -1,14 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0" >
+            fx:controller="com.musomi.desktop.controller.MainLayoutController"
+            prefWidth="1200.0"
+            prefHeight="700.0">
 
-</AnchorPane>
+    <!-- TOP BAR -->
+    <top>
+        <AnchorPane prefHeight="70.0">
+            <Label text="MUSOMI MANAGER"
+                   layoutX="25.0"
+                   layoutY="22.0"
+                   styleClass="top-bar"/>
+        </AnchorPane>
+    </top>
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox prefWidth="220.0"
+              spacing="10.0"
+              styleClass="sidebar">
+
+            <Label text="NAVIGATION"
+                   styleClass="sidebar-title"/>
+
+            <Button text="Dashboard"
+                    maxWidth="Infinity"
+                    styleClass="nav-button-active"
+                    onAction="#showDashboard"/>
+
+            <Button text="Users"
+                    maxWidth="Infinity"
+                    onAction="#showUsers"/>
+
+            <Button text="Classes"
+                    maxWidth="Infinity"
+                    onAction="#showClasses"/>
+
+            <Button text="Subjects"
+                    maxWidth="Infinity"
+                    onAction="#showSubjects"/>
+
+            <Button text="Topics"
+                    maxWidth="Infinity"
+                    onAction="#showTopics"/>
+
+            <Button text="Students"
+                    maxWidth="Infinity"
+                    onAction="#showStudents"/>
+
+            <Button text="Settings"
+                    maxWidth="Infinity"
+                    onAction="#showSettings"/>
+
+            <Button text="Audit Log"
+                    maxWidth="Infinity"
+                    onAction="#showAuditLog"/>
+
+        </VBox>
+    </left>
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <StackPane fx:id="contentArea"
+                   styleClass="content-area"/>
+    </center>
+
+</BorderPane>

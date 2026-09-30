@@ -135,3 +135,134 @@
     -fx-padding: 24;
 }
 
+/*Dashboard*/
+
+.dashboard-container {
+    -fx-padding: 24;
+    -fx-background-color: #F8FAFC;
+}
+
+.page-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #0F172A;
+}
+
+.page-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #64748B;
+}
+
+     /* Dashboard Cards */
+.dashboard-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10px;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-padding: 20px;
+}
+
+.card-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #475569;
+}
+
+.card-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #0F172A;
+}
+
+.card-description {
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748B;
+}
+
+.section-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #0F172A;
+}
+
+   /* Sidebar Navigation Buttons */
+
+.sidebar .button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8px;
+    -fx-border-color: transparent;
+    -fx-text-fill: #475569;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10px 16px;
+    -fx-cursor: hand;
+}
+
+.sidebar .button:hover {
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #0F172A;
+}
+
+.sidebar .button:pressed {
+    -fx-background-color: #E2E8F0;
+}
+
+/* Navigation heading */
+.sidebar-title {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #94A3B8;
+    -fx-padding: 8px 16px 4px 16px;
+}
+
+    /* Active Sidebar Navigation */
+.sidebar .button.nav-button-active {
+    -fx-background-color: #EEF2FF;
+    -fx-text-fill: #4F46E5;
+    -fx-font-weight: 700;
+    -fx-border-color: #4F46E5;
+    -fx-border-width: 0 0 0 4px;
+    -fx-border-radius: 8px;
+}
+
+/* Add User Dialog */
+
+.dialog-container {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 30px;
+}
+
+.dialog-container .label {
+    -fx-text-fill: #334155;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+}
+
+.dialog-container .text-field,
+.dialog-container .password-field,
+.dialog-container .combo-box {
+    -fx-pref-height: 40px;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 0 12px;
+}
+
+
+
+
+.primary-button {
+    -fx-background-color: #4F46E5;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: 600;
+    -fx-background-radius: 6px;
+    -fx-padding: 10px 18px;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #4338CA;
+}
