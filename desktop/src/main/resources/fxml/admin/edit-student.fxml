@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.musomi.desktop.controller.admin.EditStudentController"
+      spacing="15.0"
+      prefWidth="500.0"
+      prefHeight="550.0"
+      styleClass="dialog-container">
+
+    <Label text="Edit Student"
+           styleClass="page-title"/>
+
+    <Label text="Update student information"
+           styleClass="page-subtitle"/>
+
+    <VBox spacing="6.0">
+        <Label text="Student Name"/>
+
+        <TextField fx:id="nameField"
+                   promptText="Enter student name"/>
+    </VBox>
+
+    <VBox spacing="6.0">
+        <Label text="Admission Number"/>
+
+        <TextField fx:id="admissionNumberField"
+                   promptText="Enter admission number"/>
+    </VBox>
+
+    <VBox spacing="6.0">
+        <Label text="Class"/>
+
+        <ComboBox fx:id="classComboBox"
+                  maxWidth="Infinity"
+                  promptText="Select class"/>
+    </VBox>
+
+    <VBox spacing="6.0">
+        <Label text="Status"/>
+
+        <ComboBox fx:id="statusComboBox"
+                  maxWidth="Infinity"
+                  promptText="Select status"/>
+    </VBox>
+
+    <HBox spacing="10.0">
+
+        <Button text="Cancel"
+                onAction="#handleCancel"/>
+
+        <Button text="Save Changes"
+                onAction="#handleSave"
+                styleClass="primary-button"/>
+
+    </HBox>
+
+</VBox>

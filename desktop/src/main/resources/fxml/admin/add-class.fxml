@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.musomi.desktop.controller.admin.AddClassController"
+      spacing="15.0"
+      prefWidth="500.0"
+      prefHeight="450.0"
+      styleClass="dialog-container">
+
+    <Label text="Add Class"
+           styleClass="page-title"/>
+
+    <Label text="Create a new school class"
+           styleClass="page-subtitle"/>
+
+    <VBox spacing="6.0">
+        <Label text="Class Name"/>
+        <TextField fx:id="nameField"
+                   promptText="e.g. Senior One"/>
+    </VBox>
+
+    <VBox spacing="6.0">
+        <Label text="Level"/>
+
+        <ComboBox fx:id="levelComboBox"
+                  maxWidth="Infinity"
+                  promptText="Select level"/>
+    </VBox>
+
+    <HBox spacing="10.0">
+
+        <Button text="Cancel"
+                onAction="#handleCancel"/>
+
+        <Button text="Create Class"
+                onAction="#handleCreateClass"
+                styleClass="primary-button"/>
+
+    </HBox>
+
+</VBox>
