@@ -149,14 +149,17 @@ The school itself. One row per school. In v1, only one row.
 
 **Constraints:**
 - PK: `id`
-- FK: `fk_academic_years_school_id` → schools(id)
-- Unique: `uk_academic_years_school_year` (school_id, year)
+- FK: `fk_users_school` → schools(id)
+- Unique: `uq_users_school_username` (school_id, username)
+- Check: `chk_users_role` (role IN ('ADMIN', 'TEACHER', 'STUDENT'))
 
 **Indexes:**
-- `idx_academic_years_school_id`
-- `idx_academic_years_current` on (school_id, is_current) WHERE is_current = TRUE
-
+- `idx_users_school_id`
+- `idx_users_username`
+- `idx_users_role`
+- `idx_users_school_active` on (school_id) WHERE is_active = TRUE
 ---
+> **Note:** V002 predates the naming standard in `DATABASE.md` §4. V003+ will follow the standard.
 
 ### 3. terms
 
