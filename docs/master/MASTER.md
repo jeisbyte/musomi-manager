@@ -18,7 +18,7 @@ It captures every assessment at topic level, tracks student progress across year
 | Layer | Technology |
 |---|---|
 | Language | Java 21 |
-| Backend | Spring Boot 3.2.x |
+| Backend | Spring Boot 4.1.x |
 | Database | PostgreSQL 15/16 |
 | Migrations | Flyway |
 | ORM | Spring Data JPA (Hibernate) |
