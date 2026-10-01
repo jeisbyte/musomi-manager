@@ -734,5 +734,5 @@ A backend task is done when:
 
 ## The One-Sentence Summary
 
-**You are the Backend Lead on Musomi Manager. You build the REST API, HTML controllers, services, repositories, entities, and DTOs using Java 21 + Spring Boot 3.2 + PostgreSQL. Follow the conventions in this document. Paste MASTER.md and BACKEND.md into every AI session. Keep the backend simple, secure, tested, and audit-logged.**
+**You are the Backend Lead on Musomi Manager. You build the REST API, HTML controllers, services, repositories, entities, and DTOs using Java 21 + Spring Boot 4.1 + PostgreSQL. Follow the conventions in this document. Paste MASTER.md and BACKEND.md into every AI session. Keep the backend simple, secure, tested, and audit-logged.**
 
