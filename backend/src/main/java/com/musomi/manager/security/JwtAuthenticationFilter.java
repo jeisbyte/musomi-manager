@@ -1,7 +1,10 @@
 package com.musomi.manager.security;
 
+import com.musomi.manager.entity.UserSession;
 import com.musomi.manager.exception.AuthenticationException;
 import com.musomi.manager.exception.ErrorCode;
+import com.musomi.manager.repository.UserSessionRepository;
+import com.musomi.manager.util.TokenHasher;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +22,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +30,7 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserSessionRepository userSessionRepository;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Override
@@ -43,6 +48,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7).trim();
             try {
                 if (!jwtTokenProvider.validateToken(token)) {
+                    throw new AuthenticationException(ErrorCode.SESSION_EXPIRED);
+                }
+
+                String tokenHash = TokenHasher.hash(token);
+                Optional<UserSession> sessionOpt = userSessionRepository.findByTokenHash(tokenHash);
+                if (sessionOpt.isEmpty() || sessionOpt.get().getRevokedAt() != null) {
                     throw new AuthenticationException(ErrorCode.SESSION_EXPIRED);
                 }
 

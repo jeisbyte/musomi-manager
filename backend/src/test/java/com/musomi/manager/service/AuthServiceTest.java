@@ -4,11 +4,14 @@ import com.musomi.manager.dto.request.LoginRequest;
 import com.musomi.manager.dto.response.LoginResponse;
 import com.musomi.manager.entity.School;
 import com.musomi.manager.entity.User;
+import com.musomi.manager.entity.UserSession;
 import com.musomi.manager.entity.enums.Role;
 import com.musomi.manager.exception.AuthenticationException;
 import com.musomi.manager.exception.ErrorCode;
 import com.musomi.manager.repository.UserRepository;
+import com.musomi.manager.repository.UserSessionRepository;
 import com.musomi.manager.security.JwtTokenProvider;
+import com.musomi.manager.util.TokenHasher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +26,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,6 +37,9 @@ class AuthServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private UserSessionRepository userSessionRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -51,6 +59,8 @@ class AuthServiceTest {
         when(passwordEncoder.matches("correct-password", "hashed-password")).thenReturn(true);
         when(jwtTokenProvider.generateToken(user)).thenReturn("jwt-token");
         when(jwtTokenProvider.getExpiration("jwt-token")).thenReturn(expiresAt);
+        when(userSessionRepository.save(any(UserSession.class)))
+                .thenAnswer(inv -> inv.getArgument(0));
 
         LoginResponse response = authService.login(new LoginRequest("jane", "correct-password"));
 
@@ -150,6 +160,8 @@ class AuthServiceTest {
         when(passwordEncoder.matches("correct-password", "hashed-password")).thenReturn(true);
         when(jwtTokenProvider.generateToken(user)).thenReturn("jwt-token");
         when(jwtTokenProvider.getExpiration("jwt-token")).thenReturn(Instant.now().plusSeconds(3600));
+        when(userSessionRepository.save(any(UserSession.class)))
+                .thenAnswer(inv -> inv.getArgument(0));
 
         LocalDateTime beforeLogin = LocalDateTime.now();
         authService.login(new LoginRequest("jane", "correct-password"));
@@ -158,6 +170,39 @@ class AuthServiceTest {
         assertThat(user.getLockedUntil()).isNull();
         assertThat(user.getLastLoginAt()).isBetween(beforeLogin, LocalDateTime.now());
         verify(userRepository).save(user);
+    }
+
+    @Test
+    @DisplayName("should revoke session when logging out")
+    void shouldRevokeSessionWhenLoggingOut() {
+        User user = createUser();
+        UserSession session = UserSession.builder()
+                .id(1L)
+                .user(user)
+                .school(user.getSchool())
+                .tokenHash(TokenHasher.hash("test-token"))
+                .createdAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusHours(8))
+                .build();
+        when(userSessionRepository.findByTokenHash(TokenHasher.hash("test-token")))
+                .thenReturn(Optional.of(session));
+        when(userSessionRepository.save(any(UserSession.class)))
+                .thenAnswer(inv -> inv.getArgument(0));
+
+        authService.logout("test-token");
+
+        assertThat(session.getRevokedAt()).isNotNull();
+        verify(userSessionRepository).save(session);
+    }
+
+    @Test
+    @DisplayName("should not throw when logging out with unknown token")
+    void shouldNotThrowWhenLoggingOutWithUnknownToken() {
+        when(userSessionRepository.findByTokenHash(anyString()))
+                .thenReturn(Optional.empty());
+
+        authService.logout("unknown-token");
+        verify(userSessionRepository, never()).save(any(UserSession.class));
     }
 
     private User createUser() {
