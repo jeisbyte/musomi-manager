@@ -5,64 +5,63 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.musomi.desktop.controller.admin.SettingsController"
       spacing="20.0"
-      styleClass="content-area">
+      styleClass="page-container">
 
     <VBox spacing="5.0">
-
         <Label text="Settings"
                styleClass="page-title"/>
 
-        <Label text="Manage system settings"
+        <Label text="Manage school and academic settings"
                styleClass="page-subtitle"/>
-
     </VBox>
 
     <VBox spacing="20.0"
-          styleClass="dashboard-card">
+          styleClass="table-card">
 
         <Label text="School Information"
                styleClass="section-title"/>
 
-        <VBox spacing="6.0">
-
-            <Label text="School Name"/>
+        <VBox spacing="8.0">
+            <Label text="School Name"
+                   styleClass="form-label"/>
 
             <TextField fx:id="schoolNameField"
-                       promptText="Enter school name"/>
-
+                       promptText="Enter school name"
+                       prefWidth="500.0"
+                       styleClass="page-search-field"/>
         </VBox>
 
-        <VBox spacing="6.0">
-
-            <Label text="Academic Year"/>
+        <VBox spacing="8.0">
+            <Label text="Academic Year"
+                   styleClass="form-label"/>
 
             <TextField fx:id="academicYearField"
-                       promptText="e.g. 2026"/>
-
+                       promptText="Enter academic year"
+                       prefWidth="500.0"
+                       styleClass="page-search-field"/>
         </VBox>
 
-        <VBox spacing="6.0">
-
-            <Label text="Current Term"/>
+        <VBox spacing="8.0">
+            <Label text="Current Term"
+                   styleClass="form-label"/>
 
             <ComboBox fx:id="termComboBox"
-                      maxWidth="Infinity"
-                      promptText="Select current term"/>
-
+                      prefWidth="500.0"/>
         </VBox>
 
-        <HBox spacing="10.0">
+        <HBox>
+            <Region HBox.hgrow="ALWAYS"/>
 
             <Button text="Save Settings"
                     onAction="#handleSave"
                     styleClass="primary-button"/>
-
         </HBox>
 
     </VBox>

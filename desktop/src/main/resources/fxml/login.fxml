@@ -7,120 +7,166 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<!--
-    login.fxml — Musomi Manager login screen
-    Layout: two equal-width columns (indigo brand panel | white form panel)
-    Controller: com.musomi.desktop.controller.LoginController
-    Stylesheets: applied globally by SceneManager (styles.css + components.css)
--->
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.musomi.desktop.controller.LoginController"
-      prefWidth="1280"
-      prefHeight="720">
+      prefWidth="1280.0"
+      prefHeight="720.0">
 
-    <!-- ===================================================================
-         LEFT PANEL — Indigo branding column
-         =================================================================== -->
+    <!-- LEFT: BRAND PANEL -->
     <VBox fx:id="leftPanel"
           styleClass="login-left-panel"
           HBox.hgrow="ALWAYS">
 
-        <!-- Top: logo placeholder + app name + optional school name -->
-        <HBox alignment="CENTER_LEFT" spacing="12">
-            <padding><Insets top="40" left="40" right="40" bottom="0"/></padding>
-            <Pane styleClass="logo-placeholder"/>
-            <Label text="Musomi Manager" styleClass="logo-text"/>
-            <Label fx:id="schoolNameLabel" styleClass="body-small text-white-subtle"/>
-        </HBox>
+        <VBox spacing="0.0"
+              styleClass="login-brand">
 
-        <!-- Flexible spacer — pushes branding copy toward center -->
+            <HBox spacing="12.0"
+                  alignment="CENTER_LEFT">
+
+                <Label text="MM"
+                       styleClass="login-logo-mark"/>
+
+                <VBox spacing="0.0">
+
+                    <Label text="Musomi"
+                           styleClass="login-brand-name"/>
+
+                    <Label text="Manager"
+                           styleClass="login-brand-subtitle"/>
+
+                </VBox>
+
+            </HBox>
+
+            <Label fx:id="schoolNameLabel"
+                   styleClass="login-school-name"
+                   wrapText="true"/>
+
+        </VBox>
+
         <Region VBox.vgrow="ALWAYS"/>
 
-        <!-- Center: headline + sub-heading -->
-        <VBox spacing="16">
-            <padding><Insets left="64" right="64" bottom="96"/></padding>
+        <VBox spacing="18.0"
+              styleClass="login-hero">
+
             <Label text="Better Education Management"
-                   styleClass="display-white"
+                   styleClass="login-hero-title"
                    wrapText="true"/>
+
             <Label text="Track performance. Empower teachers. Support every student."
-                   styleClass="body-small text-white-subtle"
+                   styleClass="login-hero-description"
                    wrapText="true"/>
+
         </VBox>
+
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <Label text="Learning Record System"
+               styleClass="login-footer-text"/>
 
     </VBox>
 
-    <!-- ===================================================================
-         RIGHT PANEL — White login form column
-         =================================================================== -->
+
+    <!-- RIGHT: LOGIN PANEL -->
     <VBox fx:id="rightPanel"
           styleClass="login-right-panel"
-          HBox.hgrow="ALWAYS"
-          alignment="CENTER">
+          alignment="CENTER"
+          HBox.hgrow="ALWAYS">
 
-        <!-- Login card -->
-        <VBox styleClass="card login-card" spacing="20">
+        <VBox spacing="28.0"
+              styleClass="login-card">
 
-            <!-- Heading block -->
-            <VBox spacing="6">
-                <Label text="Welcome back" styleClass="h1"/>
+            <!-- HEADER -->
+            <VBox spacing="7.0">
+
+                <Label text="Welcome back"
+                       styleClass="login-title"/>
+
                 <Label text="Sign in to your Musomi Manager account"
-                       styleClass="body-small"
+                       styleClass="login-subtitle"
                        wrapText="true"/>
+
             </VBox>
 
-            <!-- Username field -->
-            <VBox spacing="6">
-                <Label text="Username or Email" styleClass="form-label"/>
-                <TextField fx:id="usernameField"
-                           styleClass="input"
-                           promptText="Enter your username or email"
-                           onAction="#handleLogin"/>
-            </VBox>
 
-            <!-- Password field -->
-            <VBox spacing="6">
-                <Label text="Password" styleClass="form-label"/>
-                <PasswordField fx:id="passwordField"
-                               styleClass="input"
-                               promptText="Enter your password"
+            <!-- FORM -->
+            <VBox spacing="18.0">
+
+                <VBox spacing="7.0">
+
+                    <Label text="Username or Email"
+                           styleClass="form-label"/>
+
+                    <TextField fx:id="usernameField"
+                               promptText="Enter your username or email"
+                               styleClass="login-input"
                                onAction="#handleLogin"/>
+
+                </VBox>
+
+
+                <VBox spacing="7.0">
+
+                    <Label text="Password"
+                           styleClass="form-label"/>
+
+                    <PasswordField fx:id="passwordField"
+                                   promptText="Enter your password"
+                                   styleClass="login-input"
+                                   onAction="#handleLogin"/>
+
+                </VBox>
+
             </VBox>
 
-            <!-- Error label — hidden and collapsed by default -->
+
+            <!-- ERROR -->
             <Label fx:id="errorLabel"
                    styleClass="error-label"
                    wrapText="true"
                    visible="false"
                    managed="false"/>
 
-            <!-- Sign In button with overlay spinner -->
+
+            <!-- LOGIN BUTTON -->
             <StackPane>
+
                 <Button fx:id="loginButton"
                         text="Sign In"
-                        styleClass="btn-primary"
+                        styleClass="login-button"
                         maxWidth="Infinity"
                         defaultButton="true"
                         onAction="#handleLogin"/>
+
                 <ProgressIndicator fx:id="spinner"
-                                   maxWidth="22"
-                                   maxHeight="22"
+                                   maxWidth="22.0"
+                                   maxHeight="22.0"
                                    visible="false"
                                    managed="false"/>
+
             </StackPane>
 
-            <!-- Version footer -->
-            <Label fx:id="versionLabel"
-                   styleClass="text-muted"
-                   maxWidth="Infinity"
-                   alignment="CENTER"/>
+
+            <!-- VERSION -->
+            <VBox spacing="6.0"
+                  alignment="CENTER">
+
+                <Region prefHeight="1.0"/>
+
+                <Label fx:id="versionLabel"
+                       styleClass="login-version"
+                       maxWidth="Infinity"
+                       alignment="CENTER"/>
+
+            </VBox>
 
         </VBox>
+
     </VBox>
 
 </HBox>

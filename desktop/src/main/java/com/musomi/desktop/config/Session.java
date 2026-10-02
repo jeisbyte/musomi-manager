@@ -17,9 +17,9 @@ public final class Session {
 
     private static final Logger log = LoggerFactory.getLogger(Session.class);
 
-    // -------------------------------------------------------------------------
-    // Singleton (initialisation-on-demand holder)
-    // -------------------------------------------------------------------------
+
+    // Singleton (initialization-on-demand holder)
+
 
     private static final class Holder {
         private static final Session INSTANCE = new Session();
@@ -44,9 +44,9 @@ public final class Session {
     private volatile Instant expiresAt;
     private volatile UserResponse user;
 
-    // -------------------------------------------------------------------------
+
     // Session Lifecycle
-    // -------------------------------------------------------------------------
+
 
     /**
      * Stores the authenticated session details.

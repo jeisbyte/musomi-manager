@@ -6,16 +6,16 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.musomi.desktop.controller.admin.ClassesController"
       spacing="20.0"
-      styleClass="content-area">
+      styleClass="page-container">
 
     <!-- PAGE HEADER -->
-
     <VBox spacing="5.0">
 
         <Label text="Classes"
@@ -27,50 +27,58 @@
     </VBox>
 
 
-    <!-- SEARCH + ADD CLASS -->
-
-    <HBox spacing="15.0">
+    <!-- TOOLBAR -->
+    <HBox spacing="12.0"
+          alignment="CENTER_LEFT">
 
         <TextField fx:id="searchField"
                    promptText="Search classes..."
-                   prefWidth="350.0"/>
+                   prefWidth="360.0"
+                   styleClass="page-search-field"/>
 
-        <Button text="+ Add Class"
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button text="+  Add Class"
                 onAction="#showAddClassDialog"
                 styleClass="primary-button"/>
 
     </HBox>
 
 
-    <!-- CLASSES TABLE -->
+    <!-- TABLE -->
+    <VBox VBox.vgrow="ALWAYS"
+          styleClass="table-card">
 
-    <TableView fx:id="classesTable"
-               VBox.vgrow="ALWAYS">
+        <TableView fx:id="classesTable"
+                   VBox.vgrow="ALWAYS"
+                   styleClass="modern-table">
 
-        <columns>
+            <columns>
 
-            <TableColumn fx:id="nameColumn"
-                         text="Class"
-                         prefWidth="220.0"/>
+                <TableColumn fx:id="nameColumn"
+                             text="Class"
+                             prefWidth="220.0"/>
 
-            <TableColumn fx:id="levelColumn"
-                         text="Level"
-                         prefWidth="180.0"/>
+                <TableColumn fx:id="levelColumn"
+                             text="Level"
+                             prefWidth="180.0"/>
 
-            <TableColumn fx:id="studentsColumn"
-                         text="Students"
-                         prefWidth="150.0"/>
+                <TableColumn fx:id="studentsColumn"
+                             text="Students"
+                             prefWidth="150.0"/>
 
-            <TableColumn fx:id="statusColumn"
-                         text="Status"
-                         prefWidth="120.0"/>
+                <TableColumn fx:id="statusColumn"
+                             text="Status"
+                             prefWidth="140.0"/>
 
-            <TableColumn fx:id="actionsColumn"
-                         text="Actions"
-                         prefWidth="180.0"/>
+                <TableColumn fx:id="actionsColumn"
+                             text="Actions"
+                             prefWidth="200.0"/>
 
-        </columns>
+            </columns>
 
-    </TableView>
+        </TableView>
+
+    </VBox>
 
 </VBox>

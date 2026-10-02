@@ -6,13 +6,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.musomi.desktop.controller.admin.UsersController"
       spacing="20.0"
-      styleClass="content-area">
+      styleClass="page-container">
 
     <!-- PAGE HEADER -->
     <VBox spacing="5.0">
@@ -25,49 +26,59 @@
 
     </VBox>
 
-    <!-- SEARCH + ADD USER -->
-    <HBox spacing="15.0">
 
-        <TextField
-                fx:id="searchField"
-                promptText="Search users..."
-                   prefWidth="350.0"/>
+    <!-- TOOLBAR -->
+    <HBox spacing="12.0"
+          alignment="CENTER_LEFT">
 
-        <Button text="+ Add User"
+        <TextField fx:id="searchField"
+                   promptText="Search users..."
+                   prefWidth="360.0"
+                   styleClass="page-search-field"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button text="+  Add User"
                 onAction="#showAddUserDialog"
                 styleClass="primary-button"/>
 
     </HBox>
 
-    <!-- USERS TABLE -->
-    <TableView fx:id="usersTable"
-               VBox.vgrow="ALWAYS">
 
-        <columns>
+    <!-- TABLE CARD -->
+    <VBox VBox.vgrow="ALWAYS"
+          styleClass="table-card">
 
-            <TableColumn fx:id="nameColumn"
-                         text="Name"
-                         prefWidth="220.0"/>
+        <TableView fx:id="usersTable"
+                   VBox.vgrow="ALWAYS"
+                   styleClass="modern-table">
 
-            <TableColumn fx:id="usernameColumn"
-                         text="Username"
-                         prefWidth="180.0"/>
+            <columns>
 
-            <TableColumn fx:id="roleColumn"
-                         text="Role"
-                         prefWidth="150.0"/>
+                <TableColumn fx:id="nameColumn"
+                             text="Name"
+                             prefWidth="220.0"/>
 
-            <TableColumn fx:id="statusColumn"
-                         text="Status"
-                         prefWidth="120.0"/>
+                <TableColumn fx:id="usernameColumn"
+                             text="Username"
+                             prefWidth="180.0"/>
 
-            <TableColumn
-                    fx:id="actionsColumn"
-                    text="Actions"
-                         prefWidth="180.0"/>
+                <TableColumn fx:id="roleColumn"
+                             text="Role"
+                             prefWidth="150.0"/>
 
-        </columns>
+                <TableColumn fx:id="statusColumn"
+                             text="Status"
+                             prefWidth="120.0"/>
 
-    </TableView>
+                <TableColumn fx:id="actionsColumn"
+                             text="Actions"
+                             prefWidth="200.0"/>
+
+            </columns>
+
+        </TableView>
+
+    </VBox>
 
 </VBox>

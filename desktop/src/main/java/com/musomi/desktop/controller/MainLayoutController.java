@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
+import com.musomi.desktop.config.SceneManager;
+import com.musomi.desktop.service.AuthService;
 
 public class MainLayoutController {
 
@@ -67,4 +69,16 @@ public class MainLayoutController {
             e.printStackTrace();
         }
     }
+
+    private final AuthService authService = new AuthService();
+
+    @FXML
+    private void handleLogout() {
+        try {
+            authService.logout();
+        } finally {
+            SceneManager.getInstance().switchTo("/fxml/login.fxml");
+        }
+    }
+
 }

@@ -6,57 +6,75 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.musomi.desktop.controller.admin.SubjectsController"
       spacing="20.0"
-      styleClass="content-area">
+      styleClass="page-container">
 
+    <!-- PAGE HEADER -->
     <VBox spacing="5.0">
+
         <Label text="Subjects"
                styleClass="page-title"/>
 
         <Label text="Manage school subjects"
                styleClass="page-subtitle"/>
+
     </VBox>
 
-    <HBox spacing="15.0">
+
+    <!-- TOOLBAR -->
+    <HBox spacing="12.0"
+          alignment="CENTER_LEFT">
 
         <TextField fx:id="searchField"
                    promptText="Search subjects..."
-                   prefWidth="350.0"/>
+                   prefWidth="360.0"
+                   styleClass="page-search-field"/>
 
-        <Button text="+ Add Subject"
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button text="+  Add Subject"
                 onAction="#showAddSubjectDialog"
                 styleClass="primary-button"/>
 
     </HBox>
 
-    <TableView fx:id="subjectsTable"
-               VBox.vgrow="ALWAYS">
 
-        <columns>
+    <!-- TABLE -->
+    <VBox VBox.vgrow="ALWAYS"
+          styleClass="table-card">
 
-            <TableColumn fx:id="nameColumn"
-                         text="Subject"
-                         prefWidth="250.0"/>
+        <TableView fx:id="subjectsTable"
+                   VBox.vgrow="ALWAYS"
+                   styleClass="modern-table">
 
-            <TableColumn fx:id="codeColumn"
-                         text="Code"
-                         prefWidth="180.0"/>
+            <columns>
 
-            <TableColumn fx:id="statusColumn"
-                         text="Status"
-                         prefWidth="150.0"/>
+                <TableColumn fx:id="nameColumn"
+                             text="Subject"
+                             prefWidth="260.0"/>
 
-            <TableColumn fx:id="actionsColumn"
-                         text="Actions"
-                         prefWidth="200.0"/>
+                <TableColumn fx:id="codeColumn"
+                             text="Code"
+                             prefWidth="180.0"/>
 
-        </columns>
+                <TableColumn fx:id="statusColumn"
+                             text="Status"
+                             prefWidth="150.0"/>
 
-    </TableView>
+                <TableColumn fx:id="actionsColumn"
+                             text="Actions"
+                             prefWidth="220.0"/>
+
+            </columns>
+
+        </TableView>
+
+    </VBox>
 
 </VBox>

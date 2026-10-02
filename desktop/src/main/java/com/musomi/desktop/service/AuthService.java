@@ -46,9 +46,8 @@ public class AuthService {
         this(new AuthApi(), Session.getInstance());
     }
 
-    // -------------------------------------------------------------------------
     // Public API
-    // -------------------------------------------------------------------------
+
 
     /**
      * Authenticates the user and persists the resulting session.

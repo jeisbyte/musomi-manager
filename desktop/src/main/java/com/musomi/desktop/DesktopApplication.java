@@ -32,7 +32,8 @@ public class DesktopApplication extends Application {
         primaryStage.setMinHeight(MIN_HEIGHT);
 
         SceneManager.getInstance().setPrimaryStage(primaryStage);
-        SceneManager.getInstance().switchTo("/fxml/main-layout.fxml");
+       SceneManager.getInstance().switchTo(LOGIN_FXML);
+        //SceneManager.getInstance().switchTo("/fxml/main-layout.fxml");
 
         primaryStage.show();
         log.info("Application started");

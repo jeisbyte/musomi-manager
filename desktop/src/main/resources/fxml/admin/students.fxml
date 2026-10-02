@@ -6,63 +6,72 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.musomi.desktop.controller.admin.StudentsController"
       spacing="20.0"
-      styleClass="content-area">
+      styleClass="page-container">
 
     <VBox spacing="5.0">
-
         <Label text="Students"
                styleClass="page-title"/>
 
-        <Label text="Manage school students"
+        <Label text="Manage student records"
                styleClass="page-subtitle"/>
-
     </VBox>
 
-    <HBox spacing="15.0">
+    <HBox spacing="12.0"
+          alignment="CENTER_LEFT">
 
         <TextField fx:id="searchField"
                    promptText="Search students..."
-                   prefWidth="350.0"/>
+                   prefWidth="360.0"
+                   styleClass="page-search-field"/>
 
-        <Button text="+ Add Student"
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button text="+  Add Student"
                 onAction="#showAddStudentDialog"
                 styleClass="primary-button"/>
 
     </HBox>
 
-    <TableView fx:id="studentsTable"
-               VBox.vgrow="ALWAYS">
+    <VBox VBox.vgrow="ALWAYS"
+          styleClass="table-card">
 
-        <columns>
+        <TableView fx:id="studentsTable"
+                   VBox.vgrow="ALWAYS"
+                   styleClass="modern-table">
 
-            <TableColumn fx:id="nameColumn"
-                         text="Student Name"
-                         prefWidth="250.0"/>
+            <columns>
 
-            <TableColumn fx:id="admissionNumberColumn"
-                         text="Admission No."
-                         prefWidth="180.0"/>
+                <TableColumn fx:id="nameColumn"
+                             text="Student"
+                             prefWidth="240.0"/>
 
-            <TableColumn fx:id="classColumn"
-                         text="Class"
-                         prefWidth="180.0"/>
+                <TableColumn fx:id="admissionNumberColumn"
+                             text="Student ID"
+                             prefWidth="170.0"/>
 
-            <TableColumn fx:id="statusColumn"
-                         text="Status"
-                         prefWidth="150.0"/>
+                <TableColumn fx:id="classColumn"
+                             text="Class"
+                             prefWidth="180.0"/>
 
-            <TableColumn fx:id="actionsColumn"
-                         text="Actions"
-                         prefWidth="200.0"/>
+                <TableColumn fx:id="statusColumn"
+                             text="Status"
+                             prefWidth="150.0"/>
 
-        </columns>
+                <TableColumn fx:id="actionsColumn"
+                             text="Actions"
+                             prefWidth="220.0"/>
 
-    </TableView>
+            </columns>
+
+        </TableView>
+
+    </VBox>
 
 </VBox>

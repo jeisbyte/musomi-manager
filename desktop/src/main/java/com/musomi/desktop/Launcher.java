@@ -6,7 +6,7 @@ package com.musomi.desktop;
  * <p>This class does NOT extend {@link javafx.application.Application}.
  * Launching from a non-Application main class tells the JVM to load JavaFX
  * from the classpath rather than requiring it on the module path — a
- * well-known workaround for the "JavaFX runtime components are missing"
+ * well-known workaround for the "JavaFX runtime components are missing"m
  * error that occurs when running an Application subclass directly.
  */
 public final class Launcher {

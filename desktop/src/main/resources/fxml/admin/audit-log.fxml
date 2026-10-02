@@ -5,14 +5,16 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.musomi.desktop.controller.admin.AuditLogController"
       spacing="20.0"
-      styleClass="content-area">
+      styleClass="page-container">
 
+    <!-- Page Header -->
     <VBox spacing="5.0">
 
         <Label text="Audit Log"
@@ -23,41 +25,56 @@
 
     </VBox>
 
-    <HBox spacing="15.0">
+    <!-- Toolbar -->
+    <HBox spacing="12.0"
+          alignment="CENTER_LEFT">
 
         <TextField fx:id="searchField"
                    promptText="Search audit log..."
-                   prefWidth="350.0"/>
+                   prefWidth="360.0"
+                   styleClass="page-search-field"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Label text="System activity"
+               styleClass="section-link"/>
 
     </HBox>
 
-    <TableView fx:id="auditTable"
-               VBox.vgrow="ALWAYS">
+    <!-- Audit Table -->
+    <VBox VBox.vgrow="ALWAYS"
+          styleClass="table-card">
 
-        <columns>
+        <TableView fx:id="auditTable"
+                   VBox.vgrow="ALWAYS"
+                   styleClass="modern-table">
 
-            <TableColumn fx:id="dateColumn"
-                         text="Date &amp; Time"
-                         prefWidth="180.0"/>
+            <columns>
 
-            <TableColumn fx:id="userColumn"
-                         text="User"
-                         prefWidth="180.0"/>
+                <TableColumn fx:id="dateColumn"
+                             text="Date &amp; Time"
+                             prefWidth="180.0"/>
 
-            <TableColumn fx:id="actionColumn"
-                         text="Action"
-                         prefWidth="150.0"/>
+                <TableColumn fx:id="userColumn"
+                             text="User"
+                             prefWidth="160.0"/>
 
-            <TableColumn fx:id="moduleColumn"
-                         text="Module"
-                         prefWidth="150.0"/>
+                <TableColumn fx:id="actionColumn"
+                             text="Action"
+                             prefWidth="140.0"/>
 
-            <TableColumn fx:id="descriptionColumn"
-                         text="Description"
-                         prefWidth="350.0"/>
+                <TableColumn fx:id="moduleColumn"
+                             text="Module"
+                             prefWidth="140.0"/>
 
-        </columns>
+                <TableColumn fx:id="descriptionColumn"
+                             text="Description"
+                             prefWidth="400.0"/>
 
-    </TableView>
+            </columns>
+
+        </TableView>
+
+    </VBox>
 
 </VBox>

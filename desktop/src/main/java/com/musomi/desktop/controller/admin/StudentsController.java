@@ -254,7 +254,6 @@ public class StudentsController {
             e.printStackTrace();
         }
     }
-
     private void handleEditStudent(
             StudentRow student
     ) {

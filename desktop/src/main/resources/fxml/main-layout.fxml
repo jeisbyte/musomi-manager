@@ -1,77 +1,232 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.musomi.desktop.controller.MainLayoutController"
-            prefWidth="1200.0"
-            prefHeight="700.0">
+            prefWidth="1280.0"
+            prefHeight="720.0">
 
-    <!-- TOP BAR -->
+    <!-- =========================================================
+         TOP BAR
+         ========================================================= -->
+
     <top>
-        <AnchorPane prefHeight="70.0">
-            <Label text="MUSOMI MANAGER"
-                   layoutX="25.0"
-                   layoutY="22.0"
-                   styleClass="top-bar"/>
-        </AnchorPane>
+
+        <HBox spacing="20.0"
+              alignment="CENTER_LEFT"
+              styleClass="top-bar">
+
+            <!-- BRAND -->
+
+            <HBox spacing="10.0"
+                  alignment="CENTER_LEFT">
+
+                <Label text="MM"
+                       styleClass="logo-mark"/>
+
+                <VBox spacing="0.0">
+
+                    <Label text="Musomi"
+                           styleClass="brand-name"/>
+
+                    <Label text="Manager"
+                           styleClass="brand-subtitle"/>
+
+                </VBox>
+
+            </HBox>
+
+
+            <!-- PUSH CONTENT TO RIGHT -->
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+
+            <!-- SEARCH -->
+
+            <TextField promptText="Search anything..."
+                       prefWidth="280.0"
+                       styleClass="search-field"/>
+
+
+            <!-- NOTIFICATION -->
+
+            <Button text="●"
+                    styleClass="notification-button"/>
+
+
+            <!-- USER PROFILE -->
+
+            <HBox spacing="12.0"
+                  alignment="CENTER_LEFT"
+                  styleClass="user-profile">
+
+                <!-- Avatar -->
+
+                <Label text="A"
+                       styleClass="avatar"/>
+
+
+                <!-- User information -->
+
+                <VBox spacing="2.0"
+                      alignment="CENTER_LEFT">
+
+                    <Label text="Administrator"
+                           styleClass="user-name"/>
+
+                    <Label text="System Administrator"
+                           styleClass="user-role"/>
+
+                </VBox>
+
+
+                <!-- Logout -->
+
+                <Button text="Logout"
+                        onAction="#handleLogout"
+                        styleClass="logout-button"/>
+
+            </HBox>
+
+        </HBox>
+
     </top>
 
-    <!-- LEFT SIDEBAR -->
+
+    <!-- =========================================================
+         LEFT SIDEBAR
+         ========================================================= -->
+
     <left>
-        <VBox prefWidth="220.0"
-              spacing="10.0"
+
+        <VBox prefWidth="240.0"
+              spacing="8.0"
               styleClass="sidebar">
+
+            <!-- NAVIGATION TITLE -->
 
             <Label text="NAVIGATION"
                    styleClass="sidebar-title"/>
+
+
+            <!-- DASHBOARD -->
 
             <Button text="Dashboard"
                     maxWidth="Infinity"
                     styleClass="nav-button-active"
                     onAction="#showDashboard"/>
 
+
+            <!-- USERS -->
+
             <Button text="Users"
                     maxWidth="Infinity"
                     onAction="#showUsers"/>
+
+
+            <!-- CLASSES -->
 
             <Button text="Classes"
                     maxWidth="Infinity"
                     onAction="#showClasses"/>
 
+
+            <!-- SUBJECTS -->
+
             <Button text="Subjects"
                     maxWidth="Infinity"
                     onAction="#showSubjects"/>
+
+
+            <!-- TOPICS -->
 
             <Button text="Topics"
                     maxWidth="Infinity"
                     onAction="#showTopics"/>
 
+
+            <!-- STUDENTS -->
+
             <Button text="Students"
                     maxWidth="Infinity"
                     onAction="#showStudents"/>
+
+
+            <!-- SPACE BETWEEN SECTIONS -->
+
+            <Region prefHeight="15.0"/>
+
+
+            <!-- SYSTEM TITLE -->
+
+            <Label text="SYSTEM"
+                   styleClass="sidebar-title"/>
+
+
+            <!-- SETTINGS -->
 
             <Button text="Settings"
                     maxWidth="Infinity"
                     onAction="#showSettings"/>
 
+
+            <!-- AUDIT LOG -->
+
             <Button text="Audit Log"
                     maxWidth="Infinity"
                     onAction="#showAuditLog"/>
 
+
+            <!-- PUSH USER SECTION TO BOTTOM -->
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+
+            <!-- SIDEBAR USER -->
+
+            <HBox spacing="10.0"
+                  alignment="CENTER_LEFT"
+                  styleClass="sidebar-user">
+
+                <Label text="A"
+                       styleClass="sidebar-avatar"/>
+
+                <VBox spacing="2.0">
+
+                    <Label text="Administrator"
+                           styleClass="sidebar-user-name"/>
+
+                    <Label text="System Administrator"
+                           styleClass="sidebar-user-role"/>
+
+                </VBox>
+
+            </HBox>
+
         </VBox>
+
     </left>
 
-    <!-- MAIN CONTENT -->
+
+    <!-- =========================================================
+         MAIN CONTENT
+         ========================================================= -->
+
     <center>
+
         <StackPane fx:id="contentArea"
                    styleClass="content-area"/>
+
     </center>
 
 </BorderPane>
