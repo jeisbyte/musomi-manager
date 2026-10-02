@@ -61,6 +61,8 @@ class AuthServiceTest {
         assertThat(response.user().fullName()).isEqualTo("Jane Doe");
         assertThat(response.user().role()).isEqualTo("ADMIN");
         assertThat(response.user().schoolId()).isEqualTo(1L);
+        assertThat(response.user().schoolName()).isEqualTo("Musomi School");
+        assertThat(response.user().schoolName()).isEqualTo("Musomi School");
         verify(userRepository).save(user);
     }
 
