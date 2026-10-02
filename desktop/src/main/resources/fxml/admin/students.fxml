@@ -10,61 +10,56 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.musomi.desktop.controller.admin.UsersController"
+      fx:controller="com.musomi.desktop.controller.admin.StudentsController"
       spacing="20.0"
       styleClass="content-area">
 
-    <!-- PAGE HEADER -->
     <VBox spacing="5.0">
 
-        <Label text="Users"
+        <Label text="Students"
                styleClass="page-title"/>
 
-        <Label text="Manage system users"
+        <Label text="Manage school students"
                styleClass="page-subtitle"/>
 
     </VBox>
 
-    <!-- SEARCH + ADD USER -->
     <HBox spacing="15.0">
 
-        <TextField
-                fx:id="searchField"
-                promptText="Search users..."
+        <TextField fx:id="searchField"
+                   promptText="Search students..."
                    prefWidth="350.0"/>
 
-        <Button text="+ Add User"
-                onAction="#showAddUserDialog"
+        <Button text="+ Add Student"
+                onAction="#showAddStudentDialog"
                 styleClass="primary-button"/>
 
     </HBox>
 
-    <!-- USERS TABLE -->
-    <TableView fx:id="usersTable"
+    <TableView fx:id="studentsTable"
                VBox.vgrow="ALWAYS">
 
         <columns>
 
             <TableColumn fx:id="nameColumn"
-                         text="Name"
-                         prefWidth="220.0"/>
+                         text="Student Name"
+                         prefWidth="250.0"/>
 
-            <TableColumn fx:id="usernameColumn"
-                         text="Username"
+            <TableColumn fx:id="admissionNumberColumn"
+                         text="Admission No."
                          prefWidth="180.0"/>
 
-            <TableColumn fx:id="roleColumn"
-                         text="Role"
-                         prefWidth="150.0"/>
+            <TableColumn fx:id="classColumn"
+                         text="Class"
+                         prefWidth="180.0"/>
 
             <TableColumn fx:id="statusColumn"
                          text="Status"
-                         prefWidth="120.0"/>
+                         prefWidth="150.0"/>
 
-            <TableColumn
-                    fx:id="actionsColumn"
-                    text="Actions"
-                         prefWidth="180.0"/>
+            <TableColumn fx:id="actionsColumn"
+                         text="Actions"
+                         prefWidth="200.0"/>
 
         </columns>
 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.musomi.desktop.controller.admin.AddTopicController"
+      spacing="15.0"
+      prefWidth="500.0"
+      prefHeight="400.0"
+      styleClass="dialog-container">
+
+    <Label text="Add Topic"
+           styleClass="page-title"/>
+
+    <Label text="Create a new subject topic"
+           styleClass="page-subtitle"/>
+
+    <VBox spacing="6.0">
+
+        <Label text="Topic Name"/>
+
+        <TextField fx:id="nameField"
+                   promptText="e.g. Algebra"/>
+
+    </VBox>
+
+    <VBox spacing="6.0">
+
+        <Label text="Subject"/>
+
+        <ComboBox fx:id="subjectComboBox"
+                  maxWidth="Infinity"
+                  promptText="Select subject"/>
+
+    </VBox>
+
+    <HBox spacing="10.0">
+
+        <Button text="Cancel"
+                onAction="#handleCancel"/>
+
+        <Button text="Create Topic"
+                onAction="#handleCreateTopic"
+                styleClass="primary-button"/>
+
+    </HBox>
+
+</VBox>
