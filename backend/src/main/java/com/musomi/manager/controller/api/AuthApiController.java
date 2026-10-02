@@ -39,7 +39,12 @@ public class AuthApiController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout() {
+    public ResponseEntity<Void> logout(
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7).trim();
+            authService.logout(token);
+        }
         SecurityContextHolder.clearContext();
         return ResponseEntity.noContent().build();
     }
