@@ -64,9 +64,9 @@ public class AuthService {
                 user.getUsername(),
                 user.getFullName(),
                 user.getRole().name(),
-                user.getSchool().getId()
+                user.getSchool().getId(),
+                user.getSchool().getName()
         );
-
         return new LoginResponse(token, expiresAt, summary);
     }
 
@@ -78,7 +78,8 @@ public class AuthService {
                 user.getUsername(),
                 user.getFullName(),
                 user.getRole().name(),
-                user.getSchool().getId()
+                user.getSchool().getId(),
+                user.getSchool().getName()
         );
     }
 }

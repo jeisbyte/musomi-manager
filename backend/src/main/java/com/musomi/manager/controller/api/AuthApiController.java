@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
@@ -38,8 +39,8 @@ public class AuthApiController {
     }
 
     @PostMapping("/logout")
-    public ApiResponse<Map<String, String>> logout() {
+    public ResponseEntity<Void> logout() {
         SecurityContextHolder.clearContext();
-        return ApiResponse.success(Map.of("message", "Logged out"));
+        return ResponseEntity.noContent().build();
     }
 }
