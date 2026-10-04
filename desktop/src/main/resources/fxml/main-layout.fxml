@@ -37,33 +37,59 @@
                     styleClass="nav-button-active"
                     onAction="#showDashboard"/>
 
-            <Button text="Users"
-                    maxWidth="Infinity"
-                    onAction="#showUsers"/>
+            <!-- ======================================================= -->
+            <!-- ADMIN NAVIGATION — only visible to ADMIN users          -->
+            <!-- ======================================================= -->
+            <VBox fx:id="adminNavSection"
+                  spacing="4.0">
 
-            <Button text="Classes"
-                    maxWidth="Infinity"
-                    onAction="#showClasses"/>
+                <Label text="ADMIN"
+                       styleClass="sidebar-title"/>
 
-            <Button text="Subjects"
-                    maxWidth="Infinity"
-                    onAction="#showSubjects"/>
+                <Button text="Users"
+                        maxWidth="Infinity"
+                        onAction="#showUsers"/>
 
-            <Button text="Topics"
-                    maxWidth="Infinity"
-                    onAction="#showTopics"/>
+                <Button text="Classes"
+                        maxWidth="Infinity"
+                        onAction="#showClasses"/>
 
-            <Button text="Students"
-                    maxWidth="Infinity"
-                    onAction="#showStudents"/>
+                <Button text="Subjects"
+                        maxWidth="Infinity"
+                        onAction="#showSubjects"/>
 
-            <Button text="Settings"
-                    maxWidth="Infinity"
-                    onAction="#showSettings"/>
+                <Button text="Topics"
+                        maxWidth="Infinity"
+                        onAction="#showTopics"/>
 
-            <Button text="Audit Log"
-                    maxWidth="Infinity"
-                    onAction="#showAuditLog"/>
+                <Button text="Students"
+                        maxWidth="Infinity"
+                        onAction="#showStudents"/>
+
+                <Button text="Settings"
+                        maxWidth="Infinity"
+                        onAction="#showSettings"/>
+
+                <Button text="Audit Log"
+                        maxWidth="Infinity"
+                        onAction="#showAuditLog"/>
+
+            </VBox>
+
+            <!-- ======================================================= -->
+            <!-- TEACHER NAVIGATION — only visible to TEACHER users      -->
+            <!-- ======================================================= -->
+            <VBox fx:id="teacherNavSection"
+                  spacing="4.0">
+
+                <Label text="TEACHER"
+                       styleClass="sidebar-title"/>
+
+                <Button text="My Classes"
+                        maxWidth="Infinity"
+                        onAction="#showMyClasses"/>
+
+            </VBox>
 
         </VBox>
     </left>
