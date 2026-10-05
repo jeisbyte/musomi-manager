@@ -26,13 +26,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/login", "/api/v1/auth/me", "/actuator/health", "/error").permitAll()
+                        .requestMatchers(
+                                "/login", "/css/**", "/js/**", "/img/**", "/error", "/error/**",
+                                "/favicon.ico", "/", "/api/v1/auth/login", "/actuator/health")
+                        .permitAll()
+                        .requestMatchers("/api/v1/**", "/student/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) -> {
+                        .defaultAuthenticationEntryPointFor((request, response, authException) -> {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType("application/json");
                             response.getWriter().write(
@@ -40,8 +44,16 @@ public class SecurityConfig {
                                             + "\"message\":\"Your session has expired. Please log in again.\","
                                             + "\"details\":{}}}"
                             );
-                        })
+                        }, request -> request.getServletPath().startsWith("/api/"))
                 )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/student/dashboard")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
