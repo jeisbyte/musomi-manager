@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/base}">
+<head>
+    <title>My Profile</title>
+</head>
+<body>
+    <div layout:fragment="content">
+
+        <!-- ========== PROFILE HERO CARD ========== -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+            <!-- Banner -->
+            <div class="relative h-32 sm:h-36 bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700">
+                <div class="absolute inset-0 opacity-[0.08]"
+                     style="background-image: repeating-linear-gradient(0deg,transparent,transparent 23px,rgba(255,255,255,1) 24px),repeating-linear-gradient(90deg,transparent,transparent 23px,rgba(255,255,255,1) 24px);">
+                </div>
+                <div class="absolute -top-8 -right-8 w-40 h-40 rounded-full bg-white/5"></div>
+                <div class="absolute -bottom-6 right-20 w-24 h-24 rounded-full bg-white/5"></div>
+            </div>
+
+            <!-- Avatar + Info row -->
+            <div class="px-5 sm:px-8 pb-6">
+                <div class="flex flex-col sm:flex-row sm:items-end gap-4 -mt-14 sm:-mt-16">
+
+                    <!-- Avatar with upload overlay -->
+                    <div class="relative shrink-0 group" id="avatar-wrapper">
+                        <img id="profile-avatar"
+                             th:src="@{/img/student-avatar.jpg}"
+                             alt="Profile picture"
+                             class="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-white shadow-lg ring-2 ring-brand-200"
+                             onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-initials').style.display='flex';">
+                        <div id="avatar-initials"
+                             class="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-brand-100 border-4 border-white shadow-lg ring-2 ring-brand-200 items-center justify-center text-brand-800 text-4xl font-bold"
+                             style="display:none;" th:text="${#strings.substring(fullName,0,1)}">A</div>
+                        <span class="absolute bottom-2 right-2 w-4 h-4 rounded-full bg-emerald-400 border-2 border-white shadow-sm z-10" title="Active"></span>
+                        <button type="button" id="open-upload-btn"
+                                onclick="document.getElementById('avatar-file-input').click()"
+                                class="absolute inset-0 rounded-full bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer border-4 border-white"
+                                title="Change profile picture" aria-label="Upload profile picture">
+                            <i data-lucide="camera" class="w-6 h-6 text-white"></i>
+                            <span class="text-[10px] text-white font-medium mt-0.5">Change</span>
+                        </button>
+                        <input type="file" id="avatar-file-input" accept="image/jpeg,image/png,image/webp"
+                               class="sr-only" onchange="openAvatarPreviewModal(this)">
+                    </div>
+
+                    <!-- Name, class and actions -->
+                    <div class="pb-1 flex-1 min-w-0">
+                        <h1 class="text-2xl sm:text-3xl font-serif font-semibold text-slate-900 leading-tight"
+                            th:text="${fullName}">Achieng Sarah</h1>
+                        <div class="flex flex-wrap items-center gap-2 mt-1.5">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-brand-100 text-brand-800"
+                                  th:text="${className + ' · ' + streamName + ' Stream'}">S3 · Blue Stream</span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+                                Active
+                            </span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-4 mt-2">
+                            <p class="text-sm text-slate-500 font-mono" th:text="'Adm · ' + ${admissionNumber}">Adm · U001/0123</p>
+                            <button type="button" onclick="document.getElementById('avatar-file-input').click()"
+                                    class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-700 hover:text-brand-900 transition-colors">
+                                <i data-lucide="image-plus" class="w-3.5 h-3.5"></i>
+                                Upload photo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== UPLOAD MODAL ========== -->
+        <div id="avatar-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+                <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+                    <h3 class="font-semibold text-slate-900 text-base">Update Profile Picture</h3>
+                    <button type="button" onclick="closeAvatarModal()"
+                            class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors" aria-label="Close">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div class="flex flex-col items-center gap-4 px-5 py-6">
+                    <div class="relative">
+                        <img id="avatar-preview-img" src="" alt="Preview"
+                             class="w-32 h-32 rounded-full object-cover border-4 border-brand-200 shadow-lg">
+                        <div class="absolute inset-0 rounded-full ring-4 ring-brand-700/20"></div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-sm font-medium text-slate-700" id="avatar-file-name">photo.jpg</p>
+                        <p class="text-xs text-slate-400 mt-0.5" id="avatar-file-size">— KB</p>
+                    </div>
+                    <p class="text-xs text-slate-400 text-center">Best results with a square photo. Max 5 MB · JPG, PNG or WebP.</p>
+                </div>
+                <div class="flex gap-3 px-5 pb-5">
+                    <button type="button" onclick="closeAvatarModal()"
+                            class="flex-1 py-2.5 rounded-lg border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="button" id="avatar-upload-btn" onclick="submitAvatarUpload()"
+                            class="flex-1 py-2.5 rounded-lg bg-brand-700 text-sm font-medium text-white hover:bg-brand-800 transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+                        Save Photo
+                    </button>
+                </div>
+                <div id="avatar-upload-feedback" class="hidden px-5 pb-4 text-sm font-medium text-center"></div>
+            </div>
+        </div>
+
+        <!-- ========== PERSONAL INFORMATION ========== -->
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 mt-2 px-1">Personal Information</h2>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+
+            <div class="flex items-center gap-4 px-5 py-4 border-b border-slate-100 hover:bg-slate-50/60 transition-colors">
+                <div class="shrink-0 w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-700">
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                </div>
+                <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Full Name</p>
+                    <p class="text-base font-semibold text-slate-900 mt-0.5 sm:mt-0 sm:text-right" th:text="${fullName}">Achieng Sarah</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 border-b border-slate-100 hover:bg-slate-50/60 transition-colors">
+                <div class="shrink-0 w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+                    <i data-lucide="hash" class="w-4 h-4"></i>
+                </div>
+                <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Admission No.</p>
+                    <p class="text-base font-mono font-medium text-slate-900 mt-0.5 sm:mt-0 sm:text-right" th:text="${admissionNumber}">U001/0123</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 border-b border-slate-100 hover:bg-slate-50/60 transition-colors">
+                <div class="shrink-0 w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center text-violet-600">
+                    <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                </div>
+                <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Class &amp; Stream</p>
+                    <div class="flex items-center gap-2 mt-0.5 sm:mt-0">
+                        <span class="text-base font-semibold text-slate-900" th:text="${className}">S3</span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-violet-100 text-violet-700"
+                              th:text="${streamName + ' Stream'}">Blue Stream</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 border-b border-slate-100 hover:bg-slate-50/60 transition-colors">
+                <div class="shrink-0 w-9 h-9 rounded-xl bg-pink-50 flex items-center justify-center text-pink-500">
+                    <i data-lucide="users" class="w-4 h-4"></i>
+                </div>
+                <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Gender</p>
+                    <p class="text-base font-medium text-slate-900 mt-0.5 sm:mt-0 sm:text-right" th:text="${gender}">Female</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-slate-50/60 transition-colors">
+                <div class="shrink-0 w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
+                    <i data-lucide="cake" class="w-4 h-4"></i>
+                </div>
+                <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Date of Birth</p>
+                    <p class="text-base font-medium text-slate-900 mt-0.5 sm:mt-0 sm:text-right" th:text="${dateOfBirth}">12 May 2010</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== GUARDIAN INFORMATION ========== -->
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 px-1">Guardian Information</h2>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+
+            <div class="flex items-center gap-4 px-5 py-4 border-b border-slate-100 hover:bg-slate-50/60 transition-colors">
+                <div class="shrink-0 w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center text-teal-600">
+                    <i data-lucide="person-standing" class="w-4 h-4"></i>
+                </div>
+                <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Guardian Name</p>
+                    <p class="text-base font-semibold text-slate-900 mt-0.5 sm:mt-0 sm:text-right" th:text="${guardianName}">Odongo Peter</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-slate-50/60 transition-colors">
+                <div class="shrink-0 w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center text-green-600">
+                    <i data-lucide="phone" class="w-4 h-4"></i>
+                </div>
+                <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Guardian Phone</p>
+                    <a th:href="'tel:' + ${guardianPhone}" th:text="${guardianPhone}"
+                       class="text-base font-mono font-medium text-brand-700 hover:text-brand-900 transition-colors mt-0.5 sm:mt-0">
+                        +256 700 123 456
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SECURITY ========== -->
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 px-1">Security</h2>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-10">
+            <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-100 bg-rose-50/40">
+                <div class="shrink-0 w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center text-rose-500">
+                    <i data-lucide="lock-keyhole" class="w-4 h-4"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-900">Change Password</p>
+                    <p class="text-xs text-slate-500">Update your login credentials</p>
+                </div>
+            </div>
+            <div class="px-5 py-5 max-w-md">
+                <form hx-post="/student/profile/change-password" hx-swap="outerHTML" class="space-y-5" id="password-form"
+                      onsubmit="if(this.new.value!==this.confirm.value){alert('Passwords do not match');return false;}">
+                    <div>
+                        <label for="current" class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Current Password</label>
+                        <input type="password" id="current" name="current" required autocomplete="current-password"
+                               class="block w-full rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-brand-700 focus:ring-brand-700 text-sm px-4 py-3 border text-slate-900 transition">
+                    </div>
+                    <div>
+                        <label for="new" class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">New Password</label>
+                        <input type="password" id="new" name="new" required autocomplete="new-password"
+                               class="block w-full rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-brand-700 focus:ring-brand-700 text-sm px-4 py-3 border text-slate-900 transition">
+                    </div>
+                    <div>
+                        <label for="confirm" class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Confirm New Password</label>
+                        <input type="password" id="confirm" name="confirm" required autocomplete="new-password"
+                               class="block w-full rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-brand-700 focus:ring-brand-700 text-sm px-4 py-3 border text-slate-900 transition">
+                    </div>
+                    <button type="submit"
+                            class="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-brand-700 hover:bg-brand-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-700 transition-colors shadow-sm">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        Update Password
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ========== SCRIPTS ========== -->
+        <script>
+        /* Sticky nav drop-shadow on scroll */
+        (function () {
+            var hdr = document.querySelector('header');
+            if (!hdr) return;
+            function chk() { hdr.classList.toggle('shadow-md', window.scrollY > 4); }
+            window.addEventListener('scroll', chk, { passive: true });
+            chk();
+        })();
+
+        /* Avatar upload flow */
+        (function () {
+            var _file = null;
+
+            window.openAvatarPreviewModal = function (inp) {
+                var f = inp.files[0];
+                if (!f) return;
+                if (f.size > 5242880) { showFB('error', 'File too large. Max 5 MB.'); inp.value = ''; return; }
+                _file = f;
+                document.getElementById('avatar-file-name').textContent = f.name;
+                document.getElementById('avatar-file-size').textContent = (f.size / 1024).toFixed(1) + ' KB';
+                var rd = new FileReader();
+                rd.onload = function (e) { document.getElementById('avatar-preview-img').src = e.target.result; };
+                rd.readAsDataURL(f);
+                var fb = document.getElementById('avatar-upload-feedback');
+                fb.classList.add('hidden'); fb.textContent = '';
+                var m = document.getElementById('avatar-modal');
+                m.classList.remove('hidden'); m.classList.add('flex');
+                lucide.createIcons();
+            };
+
+            window.closeAvatarModal = function () {
+                var m = document.getElementById('avatar-modal');
+                m.classList.add('hidden'); m.classList.remove('flex');
+                document.getElementById('avatar-file-input').value = '';
+                _file = null;
+            };
+
+            window.submitAvatarUpload = function () {
+                if (!_file) return;
+                var btn = document.getElementById('avatar-upload-btn');
+                btn.disabled = true;
+                btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Uploading...';
+                lucide.createIcons({ nodes: [btn] });
+                var fd = new FormData();
+                fd.append('photo', _file);
+                fetch('/student/profile/upload-avatar', { method: 'POST', body: fd })
+                    .then(function (r) { if (!r.ok) return r.text().then(function (t) { throw new Error(t || 'Upload failed'); }); return r.text(); })
+                    .then(function (url) {
+                        var av = document.getElementById('profile-avatar');
+                        if (av) { av.src = url + '?t=' + Date.now(); av.style.display = ''; document.getElementById('avatar-initials').style.display = 'none'; }
+                        showFB('success', 'Profile picture updated!');
+                        setTimeout(closeAvatarModal, 1200);
+                    })
+                    .catch(function (err) {
+                        showFB('error', err.message || 'Upload failed. Try again.');
+                        btn.disabled = false;
+                        btn.innerHTML = '<i data-lucide="upload-cloud" class="w-4 h-4"></i> Save Photo';
+                        lucide.createIcons({ nodes: [btn] });
+                    });
+            };
+
+            function showFB(type, msg) {
+                var fb = document.getElementById('avatar-upload-feedback');
+                fb.classList.remove('hidden', 'text-emerald-700', 'text-red-700');
+                fb.classList.add(type === 'success' ? 'text-emerald-700' : 'text-red-700');
+                fb.textContent = msg;
+            }
+        })();
+        </script>
+
+    </div>
+</body>
+</html>
