@@ -30,18 +30,26 @@ public class AuthService {
     private final UserSessionRepository userSessionRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final LoginHistoryService loginHistoryService;
 
     /** Authenticates a user and issues a recorded JWT session. */
     @Transactional
     public LoginResponse login(LoginRequest request) {
+        String usernameAttempted = request.username();
         User user = userRepository.findBySchoolIdAndUsername(1L, request.username())
-                .orElseThrow(() -> new AuthenticationException(ErrorCode.INVALID_CREDENTIALS));
+                .orElse(null);
+        if (user == null) {
+            recordLoginAttempt(usernameAttempted, null, false);
+            throw new AuthenticationException(ErrorCode.INVALID_CREDENTIALS);
+        }
 
         if (!Boolean.TRUE.equals(user.getIsActive())) {
+            recordLoginAttempt(usernameAttempted, user.getId(), false);
             throw new AuthenticationException(ErrorCode.ACCOUNT_INACTIVE);
         }
 
         if (user.getLockedUntil() != null && user.getLockedUntil().isAfter(LocalDateTime.now())) {
+            recordLoginAttempt(usernameAttempted, user.getId(), false);
             throw new AuthenticationException(ErrorCode.ACCOUNT_LOCKED);
         }
 
@@ -54,6 +62,7 @@ public class AuthService {
                         user.getId(), user.getUsername());
             }
             userRepository.save(user);
+            recordLoginAttempt(usernameAttempted, user.getId(), false);
             throw new AuthenticationException(ErrorCode.INVALID_CREDENTIALS);
         }
 
@@ -81,7 +90,18 @@ public class AuthService {
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.ofInstant(expiresAt, ZoneOffset.UTC))
                 .build());
+        recordLoginAttempt(usernameAttempted, user.getId(), true);
         return new LoginResponse(token, expiresAt, summary);
+    }
+
+    private void recordLoginAttempt(String usernameAttempted, Long userId, boolean success) {
+        // TODO(backend-lead): capture IP and User-Agent from the HTTP request
+        // when AuthApiController passes them in.
+        try {
+            loginHistoryService.record(usernameAttempted, userId, success, null, null);
+        } catch (RuntimeException exception) {
+            log.warn("Failed to record login history for username={}", usernameAttempted, exception);
+        }
     }
 
     /** Revokes the session associated with the given raw JWT. */
