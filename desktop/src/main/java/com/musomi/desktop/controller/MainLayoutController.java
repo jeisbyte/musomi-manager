@@ -1,8 +1,5 @@
 package com.musomi.desktop.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,66 +7,112 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-import com.musomi.desktop.config.SceneManager;
-import com.musomi.desktop.config.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Controller for the main application shell ({@code /fxml/main-layout.fxml}).
- *
- * <p>Manages the left-sidebar navigation and central content area.
- * Navigation items are shown or hidden based on the authenticated user's role,
- * as stored in {@link Session#getRole()}.
- *
- * <p>Role visibility rules:
- * <ul>
- *   <li>ADMIN — admin navigation section (Users, Classes, Subjects, Topics, Students, Settings, Audit Log)</li>
- *   <li>TEACHER — teacher navigation section (My Classes)</li>
- * </ul>
- *
- * <p>Backend authorization remains the source of truth. Hiding nav items is a
- * UX convenience; the backend will reject unauthorized requests regardless.
- */
 public class MainLayoutController {
 
-    private static final Logger log = LoggerFactory.getLogger(MainLayoutController.class);
+    private static final Logger log =
+            LoggerFactory.getLogger(MainLayoutController.class);
 
-    private static final String ROLE_ADMIN   = "ADMIN";
-    private static final String ROLE_TEACHER = "TEACHER";
+    @FXML
+    private StackPane contentArea;
 
-    // -------------------------------------------------------------------------
-    // FXML bindings — must match fx:id in main-layout.fxml
-    // -------------------------------------------------------------------------
+    @FXML
+    private VBox adminNavSection;
 
-    @FXML private StackPane contentArea;
+    @FXML
+    private VBox teacherNavSection;
 
-    /** Navigation section shown only to ADMIN users. */
-    @FXML private VBox adminNavSection;
+    @FXML
+    private Button dashboardButton;
 
-    /** Navigation section shown only to TEACHER users. */
-    @FXML private VBox teacherNavSection;
+    @FXML
+    private Button markEntryButton;
 
-    // -------------------------------------------------------------------------
-    // Lifecycle
-    // -------------------------------------------------------------------------
+    @FXML
+    private Button myClassesButton;
+
+    @FXML
+    private Button assessmentsButton;
+
 
     @FXML
     private void initialize() {
-        applyRoleNavigation();
-        navigateToDefaultScreen();
+
+        // We are currently developing the Teacher UI.
+        // Show only Teacher navigation for now.
+
+        if (adminNavSection != null) {
+            adminNavSection.setVisible(false);
+            adminNavSection.setManaged(false);
+        }
+
+        if (teacherNavSection != null) {
+            teacherNavSection.setVisible(true);
+            teacherNavSection.setManaged(true);
+        }
+
+        // Open Dashboard when the application starts.
+        showDashboard();
     }
 
-    // -------------------------------------------------------------------------
-    // Event handlers — shared
-    // -------------------------------------------------------------------------
+
+    // =========================================================
+    // DASHBOARD
+    // =========================================================
 
     @FXML
     private void showDashboard() {
+
+        setActiveButton(dashboardButton);
+
         loadView("/fxml/dashboard.fxml");
     }
 
-    // -------------------------------------------------------------------------
-    // Event handlers — admin
-    // -------------------------------------------------------------------------
+
+    // =========================================================
+    // MARK ENTRY
+    // =========================================================
+
+    @FXML
+    private void showMarkEntry() {
+
+        setActiveButton(markEntryButton);
+
+        loadView("/fxml/teacher/mark-entry.fxml");
+    }
+
+
+    // =========================================================
+    // MY CLASSES
+    // =========================================================
+
+    @FXML
+    private void showMyClasses() {
+
+        setActiveButton(myClassesButton);
+
+        loadView("/fxml/teacher/my-classes.fxml");
+    }
+
+
+    // =========================================================
+    // ASSESSMENTS
+    // =========================================================
+
+    @FXML
+    private void showAssessments() {
+
+        setActiveButton(assessmentsButton);
+
+        loadView("/fxml/teacher/assessments.fxml");
+    }
+
+
+    // =========================================================
+    // ADMIN NAVIGATION
+    // =========================================================
 
     @FXML
     private void showUsers() {
@@ -106,75 +149,81 @@ public class MainLayoutController {
         loadView("/fxml/admin/audit-log.fxml");
     }
 
-    // -------------------------------------------------------------------------
-    // Event handlers — teacher
-    // -------------------------------------------------------------------------
 
-    /**
-     * Navigates to the My Classes screen for the authenticated teacher.
-     *
-     * <p>The controller performs a role check on initialize() and will redirect
-     * to login if the user is not a TEACHER, providing a second layer of defence.
-     */
-    @FXML
-    private void showMyClasses() {
-        loadView("/fxml/teacher/my-classes.fxml");
-    }
+    // =========================================================
+    // ACTIVE NAVIGATION BUTTON
+    // =========================================================
 
-    // -------------------------------------------------------------------------
-    // Private helpers
-    // -------------------------------------------------------------------------
+    private static final String INACTIVE_STYLE =
+            "-fx-background-color: transparent;" +
+            "-fx-text-fill: #475569;" +
+            "-fx-font-size: 14px;" +
+            "-fx-alignment: CENTER_LEFT;" +
+            "-fx-padding: 11px 14px;" +
+            "-fx-cursor: hand;";
 
-    /**
-     * Shows or hides nav sections based on the authenticated user's role.
-     * Called once during {@link #initialize()}.
-     */
-    private void applyRoleNavigation() {
-        String role = Session.getInstance().getRole();
-        log.debug("Applying navigation for role: {}", role);
+    private static final String ACTIVE_STYLE =
+            "-fx-background-color: #eef4ff;" +
+            "-fx-background-radius: 8px;" +
+            "-fx-text-fill: #2563eb;" +
+            "-fx-font-size: 14px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-alignment: CENTER_LEFT;" +
+            "-fx-padding: 11px 14px;" +
+            "-fx-cursor: hand;";
 
-        boolean isAdmin   = ROLE_ADMIN.equalsIgnoreCase(role);
-        boolean isTeacher = ROLE_TEACHER.equalsIgnoreCase(role);
+    private void setActiveButton(Button activeButton) {
 
-        setNavSectionVisible(adminNavSection,   isAdmin);
-        setNavSectionVisible(teacherNavSection, isTeacher);
-    }
+        // Reset all tracked nav buttons to inactive
+        if (dashboardButton   != null) dashboardButton.setStyle(INACTIVE_STYLE);
+        if (markEntryButton   != null) markEntryButton.setStyle(INACTIVE_STYLE);
+        if (myClassesButton   != null) myClassesButton.setStyle(INACTIVE_STYLE);
+        if (assessmentsButton != null) assessmentsButton.setStyle(INACTIVE_STYLE);
 
-    /**
-     * Sets the visibility and managed state of a navigation section VBox.
-     * Setting managed=false removes the section from layout flow when invisible.
-     */
-    private void setNavSectionVisible(VBox section, boolean visible) {
-        if (section != null) {
-            section.setVisible(visible);
-            section.setManaged(visible);
+        // Apply active style to the selected button
+        if (activeButton != null) {
+            activeButton.setStyle(ACTIVE_STYLE);
         }
     }
 
-    /**
-     * Loads the appropriate default screen for the current user's role.
-     */
-    private void navigateToDefaultScreen() {
-        String role = Session.getInstance().getRole();
-        if (ROLE_TEACHER.equalsIgnoreCase(role)) {
-            loadView("/fxml/teacher/my-classes.fxml");
-        } else {
-            // ADMIN or any other role — show the admin dashboard
-            loadView("/fxml/dashboard.fxml");
-        }
-    }
 
-    /**
-     * Loads an FXML view and places it in the central content area.
-     *
-     * @param fxmlPath classpath-relative FXML path
-     */
+    // =========================================================
+    // VIEW LOADING
+    // =========================================================
+
     private void loadView(String fxmlPath) {
+
         try {
-            Node view = FXMLLoader.load(getClass().getResource(fxmlPath));
+
+            System.out.println("========================================");
+            System.out.println("Loading view: " + fxmlPath);
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            getClass().getResource(fxmlPath)
+                    );
+
+            Node view = loader.load();
+
             contentArea.getChildren().setAll(view);
+
+            System.out.println(
+                    "Successfully loaded: " + fxmlPath
+            );
+
+            System.out.println("========================================");
+
         } catch (Exception e) {
-            log.error("Failed to load view: {}", fxmlPath, e);
+
+            System.out.println("========================================");
+            System.out.println(
+                    "FAILED TO LOAD: " + fxmlPath
+            );
+            System.out.println("========================================");
+
+            e.printStackTrace();
+
+            System.out.println("========================================");
         }
     }
 }

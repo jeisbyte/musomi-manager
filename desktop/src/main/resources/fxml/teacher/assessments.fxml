@@ -1,10 +1,310 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<StackPane xmlns="http://javafx.com/javafx"
-           xmlns:fx="http://javafx.com/fxml"
-           prefWidth="800" prefHeight="600">
-    <Label text="Assessments" styleClass="h2"/>
-</StackPane>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.musomi.desktop.controller.teacher.AssessmentsController"
+            style="-fx-background-color: #f7f8fc;">
+
+    <!-- ===================================================== -->
+    <!-- PAGE HEADER                                           -->
+    <!-- ===================================================== -->
+
+    <top>
+        <VBox spacing="5.0">
+            <padding>
+                <Insets top="26.0" right="30.0" bottom="18.0" left="30.0"/>
+            </padding>
+
+            <HBox alignment="CENTER_LEFT">
+
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <Label text="Assessments"
+                           style="-fx-font-size: 26px;
+                                  -fx-font-weight: bold;
+                                  -fx-text-fill: #1e293b;"/>
+                    <Label text="Create and manage assessments for your classes."
+                           style="-fx-font-size: 14px;
+                                  -fx-text-fill: #64748b;"/>
+                </VBox>
+
+                <Button fx:id="createBtn"
+                        text="+ Create Assessment"
+                        onAction="#handleCreateAssessment"
+                        style="-fx-background-color: #4F46E5;
+                               -fx-text-fill: white;
+                               -fx-font-size: 14px;
+                               -fx-font-weight: 600;
+                               -fx-background-radius: 8px;
+                               -fx-padding: 10 20;
+                               -fx-cursor: hand;"/>
+            </HBox>
+        </VBox>
+    </top>
+
+
+    <!-- ===================================================== -->
+    <!-- MAIN CONTENT AREA                                     -->
+    <!-- Uses StackPane to overlay the create-form             -->
+    <!-- ===================================================== -->
+
+    <center>
+        <StackPane>
+
+            <!-- ─── Assessment list ─────────────────────────────────── -->
+            <VBox fx:id="listPane" spacing="0.0"
+                  style="-fx-background-color: #f7f8fc;">
+                <padding>
+                    <Insets top="0" right="30.0" bottom="30.0" left="30.0"/>
+                </padding>
+
+                <!-- table header card -->
+                <HBox spacing="0"
+                      style="-fx-background-color: white;
+                             -fx-background-radius: 12px 12px 0 0;
+                             -fx-border-color: #E2E8F0;
+                             -fx-border-width: 1 1 0 1;
+                             -fx-padding: 12 20;">
+                    <Label text="Assessment"        minWidth="200" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
+                    <Label text="Class"             minWidth="100" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
+                    <Label text="Subject"           minWidth="130" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
+                    <Label text="Topic"             minWidth="150" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
+                    <Label text="Date"              minWidth="110" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
+                    <Label text="Max Marks"         minWidth="90"  style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
+                    <Label text="Status"            minWidth="100" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
+                    <Label text="Action"            minWidth="80"  style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
+                </HBox>
+
+                <!-- Rows are injected here by controller -->
+                <VBox fx:id="rowsContainer"
+                      spacing="0"
+                      style="-fx-background-color: white;
+                             -fx-border-color: #E2E8F0;
+                             -fx-border-width: 0 1 1 1;
+                             -fx-background-radius: 0 0 12px 12px;"/>
+
+                <!-- Empty state -->
+                <VBox fx:id="emptyState"
+                      alignment="CENTER"
+                      spacing="12"
+                      style="-fx-background-color: white;
+                             -fx-background-radius: 0 0 12px 12px;
+                             -fx-border-color: #E2E8F0;
+                             -fx-border-width: 0 1 1 1;
+                             -fx-padding: 60 0;">
+                    <Label text="📋"
+                           style="-fx-font-size: 40px;"/>
+                    <Label text="No assessments yet"
+                           style="-fx-font-size: 16px;
+                                  -fx-font-weight: 700;
+                                  -fx-text-fill: #1e293b;"/>
+                    <Label text="Click '+ Create Assessment' to get started."
+                           style="-fx-font-size: 13px;
+                                  -fx-text-fill: #64748B;"/>
+                </VBox>
+
+            </VBox>
+
+
+            <!-- ─── Create / Edit form overlay ─────────────────────── -->
+            <VBox fx:id="formPane"
+                  visible="false"
+                  managed="false"
+                  style="-fx-background-color: rgba(15,23,42,0.45);"
+                  alignment="TOP_CENTER">
+
+                <ScrollPane fitToWidth="true"
+                            hbarPolicy="NEVER"
+                            vbarPolicy="AS_NEEDED"
+                            maxWidth="660"
+                            style="-fx-background-color: transparent;
+                                   -fx-background: transparent;
+                                   -fx-border-color: transparent;">
+                    <VBox.margin>
+                        <Insets top="40" bottom="40"/>
+                    </VBox.margin>
+
+                    <content>
+                        <VBox spacing="22"
+                              maxWidth="660"
+                              style="-fx-background-color: white;
+                                     -fx-background-radius: 14px;
+                                     -fx-padding: 32 36;
+                                     -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.18),24,0,0,6);">
+
+                            <!-- Form title -->
+                            <HBox alignment="CENTER_LEFT">
+                                <Label fx:id="formTitle"
+                                       text="Create Assessment"
+                                       style="-fx-font-size: 20px;
+                                              -fx-font-weight: 800;
+                                              -fx-text-fill: #0F172A;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button text="✕"
+                                        onAction="#handleCancelForm"
+                                        style="-fx-background-color: #F1F5F9;
+                                               -fx-text-fill: #64748B;
+                                               -fx-background-radius: 8px;
+                                               -fx-font-size: 15px;
+                                               -fx-padding: 4 10;
+                                               -fx-cursor: hand;"/>
+                            </HBox>
+
+                            <Separator/>
+
+                            <!-- Validation error banner (hidden until needed) -->
+                            <Label fx:id="errorLabel"
+                                   visible="false"
+                                   managed="false"
+                                   wrapText="true"
+                                   style="-fx-background-color: #FEF2F2;
+                                          -fx-text-fill: #B91C1C;
+                                          -fx-font-size: 13px;
+                                          -fx-background-radius: 8px;
+                                          -fx-padding: 12 14;"/>
+
+                            <!-- Success toast (hidden until needed) -->
+                            <Label fx:id="successLabel"
+                                   visible="false"
+                                   managed="false"
+                                   wrapText="true"
+                                   style="-fx-background-color: #ECFDF5;
+                                          -fx-text-fill: #065F46;
+                                          -fx-font-size: 13px;
+                                          -fx-background-radius: 8px;
+                                          -fx-padding: 12 14;"/>
+
+                            <!-- Assessment Name -->
+                            <VBox spacing="6">
+                                <Label text="Assessment Name *"
+                                       style="-fx-font-size: 13px;
+                                              -fx-font-weight: 600;
+                                              -fx-text-fill: #374151;"/>
+                                <TextField fx:id="nameField"
+                                           promptText="e.g. Mathematics Test 1"
+                                           style="-fx-font-size: 14px;
+                                                  -fx-padding: 10 12;
+                                                  -fx-background-radius: 8px;
+                                                  -fx-border-color: #D1D5DB;
+                                                  -fx-border-radius: 8px;
+                                                  -fx-border-width: 1.5;
+                                                  -fx-background-color: white;"/>
+                            </VBox>
+
+                            <!-- Class + Subject row -->
+                            <HBox spacing="16">
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <Label text="Class *"
+                                           style="-fx-font-size: 13px;
+                                                  -fx-font-weight: 600;
+                                                  -fx-text-fill: #374151;"/>
+                                    <ComboBox fx:id="classCombo"
+                                              promptText="Select class"
+                                              maxWidth="Infinity"
+                                              style="-fx-font-size: 14px;
+                                                     -fx-background-radius: 8px;"/>
+                                </VBox>
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <Label text="Subject *"
+                                           style="-fx-font-size: 13px;
+                                                  -fx-font-weight: 600;
+                                                  -fx-text-fill: #374151;"/>
+                                    <ComboBox fx:id="subjectCombo"
+                                              promptText="Select subject"
+                                              maxWidth="Infinity"
+                                              style="-fx-font-size: 14px;
+                                                     -fx-background-radius: 8px;"/>
+                                </VBox>
+                            </HBox>
+
+                            <!-- Topic -->
+                            <VBox spacing="6">
+                                <Label text="Topic *"
+                                       style="-fx-font-size: 13px;
+                                              -fx-font-weight: 600;
+                                              -fx-text-fill: #374151;"/>
+                                <ComboBox fx:id="topicCombo"
+                                          promptText="Select topic"
+                                          maxWidth="Infinity"
+                                          style="-fx-font-size: 14px;
+                                                 -fx-background-radius: 8px;"/>
+                            </VBox>
+
+                            <!-- Date + Max Marks row -->
+                            <HBox spacing="16">
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <Label text="Assessment Date *"
+                                           style="-fx-font-size: 13px;
+                                                  -fx-font-weight: 600;
+                                                  -fx-text-fill: #374151;"/>
+                                    <DatePicker fx:id="datePicker"
+                                                promptText="Select date"
+                                                maxWidth="Infinity"
+                                                style="-fx-font-size: 14px;
+                                                       -fx-background-radius: 8px;"/>
+                                </VBox>
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <Label text="Maximum Marks *"
+                                           style="-fx-font-size: 13px;
+                                                  -fx-font-weight: 600;
+                                                  -fx-text-fill: #374151;"/>
+                                    <TextField fx:id="marksField"
+                                               promptText="e.g. 40"
+                                               maxWidth="Infinity"
+                                               style="-fx-font-size: 14px;
+                                                      -fx-padding: 10 12;
+                                                      -fx-background-radius: 8px;
+                                                      -fx-border-color: #D1D5DB;
+                                                      -fx-border-radius: 8px;
+                                                      -fx-border-width: 1.5;
+                                                      -fx-background-color: white;"/>
+                                </VBox>
+                            </HBox>
+
+                            <Separator/>
+
+                            <!-- Action buttons -->
+                            <HBox spacing="12" alignment="CENTER_RIGHT">
+                                <Button text="Cancel"
+                                        onAction="#handleCancelForm"
+                                        style="-fx-background-color: #F1F5F9;
+                                               -fx-text-fill: #475569;
+                                               -fx-font-size: 14px;
+                                               -fx-font-weight: 600;
+                                               -fx-background-radius: 8px;
+                                               -fx-padding: 10 22;
+                                               -fx-cursor: hand;"/>
+                                <Button fx:id="saveDraftBtn"
+                                        text="Save Draft"
+                                        onAction="#handleSaveDraft"
+                                        style="-fx-background-color: #4F46E5;
+                                               -fx-text-fill: white;
+                                               -fx-font-size: 14px;
+                                               -fx-font-weight: 700;
+                                               -fx-background-radius: 8px;
+                                               -fx-padding: 10 26;
+                                               -fx-cursor: hand;"/>
+                            </HBox>
+
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </VBox>
+
+        </StackPane>
+    </center>
+
+</BorderPane>

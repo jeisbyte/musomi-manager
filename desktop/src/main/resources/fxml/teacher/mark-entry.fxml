@@ -1,10 +1,276 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<StackPane xmlns="http://javafx.com/javafx"
-           xmlns:fx="http://javafx.com/fxml"
-           prefWidth="800" prefHeight="600">
-    <Label text="Mark Entry" styleClass="h2"/>
-</StackPane>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.musomi.desktop.controller.teacher.MarkEntryController"
+            style="-fx-background-color: #f7f8fc;">
+
+    <!-- ========================================================= -->
+    <!-- PAGE HEADER                                                -->
+    <!-- ========================================================= -->
+
+    <top>
+
+        <VBox spacing="5.0">
+
+            <padding>
+                <Insets top="26.0"
+                        right="30.0"
+                        bottom="18.0"
+                        left="30.0"/>
+            </padding>
+
+            <Label text="Mark Entry"
+                   style="-fx-font-size: 26px;
+                          -fx-font-weight: bold;
+                          -fx-text-fill: #1e293b;"/>
+
+            <Label text="Enter and manage student marks for your classes."
+                   style="-fx-font-size: 14px;
+                          -fx-text-fill: #64748b;"/>
+
+        </VBox>
+
+    </top>
+
+
+    <!-- ========================================================= -->
+    <!-- MAIN CONTENT                                               -->
+    <!-- ========================================================= -->
+
+    <center>
+
+        <VBox spacing="16.0">
+
+            <padding>
+                <Insets top="0.0"
+                        right="30.0"
+                        bottom="25.0"
+                        left="30.0"/>
+            </padding>
+
+
+            <!-- ================================================= -->
+            <!-- FILTER CARD                                        -->
+            <!-- ================================================= -->
+
+            <VBox spacing="12.0"
+                  style="-fx-background-color: white;
+                         -fx-background-radius: 12px;
+                         -fx-padding: 18px;">
+
+                <GridPane hgap="14.0"
+                          vgap="8.0">
+
+                    <!-- CLASS -->
+
+                    <Label text="Class"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="0"
+                           style="-fx-font-size: 12px;
+                                  -fx-font-weight: bold;
+                                  -fx-text-fill: #64748b;"/>
+
+                    <ComboBox fx:id="classComboBox"
+                              prefWidth="180.0"
+                              maxWidth="Infinity"
+                              GridPane.columnIndex="0"
+                              GridPane.rowIndex="1"/>
+
+
+                    <!-- SUBJECT -->
+
+                    <Label text="Subject"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="0"
+                           style="-fx-font-size: 12px;
+                                  -fx-font-weight: bold;
+                                  -fx-text-fill: #64748b;"/>
+
+                    <ComboBox fx:id="subjectComboBox"
+                              prefWidth="180.0"
+                              maxWidth="Infinity"
+                              GridPane.columnIndex="1"
+                              GridPane.rowIndex="1"/>
+
+
+                    <!-- TOPIC -->
+
+                    <Label text="Topic"
+                           GridPane.columnIndex="2"
+                           GridPane.rowIndex="0"
+                           style="-fx-font-size: 12px;
+                                  -fx-font-weight: bold;
+                                  -fx-text-fill: #64748b;"/>
+
+                    <ComboBox fx:id="topicComboBox"
+                              prefWidth="180.0"
+                              maxWidth="Infinity"
+                              GridPane.columnIndex="2"
+                              GridPane.rowIndex="1"/>
+
+
+                    <!-- ASSESSMENT -->
+
+                    <Label text="Assessment"
+                           GridPane.columnIndex="3"
+                           GridPane.rowIndex="0"
+                           style="-fx-font-size: 12px;
+                                  -fx-font-weight: bold;
+                                  -fx-text-fill: #64748b;"/>
+
+                    <ComboBox fx:id="assessmentComboBox"
+                              prefWidth="180.0"
+                              maxWidth="Infinity"
+                              GridPane.columnIndex="3"
+                              GridPane.rowIndex="1"/>
+
+                </GridPane>
+
+            </VBox>
+
+
+            <!-- ================================================= -->
+            <!-- TABLE TOOLBAR                                      -->
+            <!-- ================================================= -->
+
+            <HBox spacing="12.0"
+                  alignment="CENTER_LEFT">
+
+                <Label text="Student Marks"
+                       style="-fx-font-size: 17px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #1e293b;"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label fx:id="progressLabel"
+                       text="0 / 0 students marked"
+                       style="-fx-font-size: 12px;
+                              -fx-text-fill: #64748b;"/>
+
+                <Button fx:id="saveAllButton"
+                        text="Save All"
+                        onAction="#saveAll"
+                        style="-fx-background-color: #4f46e5;
+                               -fx-background-radius: 8px;
+                               -fx-text-fill: white;
+                               -fx-font-weight: bold;
+                               -fx-padding: 10px 18px;
+                               -fx-cursor: hand;"/>
+
+            </HBox>
+
+
+            <!-- ================================================= -->
+            <!-- SEARCH                                             -->
+            <!-- ================================================= -->
+
+            <HBox spacing="10.0"
+                  alignment="CENTER_LEFT">
+
+                <TextField fx:id="searchField"
+                           promptText="Search student name..."
+                           prefWidth="320.0"
+                           style="-fx-background-color: white;
+                                  -fx-background-radius: 8px;
+                                  -fx-border-color: #e2e8f0;
+                                  -fx-border-radius: 8px;
+                                  -fx-padding: 10px;"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label text="Saved"
+                       style="-fx-text-fill: #16a34a;
+                              -fx-font-size: 12px;
+                              -fx-font-weight: bold;"/>
+
+                <Label text="Modified"
+                       style="-fx-text-fill: #4f46e5;
+                              -fx-font-size: 12px;
+                              -fx-font-weight: bold;"/>
+
+                <Label text="Invalid"
+                       style="-fx-text-fill: #dc2626;
+                              -fx-font-size: 12px;
+                              -fx-font-weight: bold;"/>
+
+            </HBox>
+
+
+            <!-- ================================================= -->
+            <!-- MARK TABLE                                        -->
+            <!-- ================================================= -->
+
+            <TableView fx:id="marksTable"
+                       editable="true"
+                       VBox.vgrow="ALWAYS"
+                       style="-fx-background-color: white;
+                              -fx-background-radius: 10px;">
+
+                <columns>
+
+                    <TableColumn fx:id="numberColumn"
+                                 text="#"
+                                 prefWidth="55.0"/>
+
+                    <TableColumn fx:id="studentColumn"
+                                 text="Student Name"
+                                 prefWidth="250.0"/>
+
+                    <TableColumn fx:id="markColumn"
+                                 text="Mark"
+                                 prefWidth="120.0"
+                                 editable="true"/>
+
+                    <TableColumn fx:id="totalColumn"
+                                 text="Total"
+                                 prefWidth="100.0"/>
+
+                    <TableColumn fx:id="gradeColumn"
+                                 text="Grade"
+                                 prefWidth="100.0"/>
+
+                    <TableColumn fx:id="remarkColumn"
+                                 text="Remarks"
+                                 prefWidth="240.0"/>
+
+                </columns>
+
+            </TableView>
+
+
+            <!-- ================================================= -->
+            <!-- STATUS                                             -->
+            <!-- ================================================= -->
+
+            <Separator/>
+
+            <HBox alignment="CENTER_LEFT">
+
+                <Label fx:id="statusLabel"
+                       text="All changes saved locally."
+                       style="-fx-font-size: 12px;
+                              -fx-text-fill: #64748b;"/>
+
+            </HBox>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>
