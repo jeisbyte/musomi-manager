@@ -5,40 +5,76 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.musomi.desktop.controller.admin.AddClassController"
-      spacing="15.0"
-      prefWidth="500.0"
-      prefHeight="450.0"
-      styleClass="dialog-container">
+      spacing="22.0"
+      prefWidth="520.0"
+      prefHeight="430.0"
+      styleClass="form-dialog">
 
-    <Label text="Add Class"
-           styleClass="page-title"/>
+    <!-- HEADER -->
 
-    <Label text="Create a new school class"
-           styleClass="page-subtitle"/>
+    <VBox spacing="5.0">
 
-    <VBox spacing="6.0">
-        <Label text="Class Name"/>
-        <TextField fx:id="nameField"
-                   promptText="e.g. Senior One"/>
+        <Label text="Add Class"
+               styleClass="dialog-title"/>
+
+        <Label text="Create a new school class"
+               styleClass="dialog-subtitle"/>
+
     </VBox>
 
-    <VBox spacing="6.0">
-        <Label text="Level"/>
 
-        <ComboBox fx:id="levelComboBox"
-                  maxWidth="Infinity"
-                  promptText="Select level"/>
+    <!-- FORM -->
+
+    <VBox spacing="17.0">
+
+        <!-- CLASS NAME -->
+
+        <VBox spacing="7.0">
+
+            <Label text="Class Name"
+                   styleClass="form-label"/>
+
+            <TextField fx:id="nameField"
+                       promptText="e.g. Senior One"
+                       styleClass="form-input"/>
+
+        </VBox>
+
+
+        <!-- LEVEL -->
+
+        <VBox spacing="7.0">
+
+            <Label text="Level"
+                   styleClass="form-label"/>
+
+            <ComboBox fx:id="levelComboBox"
+                      maxWidth="Infinity"
+                      promptText="Select level"
+                      styleClass="form-input"/>
+
+        </VBox>
+
     </VBox>
 
-    <HBox spacing="10.0">
+
+    <Region VBox.vgrow="ALWAYS"/>
+
+
+    <!-- BUTTONS -->
+
+    <HBox spacing="10.0"
+          alignment="CENTER_RIGHT">
 
         <Button text="Cancel"
-                onAction="#handleCancel"/>
+                onAction="#handleCancel"
+                styleClass="secondary-button"/>
 
         <Button text="Create Class"
                 onAction="#handleCreateClass"

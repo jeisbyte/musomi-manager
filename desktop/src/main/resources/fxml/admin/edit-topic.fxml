@@ -5,49 +5,78 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.musomi.desktop.controller.admin.EditTopicController"
-      spacing="15.0"
-      prefWidth="500.0"
-      prefHeight="450.0"
-      styleClass="dialog-container">
+      spacing="22.0"
+      prefWidth="520.0"
+      prefHeight="520.0"
+      styleClass="form-dialog">
 
-    <Label text="Edit Topic"
-           styleClass="page-title"/>
+    <!-- Header -->
+    <VBox spacing="5.0">
 
-    <Label text="Update topic information"
-           styleClass="page-subtitle"/>
+        <Label text="Edit Topic"
+               styleClass="dialog-title"/>
 
-    <VBox spacing="6.0">
-        <Label text="Topic Name"/>
+        <Label text="Update topic information"
+               styleClass="dialog-subtitle"/>
 
-        <TextField fx:id="nameField"
-                   promptText="Enter topic name"/>
     </VBox>
 
-    <VBox spacing="6.0">
-        <Label text="Subject"/>
+    <!-- Form Fields -->
+    <VBox spacing="17.0">
 
-        <ComboBox fx:id="subjectComboBox"
-                  maxWidth="Infinity"
-                  promptText="Select subject"/>
+        <VBox spacing="7.0">
+
+            <Label text="Topic Name"
+                   styleClass="form-label"/>
+
+            <TextField fx:id="nameField"
+                       promptText="Enter topic name"
+                       styleClass="form-input"/>
+
+        </VBox>
+
+        <VBox spacing="7.0">
+
+            <Label text="Subject"
+                   styleClass="form-label"/>
+
+            <ComboBox fx:id="subjectComboBox"
+                      maxWidth="Infinity"
+                      promptText="Select subject"
+                      styleClass="form-input"/>
+
+        </VBox>
+
+        <VBox spacing="7.0">
+
+            <Label text="Status"
+                   styleClass="form-label"/>
+
+            <ComboBox fx:id="statusComboBox"
+                      maxWidth="Infinity"
+                      promptText="Select status"
+                      styleClass="form-input"/>
+
+        </VBox>
+
     </VBox>
 
-    <VBox spacing="6.0">
-        <Label text="Status"/>
+    <!-- Push buttons to bottom -->
+    <Region VBox.vgrow="ALWAYS"/>
 
-        <ComboBox fx:id="statusComboBox"
-                  maxWidth="Infinity"
-                  promptText="Select status"/>
-    </VBox>
-
-    <HBox spacing="10.0">
+    <!-- Actions -->
+    <HBox spacing="10.0"
+          alignment="CENTER_RIGHT">
 
         <Button text="Cancel"
-                onAction="#handleCancel"/>
+                onAction="#handleCancel"
+                styleClass="secondary-button"/>
 
         <Button text="Save Changes"
                 onAction="#handleSave"

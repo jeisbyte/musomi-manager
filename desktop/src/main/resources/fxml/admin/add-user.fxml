@@ -6,80 +6,104 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.musomi.desktop.controller.admin.AddUserController"
-      spacing="15.0"
-      prefWidth="500.0"
-      prefHeight="560.0"
-      styleClass="dialog-container">
+      spacing="22.0"
+      prefWidth="520.0"
+      prefHeight="590.0"
+      styleClass="form-dialog">
 
-    <!-- TITLE -->
+    <!-- HEADER -->
 
-    <Label text="Add User"
-           styleClass="page-title"/>
+    <VBox spacing="5.0">
 
-    <Label text="Create a new system user"
-           styleClass="page-subtitle"/>
+        <Label text="Add User"
+               styleClass="dialog-title"/>
 
-
-    <!-- FULL NAME -->
-
-    <VBox spacing="6.0">
-
-        <Label text="Full Name"/>
-
-        <TextField fx:id="fullNameField"
-                   promptText="Enter full name"/>
+        <Label text="Create a new system user"
+               styleClass="dialog-subtitle"/>
 
     </VBox>
 
 
-    <!-- USERNAME -->
+    <!-- FORM -->
 
-    <VBox spacing="6.0">
+    <VBox spacing="17.0">
 
-        <Label text="Username"/>
+        <!-- FULL NAME -->
 
-        <TextField fx:id="usernameField"
-                   promptText="Enter username"/>
+        <VBox spacing="7.0">
+
+            <Label text="Full Name"
+                   styleClass="form-label"/>
+
+            <TextField fx:id="fullNameField"
+                       promptText="Enter full name"
+                       styleClass="form-input"/>
+
+        </VBox>
+
+
+        <!-- USERNAME -->
+
+        <VBox spacing="7.0">
+
+            <Label text="Username"
+                   styleClass="form-label"/>
+
+            <TextField fx:id="usernameField"
+                       promptText="Enter username"
+                       styleClass="form-input"/>
+
+        </VBox>
+
+
+        <!-- PASSWORD -->
+
+        <VBox spacing="7.0">
+
+            <Label text="Password"
+                   styleClass="form-label"/>
+
+            <PasswordField fx:id="passwordField"
+                           promptText="Enter password"
+                           styleClass="form-input"/>
+
+        </VBox>
+
+
+        <!-- ROLE -->
+
+        <VBox spacing="7.0">
+
+            <Label text="Role"
+                   styleClass="form-label"/>
+
+            <ComboBox fx:id="roleComboBox"
+                      promptText="Select role"
+                      maxWidth="Infinity"
+                      styleClass="form-input"/>
+
+        </VBox>
 
     </VBox>
 
 
-    <!-- PASSWORD -->
-
-    <VBox spacing="6.0">
-
-        <Label text="Password"/>
-
-        <PasswordField fx:id="passwordField"
-                       promptText="Enter password"/>
-
-    </VBox>
-
-
-    <!-- ROLE -->
-
-    <VBox spacing="6.0">
-
-        <Label text="Role"/>
-
-        <ComboBox fx:id="roleComboBox"
-                  promptText="Select role"
-                  maxWidth="Infinity"/>
-
-    </VBox>
+    <Region VBox.vgrow="ALWAYS"/>
 
 
     <!-- BUTTONS -->
 
-    <HBox spacing="10.0">
+    <HBox spacing="10.0"
+          alignment="CENTER_RIGHT">
 
         <Button text="Cancel"
-                onAction="#handleCancel"/>
+                onAction="#handleCancel"
+                styleClass="secondary-button"/>
 
         <Button text="Create User"
                 onAction="#handleCreateUser"

@@ -43,7 +43,20 @@
 
     <!-- Audit Table -->
     <VBox VBox.vgrow="ALWAYS"
+          spacing="12.0"
           styleClass="table-card">
+
+        <HBox alignment="CENTER_LEFT">
+
+            <Label text="Activity History"
+                   styleClass="section-title"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label text="Recent system actions"
+                   styleClass="dialog-subtitle"/>
+
+        </HBox>
 
         <TableView fx:id="auditTable"
                    VBox.vgrow="ALWAYS"

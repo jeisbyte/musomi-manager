@@ -61,6 +61,9 @@ public class StudentsController {
                 data -> data.getValue().statusProperty()
         );
 
+        /*
+         * Table action buttons
+         */
         actionsColumn.setCellFactory(column ->
                 new TableCell<StudentRow, String>() {
 
@@ -78,6 +81,21 @@ public class StudentsController {
                             );
 
                     {
+                        /*
+                         * Apply professional table button styles
+                         */
+                        editButton.getStyleClass().add(
+                                "table-action-button"
+                        );
+
+                        deactivateButton.getStyleClass().addAll(
+                                "table-action-button",
+                                "table-action-danger"
+                        );
+
+                        /*
+                         * Edit student
+                         */
                         editButton.setOnAction(event -> {
 
                             StudentRow student =
@@ -88,6 +106,9 @@ public class StudentsController {
                             handleEditStudent(student);
                         });
 
+                        /*
+                         * Deactivate student
+                         */
                         deactivateButton.setOnAction(event -> {
 
                             StudentRow student =
@@ -116,16 +137,25 @@ public class StudentsController {
                 }
         );
 
+        /*
+         * Load sample data
+         */
         loadSampleStudents();
 
         studentsTable.setItems(allStudents);
 
+        /*
+         * Search
+         */
         searchField.textProperty().addListener(
                 (observable, oldValue, newValue) ->
                         filterStudents(newValue)
         );
     }
 
+    /*
+     * Sample students
+     */
     private void loadSampleStudents() {
 
         allStudents.addAll(
@@ -160,6 +190,9 @@ public class StudentsController {
         );
     }
 
+    /*
+     * Search students
+     */
     private void filterStudents(String searchText) {
 
         String search =
@@ -200,6 +233,9 @@ public class StudentsController {
         studentsTable.setItems(filteredStudents);
     }
 
+    /*
+     * Add Student
+     */
     @FXML
     private void showAddStudentDialog() {
 
@@ -224,8 +260,13 @@ public class StudentsController {
                     Modality.APPLICATION_MODAL
             );
 
+            /*
+             * Important:
+             * Use a styled Scene so the dialog receives
+             * the application's CSS files.
+             */
             dialog.setScene(
-                    new Scene(root)
+                    createStyledScene(root)
             );
 
             dialog.setResizable(false);
@@ -254,6 +295,10 @@ public class StudentsController {
             e.printStackTrace();
         }
     }
+
+    /*
+     * Edit Student
+     */
     private void handleEditStudent(
             StudentRow student
     ) {
@@ -281,8 +326,12 @@ public class StudentsController {
                     Modality.APPLICATION_MODAL
             );
 
+            /*
+             * Important:
+             * Use the same styled Scene for Edit Student.
+             */
             dialog.setScene(
-                    new Scene(root)
+                    createStyledScene(root)
             );
 
             dialog.setResizable(false);
@@ -297,6 +346,9 @@ public class StudentsController {
         }
     }
 
+    /*
+     * Deactivate Student
+     */
     private void handleDeactivateStudent(
             StudentRow student
     ) {
@@ -306,6 +358,39 @@ public class StudentsController {
         studentsTable.refresh();
     }
 
+    /*
+     * Apply application CSS to dialog windows
+     */
+    private Scene createStyledScene(Parent root) {
+
+        Scene scene = new Scene(root);
+
+        var styles = getClass()
+                .getResource("/css/styles.css");
+
+        var components = getClass()
+                .getResource("/css/components.css");
+
+        if (styles != null) {
+
+            scene.getStylesheets().add(
+                    styles.toExternalForm()
+            );
+        }
+
+        if (components != null) {
+
+            scene.getStylesheets().add(
+                    components.toExternalForm()
+            );
+        }
+
+        return scene;
+    }
+
+    /*
+     * Student row model
+     */
     public static class StudentRow {
 
         private final SimpleStringProperty name;
@@ -379,6 +464,7 @@ public class StudentsController {
         public void setAdmissionNumber(
                 String admissionNumber
         ) {
+
             this.admissionNumber.set(
                     admissionNumber
             );
@@ -387,6 +473,7 @@ public class StudentsController {
         public void setClassName(
                 String className
         ) {
+
             this.className.set(className);
         }
 

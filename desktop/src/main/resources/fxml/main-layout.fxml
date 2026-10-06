@@ -53,10 +53,10 @@
 
             <!-- SEARCH -->
 
-            <TextField promptText="Search anything..."
+            <TextField fx:id="globalSearchField"
+                       promptText="Search anything..."
                        prefWidth="280.0"
                        styleClass="search-field"/>
-
 
             <!-- NOTIFICATION -->
 

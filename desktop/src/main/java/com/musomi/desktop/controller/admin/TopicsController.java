@@ -71,6 +71,16 @@ public class TopicsController {
                             );
 
                     {
+                        // Table action button styling
+                        editButton.getStyleClass().add(
+                                "table-action-button"
+                        );
+
+                        deactivateButton.getStyleClass().addAll(
+                                "table-action-button",
+                                "table-action-danger"
+                        );
+
                         editButton.setOnAction(event -> {
 
                             TopicRow topic =
@@ -210,7 +220,7 @@ public class TopicsController {
             );
 
             dialog.setScene(
-                    new Scene(root)
+                    createStyledScene(root)
             );
 
             dialog.setResizable(false);
@@ -267,7 +277,7 @@ public class TopicsController {
             );
 
             dialog.setScene(
-                    new Scene(root)
+                    createStyledScene(root)
             );
 
             dialog.setResizable(false);
@@ -280,6 +290,25 @@ public class TopicsController {
 
             e.printStackTrace();
         }
+    }
+
+    private Scene createStyledScene(Parent root) {
+
+        Scene scene = new Scene(root);
+
+        scene.getStylesheets().add(
+                getClass()
+                        .getResource("/css/styles.css")
+                        .toExternalForm()
+        );
+
+        scene.getStylesheets().add(
+                getClass()
+                        .getResource("/css/components.css")
+                        .toExternalForm()
+        );
+
+        return scene;
     }
 
     private void handleDeactivateTopic(

@@ -61,12 +61,6 @@ public class ClassesController {
                 data -> data.getValue().statusProperty()
         );
 
-        /*
-         * ACTIONS COLUMN
-         *
-         * This creates the Edit and Deactivate buttons
-         * inside every table row.
-         */
         actionsColumn.setCellFactory(column ->
                 new TableCell<ClassRow, String>() {
 
@@ -84,6 +78,16 @@ public class ClassesController {
                             );
 
                     {
+                        // Standard table action styling
+                        editButton.getStyleClass().add(
+                                "table-action-button"
+                        );
+
+                        deactivateButton.getStyleClass().addAll(
+                                "table-action-button",
+                                "table-action-danger"
+                        );
+
                         editButton.setOnAction(event -> {
 
                             ClassRow classRow =
@@ -226,9 +230,9 @@ public class ClassesController {
                     Modality.APPLICATION_MODAL
             );
 
-            dialog.setScene(
-                    new Scene(root)
-            );
+            Scene scene = createStyledScene(root);
+
+            dialog.setScene(scene);
 
             dialog.setResizable(false);
 
@@ -256,9 +260,6 @@ public class ClassesController {
         }
     }
 
-    /*
-     * EDIT CLASS
-     */
     private void handleEditClass(ClassRow classRow) {
 
         try {
@@ -284,9 +285,9 @@ public class ClassesController {
                     Modality.APPLICATION_MODAL
             );
 
-            dialog.setScene(
-                    new Scene(root)
-            );
+            Scene scene = createStyledScene(root);
+
+            dialog.setScene(scene);
 
             dialog.setResizable(false);
 
@@ -300,9 +301,29 @@ public class ClassesController {
         }
     }
 
-    /*
-     * DEACTIVATE CLASS
+    /**
+     * Applies the same CSS used by the main
+     * Musomi Manager application.
      */
+    private Scene createStyledScene(Parent root) {
+
+        Scene scene = new Scene(root);
+
+        scene.getStylesheets().add(
+                getClass()
+                        .getResource("/css/styles.css")
+                        .toExternalForm()
+        );
+
+        scene.getStylesheets().add(
+                getClass()
+                        .getResource("/css/components.css")
+                        .toExternalForm()
+        );
+
+        return scene;
+    }
+
     private void handleDeactivateClass(
             ClassRow classRow
     ) {
@@ -312,9 +333,6 @@ public class ClassesController {
         classesTable.refresh();
     }
 
-    /*
-     * CLASS ROW MODEL
-     */
     public static class ClassRow {
 
         private final SimpleStringProperty name;
