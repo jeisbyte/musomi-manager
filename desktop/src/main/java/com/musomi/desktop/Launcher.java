@@ -9,7 +9,7 @@ package com.musomi.desktop;
  * well-known workaround for the "JavaFX runtime components are missing"
  * error that occurs when running an Application subclass directly.
  */
-public final class Launcher {
+public final class  Launcher {
 
     private Launcher() {}
 
