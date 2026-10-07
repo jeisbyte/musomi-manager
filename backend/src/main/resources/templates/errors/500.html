@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/base}">
+<head>
+    <title>Server Error</title>
+</head>
+<body>
+    <div layout:fragment="content" class="flex flex-col items-center justify-center py-16 text-center">
+        <div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mb-6">
+            <i data-lucide="alert-triangle" class="w-8 h-8 text-red-600"></i>
+        </div>
+        <h1 class="text-2xl font-serif font-semibold text-slate-900 mb-2">Something went wrong on our side.</h1>
+        <p class="text-slate-500 mb-8 max-w-sm">Please try again later. If the problem persists, contact your school office.</p>
+        <a th:href="@{/student/dashboard}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-brand-700 rounded-lg hover:bg-brand-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-700 transition-colors">
+            Back to Dashboard
+        </a>
+    </div>
+</body>
+</html>

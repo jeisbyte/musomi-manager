@@ -1,0 +1,21 @@
+<nav th:fragment="bottom-nav" class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 h-16 z-40 pb-safe" aria-label="Mobile Navigation">
+    <div class="max-w-md mx-auto h-full flex justify-around items-center px-2">
+        <a th:href="@{/student/dashboard}" class="flex flex-col items-center justify-center w-full h-full gap-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-700"
+           th:classappend="${currentPage == 'dashboard' ? 'text-brand-700' : 'text-slate-500 hover:text-slate-900'}">
+            <i data-lucide="home" class="w-6 h-6" th:classappend="${currentPage == 'dashboard' ? 'fill-brand-50' : ''}"></i>
+            <span class="text-[12px] font-medium leading-none">Home</span>
+        </a>
+        
+        <a th:href="@{/student/marks}" class="flex flex-col items-center justify-center w-full h-full gap-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-700"
+           th:classappend="${currentPage == 'marks' ? 'text-brand-700' : 'text-slate-500 hover:text-slate-900'}">
+            <i data-lucide="award" class="w-6 h-6" th:classappend="${currentPage == 'marks' ? 'fill-brand-50' : ''}"></i>
+            <span class="text-[12px] font-medium leading-none">Marks</span>
+        </a>
+        
+        <a th:href="@{/student/profile}" class="flex flex-col items-center justify-center w-full h-full gap-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-700"
+           th:classappend="${currentPage == 'profile' ? 'text-brand-700' : 'text-slate-500 hover:text-slate-900'}">
+            <i data-lucide="user" class="w-6 h-6" th:classappend="${currentPage == 'profile' ? 'fill-brand-50' : ''}"></i>
+            <span class="text-[12px] font-medium leading-none">Me</span>
+        </a>
+    </div>
+</nav>

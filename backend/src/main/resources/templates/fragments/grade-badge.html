@@ -1,0 +1,15 @@
+<!-- Grade Badge Component -->
+<span th:fragment="badge(grade)" 
+      class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider"
+      th:classappend="${
+          grade == 'A' ? 'bg-emerald-50 text-emerald-700' :
+          grade == 'B' ? 'bg-blue-50 text-blue-700' :
+          grade == 'C' ? 'bg-amber-50 text-amber-700' :
+          grade == 'D' ? 'bg-orange-50 text-orange-700' :
+          grade == 'E' ? 'bg-red-50 text-red-700' :
+          grade == 'F' ? 'bg-red-100 text-red-800' :
+          'bg-slate-100 text-slate-600'
+      }"
+      th:text="${grade != null ? grade : '-'}">
+    A
+</span>

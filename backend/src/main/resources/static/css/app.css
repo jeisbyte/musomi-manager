@@ -1,0 +1,28 @@
+/* Custom styles for Musomi Manager Student Portal */
+/* Tailwind handles most styling, but any unavoidable custom CSS goes here */
+
+/* Base transition overrides */
+:root {
+  --transition-duration: 200ms;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* HTMX Transition Support */
+.htmx-indicator {
+  opacity: 0;
+  transition: opacity var(--transition-duration) ease-in;
+}
+.htmx-request .htmx-indicator {
+  opacity: 1;
+}
+.htmx-request.htmx-indicator {
+  opacity: 1;
+}
+
+/* Safe area padding for mobile bottom nav on iOS */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}

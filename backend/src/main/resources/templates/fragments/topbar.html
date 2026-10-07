@@ -1,0 +1,30 @@
+<header th:fragment="topbar" class="bg-brand-900 text-white shadow-sm sticky top-0 z-40">
+    <div class="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <img th:src="@{/img/logo.svg}" alt="School Crest" class="w-8 h-8" onerror="this.style.display='none'">
+            <span class="font-serif font-semibold text-lg tracking-tight" th:text="${schoolName != null ? schoolName : 'Musomi'}">Musomi</span>
+        </div>
+        
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-6" aria-label="Main Navigation">
+            <a th:href="@{/student/dashboard}" class="text-sm font-medium hover:text-brand-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-900 rounded-sm" th:classappend="${currentPage == 'dashboard' ? 'text-white' : 'text-brand-100/80'}">Home</a>
+            <a th:href="@{/student/marks}" class="text-sm font-medium hover:text-brand-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-900 rounded-sm" th:classappend="${currentPage == 'marks' ? 'text-white' : 'text-brand-100/80'}">Marks</a>
+            <a th:href="@{/student/results}" class="text-sm font-medium hover:text-brand-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-900 rounded-sm" th:classappend="${currentPage == 'results' ? 'text-white' : 'text-brand-100/80'}">Results</a>
+            <a th:href="@{/student/reports}" class="text-sm font-medium hover:text-brand-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-900 rounded-sm" th:classappend="${currentPage == 'reports' ? 'text-white' : 'text-brand-100/80'}">Reports</a>
+            
+            <div class="w-px h-4 bg-brand-700/50 mx-2"></div>
+            
+            <a th:href="@{/student/profile}" class="text-sm font-medium flex items-center gap-2 hover:text-brand-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-900 rounded-sm" th:classappend="${currentPage == 'profile' ? 'text-white' : 'text-brand-100/80'}">
+                <i data-lucide="user-circle" class="w-4 h-4"></i>
+                <span class="sr-only lg:not-sr-only">Profile</span>
+            </a>
+            
+            <form th:action="@{/logout}" method="post" class="inline">
+                <button type="submit" class="text-sm font-medium text-brand-100/80 hover:text-white flex items-center gap-2 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-900 rounded-sm" aria-label="Sign out">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span class="sr-only lg:not-sr-only">Sign out</span>
+                </button>
+            </form>
+        </nav>
+    </div>
+</header>

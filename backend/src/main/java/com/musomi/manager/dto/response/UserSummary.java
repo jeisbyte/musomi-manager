@@ -5,6 +5,7 @@ public record UserSummary(
         String username,
         String fullName,
         String role,
-        Long schoolId
+        Long schoolId,
+        String schoolName
 ) {
 }

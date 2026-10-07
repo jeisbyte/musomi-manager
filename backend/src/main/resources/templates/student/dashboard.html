@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/base}">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        
+        <!-- Header -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-serif font-semibold text-brand-900 mb-1">Hello, <span th:text="${firstName}">Sarah</span></h1>
+            <p class="text-slate-500 font-medium">
+                <span th:text="${currentTerm}">Term 1</span> &middot; <span th:text="${currentYear}">2026</span> &middot; 
+                <span th:text="${className + ' ' + streamName}">S3 Blue</span>
+            </p>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div class="text-sm font-medium text-slate-500 mb-2">Overall Average</div>
+                <div class="flex items-end justify-between">
+                    <div class="text-2xl font-mono tabular-nums font-medium text-slate-900">
+                        <span th:text="${average != null ? average + '%' : '—'}">82.5%</span>
+                    </div>
+                    <div th:if="${overallGrade != null}">
+                        <div th:replace="~{fragments/grade-badge :: badge(${overallGrade})}"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div class="text-sm font-medium text-slate-500 mb-2">Class Position</div>
+                <div class="text-2xl font-mono tabular-nums font-medium text-slate-900">
+                    <th:block th:if="${position != null}">
+                        <span th:text="${position}">12</span><span class="text-base text-slate-400 font-sans ml-1">of <span th:text="${classSize}">42</span></span>
+                    </th:block>
+                    <th:block th:if="${position == null}">—</th:block>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <a th:href="@{/student/results}" class="flex items-center gap-3 p-3 bg-brand-50 hover:bg-brand-100 transition-colors rounded-lg border border-brand-100 focus:outline-none focus:ring-2 focus:ring-brand-700">
+                <div class="w-8 h-8 rounded-md bg-white flex items-center justify-center shrink-0">
+                    <i data-lucide="bar-chart-2" class="w-4 h-4 text-brand-700"></i>
+                </div>
+                <div class="font-medium text-sm text-brand-900">My Results</div>
+            </a>
+            <a th:href="@{/student/reports}" class="flex items-center gap-3 p-3 bg-brand-50 hover:bg-brand-100 transition-colors rounded-lg border border-brand-100 focus:outline-none focus:ring-2 focus:ring-brand-700">
+                <div class="w-8 h-8 rounded-md bg-white flex items-center justify-center shrink-0">
+                    <i data-lucide="file-text" class="w-4 h-4 text-brand-700"></i>
+                </div>
+                <div class="font-medium text-sm text-brand-900">Report Cards</div>
+            </a>
+        </div>
+
+        <!-- Recent Marks -->
+        <div>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-serif font-semibold text-slate-900">Recent marks</h2>
+                <a th:href="@{/student/marks}" class="text-sm font-medium text-brand-700 hover:text-brand-800 focus:outline-none focus:underline">View all</a>
+            </div>
+            
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden" th:if="${not #lists.isEmpty(recentMarks)}">
+                <div class="divide-y divide-slate-100">
+                    <div th:each="mark : ${recentMarks}" class="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                        <div>
+                            <div class="font-medium text-slate-900 text-sm mb-1" th:text="${mark.subjectName}">Mathematics</div>
+                            <div class="flex items-center gap-2 text-xs text-slate-500">
+                                <span class="capitalize" th:text="${#strings.toLowerCase(mark.type)}">Test</span>
+                                <span>&middot;</span>
+                                <span th:text="${mark.title}">Mid-term</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-right">
+                            <div class="font-mono tabular-nums text-sm">
+                                <span class="font-medium text-slate-900" th:text="${#numbers.formatDecimal(mark.score, 1, 'COMMA', 0, 'POINT')}">85</span>
+                                <span class="text-slate-400">/</span><span class="text-slate-400" th:text="${#numbers.formatDecimal(mark.maxScore, 1, 'COMMA', 0, 'POINT')}">100</span>
+                            </div>
+                            <div th:replace="~{fragments/grade-badge :: badge(${mark.grade})}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div th:if="${#lists.isEmpty(recentMarks)}">
+                <div th:replace="~{fragments/empty-state :: empty-state('inbox', 'No marks yet', 'Your recent marks will appear here once published by your teachers.')}"></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
