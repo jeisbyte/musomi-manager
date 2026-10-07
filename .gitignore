@@ -50,3 +50,6 @@ EOF
 
 backend/classpath.txt
 >>>>>>> 59ce7fe (feat: User entity, repository, V002 migration, and Flyway starter fix)
+
+# Generated report PDFs
+backend/data/
