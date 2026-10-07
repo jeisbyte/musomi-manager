@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/base}">
+<head>
+    <title>My Results</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <!-- Switcher -->
+        <div class="flex p-1 bg-slate-100 rounded-lg mb-6 w-full max-w-xs mx-auto">
+            <a th:href="@{/student/marks}" class="flex-1 py-1.5 text-sm font-medium text-center rounded-md text-slate-500 hover:text-slate-900 transition-colors">Marks</a>
+            <a th:href="@{/student/results}" class="flex-1 py-1.5 text-sm font-medium text-center rounded-md shadow-sm bg-white text-brand-700">Results</a>
+        </div>
+
+        <div class="mb-6 flex justify-between items-end">
+            <div>
+                <h1 class="text-2xl font-serif font-semibold text-slate-900 mb-1">Term Results</h1>
+                <p class="text-slate-500 font-medium"><span th:text="${termName}">Term</span> &middot; <span th:text="${year}">Year</span></p>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(subjects)}">
+            <div th:replace="~{fragments/empty-state :: empty-state('bar-chart-2', 'No results yet', 'Your term averages have not been calculated yet.')}"></div>
+        </div>
+
+        <div th:if="${not #lists.isEmpty(subjects)}" class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mb-8">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-600">
+                    <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500 border-b border-slate-200">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">Subject</th>
+                            <th scope="col" class="px-4 py-3 text-right">Average</th>
+                            <th scope="col" class="px-4 py-3">Grade</th>
+                            <th scope="col" class="px-4 py-3 text-right hidden sm:table-cell">Assessments</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr th:each="subject : ${subjects}" class="hover:bg-slate-50 transition-colors">
+                            <td class="px-4 py-3">
+                                <a th:href="@{/student/subjects/{id}(id=${subject.subjectId})}" class="font-medium text-brand-700 hover:text-brand-800 focus:outline-none focus:underline block" th:text="${subject.subjectName}">Subject</a>
+                            </td>
+                            <td class="px-4 py-3 text-right font-mono tabular-nums text-slate-900" th:text="${#numbers.formatDecimal(subject.average, 1, 'COMMA', 1, 'POINT') + '%'}">0.0%</td>
+                            <td class="px-4 py-3">
+                                <div th:replace="~{fragments/grade-badge :: badge(${subject.grade})}"></div>
+                            </td>
+                            <td class="px-4 py-3 text-right font-mono tabular-nums text-slate-500 hidden sm:table-cell" th:text="${subject.assessmentCount}">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div th:if="${not #lists.isEmpty(subjects)}" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="text-sm font-medium text-slate-500 mb-1">Overall Average</div>
+                <div class="text-xl font-mono tabular-nums font-medium text-slate-900" th:text="${overallAverage != null ? #numbers.formatDecimal(overallAverage, 1, 'COMMA', 1, 'POINT') + '%' : '—'}">0%</div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="text-sm font-medium text-slate-500 mb-1">Overall Grade</div>
+                <div>
+                    <div th:if="${overallGrade != null}" th:replace="~{fragments/grade-badge :: badge(${overallGrade})}"></div>
+                    <span th:if="${overallGrade == null}" class="text-xl font-mono text-slate-900">—</span>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm col-span-2 md:col-span-1">
+                <div class="text-sm font-medium text-slate-500 mb-1">Class Position</div>
+                <div class="text-xl font-mono tabular-nums font-medium text-slate-900">
+                    <th:block th:if="${position != null}">
+                        <span th:text="${position}">12</span><span class="text-sm text-slate-400 font-sans ml-1">of <span th:text="${classSize}">42</span></span>
+                    </th:block>
+                    <th:block th:if="${position == null}">—</th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

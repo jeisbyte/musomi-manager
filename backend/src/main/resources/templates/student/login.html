@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/auth}">
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <div layout:fragment="content" class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+        
+        <div class="flex flex-col items-center mb-8 text-center">
+            <img th:src="@{/img/logo.svg}" alt="School Logo" class="w-12 h-12 mb-3" onerror="this.style.display='none'">
+            <h1 class="text-xl font-serif font-semibold text-brand-900" th:text="${schoolName != null ? schoolName : 'Musomi'}">Musomi Manager</h1>
+            <p class="text-slate-500 mt-1 font-medium">Student login</p>
+        </div>
+
+        <div th:if="${errorMessage}" class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 text-sm font-medium flex items-start gap-3">
+            <i data-lucide="alert-circle" class="w-5 h-5 shrink-0 text-red-600 mt-0.5"></i>
+            <span th:text="${errorMessage}">Error message goes here.</span>
+        </div>
+
+        <form th:action="@{/login}" method="post" class="space-y-5" onsubmit="document.getElementById('login-btn').classList.add('htmx-request')">
+            <!-- Username -->
+            <div>
+                <label for="username" class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+                <input type="text" id="username" name="username" required autocomplete="username"
+                       class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-brand-700 focus:ring-brand-700 sm:text-sm px-3 py-2 border text-slate-900">
+                <p class="mt-1.5 text-xs text-slate-500">Use the username given by your school.</p>
+            </div>
+
+            <!-- Password -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                <div class="relative">
+                    <input type="password" id="password" name="password" required autocomplete="current-password"
+                           class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-brand-700 focus:ring-brand-700 sm:text-sm px-3 py-2 border text-slate-900 pr-10">
+                    <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus:outline-none focus:text-brand-700" 
+                            onclick="const p = document.getElementById('password'); const isPwd = p.type === 'password'; p.type = isPwd ? 'text' : 'password'; this.innerHTML = isPwd ? '<i data-lucide=\'eye-off\' class=\'w-4 h-4\'></i>' : '<i data-lucide=\'eye\' class=\'w-4 h-4\'></i>'; lucide.createIcons({root: this});" aria-label="Toggle password visibility">
+                        <i data-lucide="eye" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" id="login-btn" class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-brand-700 hover:bg-brand-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-700 transition-colors">
+                <span class="inline-flex items-center gap-2">
+                    Log in
+                    <i data-lucide="loader-2" class="w-4 h-4 animate-spin htmx-indicator hidden"></i>
+                </span>
+            </button>
+        </form>
+
+        <div class="mt-8 text-center border-t border-slate-100 pt-6">
+            <p class="text-sm text-slate-500">Forgot your password? Ask your school office to reset it.</p>
+        </div>
+    </div>
+</body>
+</html>

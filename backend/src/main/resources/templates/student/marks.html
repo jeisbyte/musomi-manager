@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/base}">
+<head>
+    <title>My Marks</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <!-- Switcher -->
+        <div class="flex p-1 bg-slate-100 rounded-lg mb-6 w-full max-w-xs mx-auto">
+            <a th:href="@{/student/marks}" class="flex-1 py-1.5 text-sm font-medium text-center rounded-md shadow-sm bg-white text-brand-700">Marks</a>
+            <a th:href="@{/student/results}" class="flex-1 py-1.5 text-sm font-medium text-center rounded-md text-slate-500 hover:text-slate-900 transition-colors">Results</a>
+        </div>
+
+        <h1 class="text-2xl font-serif font-semibold text-slate-900 mb-6">Published Marks</h1>
+
+        <div th:if="${#lists.isEmpty(subjectGroups)}">
+            <div th:replace="~{fragments/empty-state :: empty-state('award', 'No marks yet', 'Your teachers have not published any marks yet.')}"></div>
+        </div>
+
+        <div th:if="${not #lists.isEmpty(subjectGroups)}" class="space-y-6">
+            <div th:each="group : ${subjectGroups}" class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center justify-between">
+                    <h3 class="font-serif font-semibold text-slate-900" th:text="${group.subjectName}">Subject Name</h3>
+                    <a th:href="@{/student/subjects/{id}(id=${group.subjectId})}" class="text-sm font-medium text-brand-700 hover:text-brand-800">View all</a>
+                </div>
+                <div class="divide-y divide-slate-100">
+                    <div th:each="mark : ${group.marks}" class="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                        <div>
+                            <div class="font-medium text-slate-900 text-sm mb-1" th:text="${mark.title}">Title</div>
+                            <div class="flex items-center gap-2 text-xs text-slate-500">
+                                <span class="capitalize" th:text="${#strings.toLowerCase(mark.type)}">Type</span>
+                                <span>&middot;</span>
+                                <span th:text="${mark.date}">Date</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-right">
+                            <div class="font-mono tabular-nums text-sm">
+                                <span class="font-medium text-slate-900" th:text="${#numbers.formatDecimal(mark.score, 1, 'COMMA', 0, 'POINT')}">Score</span>
+                                <span class="text-slate-400">/</span><span class="text-slate-400" th:text="${#numbers.formatDecimal(mark.maxScore, 1, 'COMMA', 0, 'POINT')}">Max</span>
+                            </div>
+                            <div th:replace="~{fragments/grade-badge :: badge(${mark.grade})}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle + ' - ' + (schoolName != null ? schoolName : 'Musomi Manager')}">Musomi Manager</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&family=Source+Serif+4:wght@600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Public Sans"', 'system-ui', 'sans-serif'],
+                        serif: ['"Source Serif 4"', 'Georgia', 'serif'],
+                        mono: ['"IBM Plex Mono"', '"Courier New"', 'monospace']
+                    },
+                    colors: {
+                        brand: {
+                            50: '#EEF3FA',
+                            100: '#DCE7F5',
+                            700: '#1C4E9D',
+                            800: '#163E80',
+                            900: '#0B2545'
+                        },
+                        page: '#F5F8FC'
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .tabular-nums {
+                font-variant-numeric: tabular-nums;
+            }
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <!-- Pinned Lucide icons -->
+    <script src="https://unpkg.com/lucide@0.350.0"></script>
+</head>
+<body class="bg-page text-slate-900 font-sans antialiased min-h-screen flex flex-col">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-700 rounded-br-lg shadow-md">Skip to content</a>
+    
+    <header th:replace="~{fragments/topbar :: topbar}"></header>
+    
+    <main id="main-content" class="flex-grow max-w-3xl w-full mx-auto px-4 py-6 pb-24 md:pb-6" layout:fragment="content">
+        <!-- Content will be injected here by Thymeleaf Layout Dialect -->
+    </main>
+    
+    <nav th:replace="~{fragments/bottom-nav :: bottom-nav}"></nav>
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-[360px] w-full px-4 sm:px-0"></div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

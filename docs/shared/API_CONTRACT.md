@@ -232,10 +232,9 @@ Get the currently logged-in user.
     "id": 5,
     "username": "teacher1",
     "fullName": "Mr. Okello",
-    "email": "okello@school.ug",
-    "phone": "+256700000000",
     "role": "TEACHER",
-    "schoolId": 1
+    "schoolId": 1,
+    "schoolName": "St. Mary's Secondary School"
   }
 }
 ```
@@ -281,22 +280,24 @@ List users with filters.
 **Response 200:**
 ```json
 {
-  "data": [
-    {
-      "id": 5,
-      "username": "teacher1",
-      "fullName": "Mr. Okello",
-      "email": "okello@school.ug",
-      "phone": "+256700000000",
-      "role": "TEACHER",
-      "isActive": true,
-      "lastLoginAt": "2026-09-23T08:15:00Z"
-    }
-  ],
-  "page": 0,
-  "size": 20,
-  "total": 45,
-  "totalPages": 3
+  "data": {
+    "data": [
+      {
+        "id": 5,
+        "username": "teacher1",
+        "fullName": "Mr. Okello",
+        "email": "okello@school.ug",
+        "phone": "+256700000000",
+        "role": "TEACHER",
+        "isActive": true,
+        "lastLoginAt": "2026-09-23T08:15:00Z"
+      }
+    ],
+    "page": 0,
+    "size": 20,
+    "total": 45,
+    "totalPages": 3
+  }
 }
 ```
 
@@ -327,8 +328,12 @@ Create a new user.
     "id": 6,
     "username": "teacher2",
     "fullName": "Ms. Achieng",
+    "email": "achieng@school.ug",
+    "phone": "+256700000001",
     "role": "TEACHER",
-    "isActive": true
+    "isActive": true,
+    "createdAt": "2026-02-01T10:00:00Z",
+    "lastLoginAt": null
   }
 }
 ```
@@ -426,9 +431,9 @@ Admin shares this with the user. User must change on next login (future enhancem
 ```json
 {
   "data": [
-    { "id": 3, "year": 2026, "isCurrent": true },
-    { "id": 2, "year": 2025, "isCurrent": false },
-    { "id": 1, "year": 2024, "isCurrent": false }
+    { "id": 3, "year": 2026, "isCurrent": true, "createdAt": "2026-01-10T08:00:00Z" },
+    { "id": 2, "year": 2025, "isCurrent": false, "createdAt": "2025-01-10T08:00:00Z" },
+    { "id": 1, "year": 2024, "isCurrent": false, "createdAt": "2024-01-10T08:00:00Z" }
   ]
 }
 ```
@@ -506,9 +511,9 @@ Set as current term.
 ```json
 {
   "data": [
-    { "id": 1, "name": "S1", "sortOrder": 1 },
-    { "id": 2, "name": "S2", "sortOrder": 2 },
-    { "id": 3, "name": "S3", "sortOrder": 3 }
+    { "id": 1, "name": "S1", "sortOrder": 1, "isActive": true },
+    { "id": 2, "name": "S2", "sortOrder": 2, "isActive": true },
+    { "id": 3, "name": "S3", "sortOrder": 3, "isActive": true }
   ]
 }
 ```
@@ -520,6 +525,37 @@ Set as current term.
 **Request:**
 ```json
 { "name": "S4", "sortOrder": 4 }
+```
+
+**Response 201**
+
+---
+
+### GET /admin/streams?classId={id}
+
+**Auth:** ADMIN
+
+**Response 200:**
+```json
+{
+  "data": [
+    { "id": 1, "classId": 1, "name": "Blue", "capacity": 50, "isActive": true },
+    { "id": 2, "classId": 1, "name": "Red", "capacity": 50, "isActive": true }
+  ]
+}
+```
+
+---
+
+### POST /admin/streams
+
+**Request:**
+```json
+{
+  "classId": 1,
+  "name": "Green",
+  "capacity": 50
+}
 ```
 
 **Response 201**
@@ -538,10 +574,8 @@ Set as current term.
       "classLevelId": 3,
       "academicYearId": 3,
       "classTeacherId": 5,
-      "streams": [
-        { "id": 1, "name": "Blue", "capacity": 50, "studentCount": 42 },
-        { "id": 2, "name": "Red", "capacity": 50, "studentCount": 45 }
-      ]
+      "isActive": true,
+      "createdAt": "2026-01-10T08:00:00Z"
     }
   ]
 }
@@ -592,8 +626,7 @@ Set as current term.
       "name": "Mathematics",
       "description": null,
       "isCore": true,
-      "isActive": true,
-      "classLevels": [1, 2, 3, 4]
+      "isActive": true
     }
   ]
 }
@@ -608,8 +641,8 @@ Set as current term.
 {
   "code": "ENG",
   "name": "English",
-  "isCore": true,
-  "classLevelIds": [1, 2, 3, 4]
+  "description": null,
+  "isCore": true
 }
 ```
 
@@ -623,8 +656,8 @@ Set as current term.
 ```json
 {
   "data": [
-    { "id": 1, "name": "Algebra", "sortOrder": 1, "assessmentCount": 12 },
-    { "id": 2, "name": "Geometry", "sortOrder": 2, "assessmentCount": 8 }
+    { "id": 1, "subjectId": 1, "name": "Algebra", "description": null, "sortOrder": 1 },
+    { "id": 2, "subjectId": 1, "name": "Geometry", "description": null, "sortOrder": 2 }
   ]
 }
 ```
@@ -635,14 +668,34 @@ Set as current term.
 
 **Request:**
 ```json
-{ "name": "Statistics", "sortOrder": 3, "description": null }
+{ "subjectId": 1, "name": "Statistics", "description": null, "sortOrder": 3 }
 ```
+
+**Note:** The subject ID is derived from the path `/admin/subjects/{id}/topics`; the controller binds the path value and overwrites any client-supplied `subjectId`.
 
 **Response 201**
 
 ---
 
+### GET /admin/topics?subjectId={id}
+
+**Auth:** ADMIN
+
+**Response 200:**
+```json
+{
+  "data": [
+    { "id": 1, "subjectId": 1, "name": "Algebra", "description": null, "sortOrder": 1 },
+    { "id": 2, "subjectId": 1, "name": "Geometry", "description": null, "sortOrder": 2 }
+  ]
+}
+```
+
+---
+
 ## 8. Admin Endpoints — Students
+
+(Not yet implemented — planned for Phase 3)
 
 ### GET /admin/students
 
@@ -791,6 +844,8 @@ Download the Excel template.
 
 ## 9. Admin Endpoints — Teacher Assignments
 
+(Not yet implemented — planned for Phase 3)
+
 ### GET /admin/assignments?teacherId={id}
 
 **Response 200:**
@@ -840,6 +895,8 @@ Download the Excel template.
 ---
 
 ## 10. Admin Endpoints — School Settings
+
+(Not yet implemented — planned for Phase 2)
 
 ### GET /admin/settings
 
@@ -898,6 +955,8 @@ Upload logo.
 
 ## 11. Admin Endpoints — Audit Log
 
+(Not yet implemented — planned for Phase 2)
+
 ### GET /admin/audit
 
 **Auth:** ADMIN
@@ -932,6 +991,8 @@ Upload logo.
 ---
 
 ## 12. Teacher Endpoints — Classes
+
+(Not yet implemented — planned for Phase 3)
 
 ### GET /teacher/classes
 
@@ -994,6 +1055,8 @@ Get the roster for a class-stream.
 ---
 
 ## 13. Teacher Endpoints — Assessments
+
+(Not yet implemented — planned for Phase 3)
 
 ### GET /teacher/assessments
 
@@ -1117,6 +1180,8 @@ Publish the assessment. Makes marks visible to students.
 ---
 
 ## 14. Teacher Endpoints — Mark Entry
+
+(Not yet implemented — planned for Phase 3)
 
 ### GET /teacher/assessments/{id}/grid
 
@@ -1242,6 +1307,8 @@ Save multiple scores at once (used for "Save Draft").
 
 ## 15. Teacher Endpoints — Comments
 
+(Not yet implemented — planned for Phase 3)
+
 ### GET /teacher/students/{studentId}/comments?termId={id}
 
 Get all comments for a student in a term.
@@ -1309,6 +1376,8 @@ Create or update a comment. If a comment of the same type/subject/term exists, i
 ---
 
 ## 16. Report Endpoints
+
+(Not yet implemented — planned for Phase 4)
 
 ### POST /reports/generate
 
@@ -1381,6 +1450,8 @@ Download the PDF.
 ---
 
 ## 17. Student Endpoints (Web)
+
+(Not yet implemented — planned for Phase 4)
 
 These are called by the student web app. Session-based (cookie).
 
