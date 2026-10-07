@@ -61,7 +61,8 @@ public class ReportApiController {
             throw new ResourceNotFoundException(ErrorCode.REPORT_NOT_FOUND);
         }
         try {
-            byte[] file = Files.readAllBytes(Path.of(report.getFilePath()));
+            Path filePath = Path.of(report.getFilePath().replace('\\', '/'));
+            byte[] file = Files.readAllBytes(filePath);
             String studentId = report.getStudent() == null || report.getStudent().getId() == null
                     ? "unknown"
                     : report.getStudent().getId().toString();

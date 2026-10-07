@@ -331,12 +331,13 @@ public class ReportService {
         } catch (IOException exception) {
             throw new IllegalStateException("Unable to write generated report card to " + filePath, exception);
         }
+        String storedFilePath = filePath.toString().replace('\\', '/');
 
         GeneratedReport saved = generatedReportRepository.save(GeneratedReport.builder()
                 .school(School.builder().id(schoolId).build())
                 .student(report.student())
                 .term(term)
-                .filePath(filePath.toString())
+                .filePath(storedFilePath)
                 .fileSizeBytes((long) pdf.length)
                 .generatedBy(User.builder().id(generatedBy == null ? DEFAULT_SCHOOL_ID : generatedBy).build())
                 .generatedAt(LocalDateTime.now())
