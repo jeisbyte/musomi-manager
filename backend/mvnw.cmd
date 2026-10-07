@@ -32,15 +32,18 @@
 @SET __MVNW_ERROR__=
 @SET __MVNW_PSMODULEP_SAVE=%PSModulePath%
 @SET PSModulePath=
-@FOR /F "usebackq tokens=1* delims==" %%A IN (`powershell -noprofile "& {$scriptDir='%~dp0'; $script='%__MVNW_ARG0_NAME__%'; icm -ScriptBlock ([Scriptblock]::Create((Get-Content -Raw '%~f0'))) -NoNewScope}"`) DO @(
+@SET __MVNW_POWERSHELL_CMD__=powershell
+@WHERE pwsh.exe >NUL 2>&1 && SET __MVNW_POWERSHELL_CMD__=pwsh
+@FOR /F "usebackq tokens=1* delims==" %%A IN (`%__MVNW_POWERSHELL_CMD__% -noprofile -Command "& {$scriptDir='%~dp0'; $script='%__MVNW_ARG0_NAME__%'; icm -ScriptBlock ([Scriptblock]::Create((Get-Content -Raw '%~f0'))) -NoNewScope}"`) DO @(
   IF "%%A"=="MVN_CMD" (set __MVNW_CMD__=%%B) ELSE IF "%%B"=="" (echo %%A) ELSE (echo %%A=%%B)
 )
 @SET PSModulePath=%__MVNW_PSMODULEP_SAVE%
 @SET __MVNW_PSMODULEP_SAVE=
 @SET __MVNW_ARG0_NAME__=
+@SET __MVNW_POWERSHELL_CMD__=
 @SET MVNW_USERNAME=
 @SET MVNW_PASSWORD=
-@IF NOT "%__MVNW_CMD__%"=="" ("%__MVNW_CMD__%" %*)
+@IF NOT "%__MVNW_CMD__%"=="" ("%__MVNW_CMD__%" %* & exit /b)
 @echo Cannot start maven from wrapper >&2 && exit /b 1
 @GOTO :EOF
 : end batch / begin powershell #>
@@ -89,10 +92,11 @@ if (-not (Test-Path -Path $MAVEN_M2_PATH)) {
 }
 
 $MAVEN_WRAPPER_DISTS = $null
-if ((Get-Item $MAVEN_M2_PATH).Target[0] -eq $null) {
+$MAVEN_M2_ITEM = Get-Item $MAVEN_M2_PATH
+if (!$MAVEN_M2_ITEM.Target) {
   $MAVEN_WRAPPER_DISTS = "$MAVEN_M2_PATH/wrapper/dists"
 } else {
-  $MAVEN_WRAPPER_DISTS = (Get-Item $MAVEN_M2_PATH).Target[0] + "/wrapper/dists"
+  $MAVEN_WRAPPER_DISTS = $MAVEN_M2_ITEM.Target[0] + "/wrapper/dists"
 }
 
 $MAVEN_HOME_PARENT = "$MAVEN_WRAPPER_DISTS/$distributionUrlNameMain"
