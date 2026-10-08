@@ -36,6 +36,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuditService auditService;
 
     private final SecureRandom secureRandom = new SecureRandom();
 
@@ -92,6 +93,8 @@ public class UserService {
         log.info("User created: userId={}, username={}, role={}",
                 saved.getId(), saved.getUsername(), saved.getRole());
 
+        // TODO(backend-lead): pass real userId once @CurrentUser is wired in services
+        auditService.log("USER_CREATED", "User", saved.getId(), 1L, scopedSchoolId);
         return UserMapper.toResponse(saved);
     }
 
@@ -125,6 +128,9 @@ public class UserService {
         User saved = userRepository.save(user);
         log.info("User updated: userId={}", saved.getId());
 
+        // TODO(backend-lead): pass real userId once @CurrentUser is wired in services
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("USER_UPDATED", "User", saved.getId(), 1L, 1L);
         return UserMapper.toResponse(saved);
     }
 
@@ -148,6 +154,8 @@ public class UserService {
         userRepository.save(user);
 
         log.info("User deactivated: userId={}, by={}", id, currentUserId);
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("USER_DEACTIVATED", "User", id, currentUserId, 1L);
     }
 
     /**
@@ -168,6 +176,9 @@ public class UserService {
         userRepository.save(user);
 
         log.info("Password reset for userId={}", id);
+        // TODO(backend-lead): pass real userId once @CurrentUser is wired in services
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("USER_PASSWORD_RESET", "User", id, 1L, 1L);
         return new ResetPasswordResponse(temporaryPassword);
     }
 

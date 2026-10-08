@@ -58,6 +58,9 @@ class ScoreServiceTest {
     @Mock
     private AssessmentTopicRepository assessmentTopicRepository;
 
+    @Mock
+    private AuditService auditService;
+
     @InjectMocks
     private ScoreService scoreService;
 

@@ -56,6 +56,7 @@ public class AssessmentService {
     private final TopicRepository topicRepository;
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
+    private final AuditService auditService;
 
     /** Lists assessments for the teacher with optional filtering. */
     @Transactional(readOnly = true)
@@ -180,6 +181,7 @@ public class AssessmentService {
 
         log.info("Assessment created: assessmentId={}, teacherId={}, classId={}",
                 saved.getId(), teacherId, classEntity.getId());
+        auditService.log("ASSESSMENT_CREATED", "Assessment", saved.getId(), teacherId, resolvedSchoolId);
         return AssessmentMapper.toResponse(saved);
     }
 
@@ -250,6 +252,9 @@ public class AssessmentService {
         assessmentTopicRepository.saveAll(topics);
 
         log.info("Assessment updated: assessmentId={}, title={}", saved.getId(), saved.getTitle());
+        // TODO(backend-lead): pass real userId once @CurrentUser is wired in services
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("ASSESSMENT_UPDATED", "Assessment", saved.getId(), 1L, 1L);
         return AssessmentMapper.toResponse(saved);
     }
 
@@ -271,6 +276,9 @@ public class AssessmentService {
         assessmentRepository.deleteById(id);
 
         log.info("Assessment deleted: assessmentId={}", id);
+        // TODO(backend-lead): pass real userId once @CurrentUser is wired in services
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("ASSESSMENT_DELETED", "Assessment", id, 1L, 1L);
     }
 
     /** Publishes an assessment after verifying every student has a mark. */
@@ -300,5 +308,7 @@ public class AssessmentService {
         assessmentRepository.save(assessment);
 
         log.info("Assessment published: assessmentId={}, publishedBy={} ", id, teacherId);
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("ASSESSMENT_PUBLISHED", "Assessment", id, teacherId, 1L);
     }
 }

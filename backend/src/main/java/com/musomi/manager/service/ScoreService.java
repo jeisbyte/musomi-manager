@@ -46,6 +46,7 @@ public class ScoreService {
     private final ScoreHistoryRepository scoreHistoryRepository;
     private final StudentRepository studentRepository;
     private final AssessmentTopicRepository assessmentTopicRepository;
+    private final AuditService auditService;
 
     /** Updates a single score after permission and range checks. */
     @Transactional
@@ -88,6 +89,8 @@ public class ScoreService {
 
         log.info("Score updated: scoreId={}, studentId={}, teacherId={}",
                 saved.getId(), saved.getStudent().getId(), currentUserId);
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("SCORE_UPDATED", "Score", scoreId, currentUserId, DEFAULT_SCHOOL_ID);
         return ScoreMapper.toResponse(saved, GradeCalculator.calculate(saved.getScore(), assessment.getMaxScore()));
     }
 
@@ -153,6 +156,8 @@ public class ScoreService {
         }
 
         log.info("Batch saved: assessmentId={}, savedCount={}", assessmentId, responses.size());
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("SCORES_BATCH_SAVED", "Score", assessmentId, currentUserId, DEFAULT_SCHOOL_ID);
         return responses;
     }
 

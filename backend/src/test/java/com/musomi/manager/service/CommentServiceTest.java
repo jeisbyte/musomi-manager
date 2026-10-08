@@ -56,6 +56,9 @@ class CommentServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private AuditService auditService;
+
     @InjectMocks
     private CommentService commentService;
 

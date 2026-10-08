@@ -37,6 +37,7 @@ public class CommentService {
     private final TermRepository termRepository;
     private final SubjectRepository subjectRepository;
     private final UserRepository userRepository;
+    private final AuditService auditService;
 
     /** Lists comments for a student and term. */
     @Transactional(readOnly = true)
@@ -111,6 +112,7 @@ public class CommentService {
         Comment saved = commentRepository.save(comment);
         log.info("Comment {} for student {} and term {}", created ? "created" : "updated",
                 request.studentId(), request.termId());
+        auditService.log("COMMENT_SAVED", "Comment", saved.getId(), authorId, resolvedSchoolId);
         return CommentMapper.toResponse(saved);
     }
 
@@ -122,6 +124,9 @@ public class CommentService {
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.VALIDATION_FAILED));
         commentRepository.delete(comment);
         log.info("Comment {} deleted", id);
+        // TODO(backend-lead): pass real userId once @CurrentUser is wired in services
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("COMMENT_DELETED", "Comment", id, 1L, 1L);
     }
 
     private boolean sameSubject(Subject first, Subject second) {

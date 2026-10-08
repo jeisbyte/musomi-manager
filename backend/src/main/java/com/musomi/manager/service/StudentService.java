@@ -39,6 +39,7 @@ public class StudentService {
     private final GuardianRepository guardianRepository;
     private final ClassRepository classRepository;
     private final StreamRepository streamRepository;
+    private final AuditService auditService;
 
     /** Lists students for a school with optional class, stream, status, and search filters. */
     @Transactional(readOnly = true)
@@ -96,6 +97,8 @@ public class StudentService {
         }
 
         log.info("Student {} created for school {}", saved.getAdmissionNumber(), resolvedSchoolId);
+        // TODO(backend-lead): pass real userId once @CurrentUser is wired in services
+        auditService.log("STUDENT_CREATED", "Student", saved.getId(), 1L, resolvedSchoolId);
         return StudentMapper.toResponseWithGuardians(saved, guardianRepository.findByStudentId(saved.getId()));
     }
 
@@ -127,6 +130,9 @@ public class StudentService {
 
         Student saved = studentRepository.save(student);
         log.info("Student {} updated", id);
+        // TODO(backend-lead): pass real userId once @CurrentUser is wired in services
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("STUDENT_UPDATED", "Student", saved.getId(), 1L, 1L);
         return StudentMapper.toResponseWithGuardians(saved, guardianRepository.findByStudentId(id));
     }
 
@@ -139,6 +145,9 @@ public class StudentService {
         student.setUpdatedAt(LocalDateTime.now());
         studentRepository.save(student);
         log.info("Student {} deactivated", id);
+        // TODO(backend-lead): pass real userId once @CurrentUser is wired in services
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("STUDENT_DEACTIVATED", "Student", id, 1L, 1L);
     }
 
     /** Adds a guardian to an existing student and returns the updated student details. */
@@ -146,6 +155,9 @@ public class StudentService {
     public StudentResponse addGuardian(Long studentId, CreateGuardianRequest request) {
         Student student = findStudent(studentId);
         guardianRepository.save(buildGuardian(student, request));
+        // TODO(backend-lead): pass real userId once @CurrentUser is wired in services
+        // TODO(backend-lead): pass real schoolId once school context is wired in services
+        auditService.log("STUDENT_UPDATED", "Student", studentId, 1L, 1L);
         return StudentMapper.toResponseWithGuardians(
                 student, guardianRepository.findByStudentId(studentId));
     }

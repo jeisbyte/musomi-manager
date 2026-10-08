@@ -81,6 +81,9 @@ class AssessmentServiceTest {
     @Mock
     private StudentRepository studentRepository;
 
+    @Mock
+    private AuditService auditService;
+
     @InjectMocks
     private AssessmentService assessmentService;
 
