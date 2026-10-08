@@ -78,7 +78,8 @@ public class AssessmentService {
                         && termId.equals(assessment.getTerm().getId()))
                 .filter(assessment -> status == null || assessment.getStatus() != null
                         && assessment.getStatus().equalsIgnoreCase(status))
-                .map(AssessmentMapper::toResponse)
+                .map(assessment -> AssessmentMapper.toResponse(
+                        assessment, assessmentTopicRepository.findByAssessmentId(assessment.getId())))
                 .toList();
     }
 
@@ -182,7 +183,7 @@ public class AssessmentService {
         log.info("Assessment created: assessmentId={}, teacherId={}, classId={}",
                 saved.getId(), teacherId, classEntity.getId());
         auditService.log("ASSESSMENT_CREATED", "Assessment", saved.getId(), teacherId, resolvedSchoolId);
-        return AssessmentMapper.toResponse(saved);
+        return AssessmentMapper.toResponse(saved, assessmentTopicRepository.findByAssessmentId(saved.getId()));
     }
 
     /** Returns a single assessment by id. */
@@ -190,7 +191,7 @@ public class AssessmentService {
     public AssessmentResponse getAssessment(Long id) {
         Assessment assessment = assessmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ASSESSMENT_NOT_FOUND));
-        return AssessmentMapper.toResponse(assessment);
+        return AssessmentMapper.toResponse(assessment, assessmentTopicRepository.findByAssessmentId(id));
     }
 
     /** Updates a draft assessment and replaces its topics. */
@@ -234,7 +235,8 @@ public class AssessmentService {
 
         Assessment saved = assessmentRepository.save(assessment);
 
-        assessmentTopicRepository.deleteByAssessmentId(saved.getId());
+        assessmentTopicRepository.deleteByAssessmentId(id);
+        assessmentTopicRepository.flush();
         List<AssessmentTopic> topics = new ArrayList<>();
         for (Long topicId : req.topicIds()) {
             Topic topic = topicRepository.findById(topicId)
@@ -255,7 +257,7 @@ public class AssessmentService {
         // TODO(backend-lead): pass real userId once @CurrentUser is wired in services
         // TODO(backend-lead): pass real schoolId once school context is wired in services
         auditService.log("ASSESSMENT_UPDATED", "Assessment", saved.getId(), 1L, 1L);
-        return AssessmentMapper.toResponse(saved);
+        return AssessmentMapper.toResponse(saved, assessmentTopicRepository.findByAssessmentId(saved.getId()));
     }
 
     /** Deletes a draft assessment after removing associated topics and scores. */

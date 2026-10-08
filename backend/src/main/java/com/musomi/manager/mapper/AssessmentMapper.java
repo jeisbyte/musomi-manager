@@ -14,11 +14,22 @@ public final class AssessmentMapper {
 
     /** Maps an assessment to its response DTO. */
     public static AssessmentResponse toResponse(Assessment entity) {
+        return toResponse(entity, List.of());
+    }
+
+    /** Maps an assessment and its topic associations to a response DTO. */
+    public static AssessmentResponse toResponse(Assessment entity, List<AssessmentTopic> assessmentTopics) {
         if (entity == null) {
             return null;
         }
 
-        List<AssessmentResponse.TopicSummary> topics = List.of();
+        List<AssessmentResponse.TopicSummary> topics = assessmentTopics == null
+                ? List.of()
+                : assessmentTopics.stream()
+                    .map(assessmentTopic -> new AssessmentResponse.TopicSummary(
+                            assessmentTopic.getTopic().getId(),
+                            assessmentTopic.getTopic().getName()))
+                    .toList();
 
         return new AssessmentResponse(
                 entity.getId(),

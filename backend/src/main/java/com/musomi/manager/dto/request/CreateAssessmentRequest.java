@@ -6,7 +6,6 @@ import java.util.List;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -37,7 +36,7 @@ public record CreateAssessmentRequest(
         @DecimalMin(value = "0.01")
         BigDecimal maxScore,
 
-        @NotEmpty
+        @NotNull
         List<Long> topicIds
 ) {
 }
