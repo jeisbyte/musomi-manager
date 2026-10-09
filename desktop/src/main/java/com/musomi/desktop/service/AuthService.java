@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.musomi.desktop.api.AuthApi;
+import com.musomi.desktop.api.ApiException;
 import com.musomi.desktop.config.Session;
 import com.musomi.desktop.model.dto.LoginRequest;
 import com.musomi.desktop.model.dto.LoginResponse;
@@ -65,12 +66,19 @@ public class AuthService {
      * @throws com.musomi.desktop.api.ApiException on invalid credentials, locked account, or network error
      */
     public LoginResponse login(String username, String password) {
-        log.debug("AuthService.login — user: {}", username);
+        log.debug("AuthService.login");
 
         LoginResponse response = api.login(new LoginRequest(username, password));
+        if (response == null) {
+            throw new ApiException("INVALID_AUTH_RESPONSE", "The server returned an invalid login response.");
+        }
 
-        session.set(response.getToken(), response.getExpiresAt(), response.getUser());
-        log.debug("Session established for user: {}", username);
+        try {
+            session.set(response.getToken(), response.getExpiresAt(), response.getUser());
+        } catch (IllegalArgumentException ex) {
+            throw new ApiException("INVALID_AUTH_RESPONSE", "The server returned an invalid login response.");
+        }
+        log.debug("Session established");
 
         return response;
     }

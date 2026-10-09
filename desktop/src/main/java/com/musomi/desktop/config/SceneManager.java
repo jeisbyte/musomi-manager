@@ -1,5 +1,6 @@
 package com.musomi.desktop.config;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,6 +35,7 @@ public final class SceneManager {
 
     private static final String CSS_STYLES     = "/css/styles.css";
     private static final String CSS_COMPONENTS = "/css/components.css";
+    private static final String LOGIN_FXML = "/fxml/login.fxml";
 
     /** The method name controllers must expose to receive navigation data. */
     private static final String SET_DATA_METHOD = "setData";
@@ -63,6 +65,7 @@ public final class SceneManager {
 
     /** The JavaFX primary stage registered by {@link com.musomi.desktop.DesktopApplication}. */
     private Stage primaryStage;
+    private volatile String currentFxmlPath;
 
     // -------------------------------------------------------------------------
     // Stage registration
@@ -119,20 +122,28 @@ public final class SceneManager {
     public void switchTo(String fxmlPath, Object data) {
         requireStage();
 
-        log.debug("Navigating to: {}", fxmlPath);
+        String destination = fxmlPath;
+        Object navigationData = data;
+        if (isProtectedPath(destination) && !Session.getInstance().isAuthenticated()) {
+            log.debug("Blocked unauthenticated navigation to: {}", destination);
+            destination = LOGIN_FXML;
+            navigationData = null;
+        }
+
+        log.debug("Navigating to: {}", destination);
 
         try {
             URL url = Objects.requireNonNull(
-                    getClass().getResource(fxmlPath),
-                    "FXML resource not found: " + fxmlPath
+                    getClass().getResource(destination),
+                    "FXML resource not found: " + destination
             );
 
             FXMLLoader loader = new FXMLLoader(url);
             Parent root = loader.load();
 
             // Pass data to the controller if it exposes setData(Object)
-            if (data != null) {
-                injectData(loader.getController(), data, fxmlPath);
+            if (navigationData != null) {
+                injectData(loader.getController(), navigationData, destination);
             }
 
             // Obtain or create the scene, then update its root
@@ -146,13 +157,38 @@ public final class SceneManager {
             applyStylesheets(scene);
 
             primaryStage.setScene(scene);
-            log.debug("Navigation complete: {}", fxmlPath);
+            currentFxmlPath = destination;
+            log.debug("Navigation complete: {}", destination);
 
         } catch (IOException ex) {
-            String msg = "Failed to load FXML: " + fxmlPath;
+            String msg = "Failed to load FXML: " + destination;
             log.error(msg, ex);
             throw new NavigationException(msg, ex);
         }
+    }
+
+    /**
+     * Clears an invalidated session's protected view without navigating away
+     * from the login screen when the login request itself returned 401.
+     */
+    public void handleUnauthorizedResponse() {
+        if (primaryStage == null || !isProtectedPath(currentFxmlPath)) {
+            return;
+        }
+
+        try {
+            Platform.runLater(() -> {
+                if (primaryStage != null && isProtectedPath(currentFxmlPath)) {
+                    switchTo(LOGIN_FXML);
+                }
+            });
+        } catch (IllegalStateException ex) {
+            log.debug("JavaFX platform is not available for unauthorized navigation");
+        }
+    }
+
+    private boolean isProtectedPath(String path) {
+        return path != null && path.startsWith("/fxml/") && !path.equals(LOGIN_FXML);
     }
 
     // -------------------------------------------------------------------------

@@ -50,7 +50,7 @@ public class AuthApi {
      * @throws ApiException on HTTP 401 (invalid credentials), 403 (locked/inactive), or network error
      */
     public LoginResponse login(LoginRequest request) {
-        log.debug("Attempting login for user: {}", request.getUsername());
+        log.debug("Submitting login request");
         return client.post(LOGIN_PATH, request, LoginResponse.class);
     }
 

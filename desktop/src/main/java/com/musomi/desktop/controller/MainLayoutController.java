@@ -2,6 +2,8 @@ package com.musomi.desktop.controller;
 
 import com.musomi.desktop.controller.teacher.AssessmentStore.Assessment;
 import com.musomi.desktop.controller.teacher.MarkEntryController;
+import com.musomi.desktop.config.SceneManager;
+import com.musomi.desktop.config.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -201,6 +203,10 @@ public class MainLayoutController {
     }
 
     private void loadView(String fxmlPath, Assessment assessment) {
+        if (!Session.getInstance().isAuthenticated()) {
+            SceneManager.getInstance().switchTo("/fxml/login.fxml");
+            return;
+        }
 
         try {
 

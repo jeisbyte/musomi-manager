@@ -56,15 +56,18 @@ public final class Session {
      * @param user      authenticated user profile
      */
     public void set(String token, Instant expiresAt, UserResponse user) {
+        if (token == null || token.isBlank()
+                || expiresAt == null || !expiresAt.isAfter(Instant.now())
+                || user == null || user.getRole() == null || user.getRole().isBlank()) {
+            throw new IllegalArgumentException("Cannot establish a session from incomplete or expired login data");
+        }
+
         this.token = token;
         this.expiresAt = expiresAt;
         this.user = user;
 
         if (log.isDebugEnabled()) {
-            log.debug("Session established for user: {} (role: {}, expiresAt: {})",
-                    user != null ? user.getUsername() : "null",
-                    user != null ? user.getRole() : "null",
-                    expiresAt);
+            log.debug("Session established (role: {}, expiresAt: {})", user.getRole(), expiresAt);
         }
     }
 
@@ -74,7 +77,9 @@ public final class Session {
      * @return {@code true} if token is non-null and has not expired; {@code false} otherwise
      */
     public boolean isAuthenticated() {
-        return token != null && expiresAt != null && expiresAt.isAfter(Instant.now());
+        return token != null && !token.isBlank()
+                && expiresAt != null && expiresAt.isAfter(Instant.now())
+                && user != null;
     }
 
     /**

@@ -17,6 +17,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.musomi.desktop.config.ApiConfig;
 import com.musomi.desktop.config.AppConfig;
+import com.musomi.desktop.config.SceneManager;
 import com.musomi.desktop.config.Session;
 import com.musomi.desktop.model.dto.ApiResponse;
 import com.musomi.desktop.util.MockData;
@@ -160,6 +161,10 @@ public final class ApiClient {
             HttpResponse<String> response = client.send(builder.build(), HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() >= 400) {
+                if (response.statusCode() == 401) {
+                    Session.getInstance().clear();
+                    SceneManager.getInstance().handleUnauthorizedResponse();
+                }
                 throw ApiException.from(response);
             }
 
