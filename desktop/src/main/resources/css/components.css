@@ -200,6 +200,255 @@
     -fx-font-weight: 600;
 }
 
+/* Assessment list adapts its columns to the content viewport. */
+.assessment-table {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12px;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-padding: 0;
+}
+
+.assessment-table .column-header-background {
+    -fx-background-color: #F8FAFC;
+    -fx-background-radius: 12px 12px 0 0;
+}
+
+.assessment-table .column-header,
+.assessment-table .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #E2E8F0 transparent;
+    -fx-padding: 10 8;
+}
+
+.assessment-table .column-header .label {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #64748B;
+}
+
+.assessment-table .table-cell {
+    -fx-padding: 9 8;
+    -fx-font-size: 13px;
+    -fx-text-fill: #475569;
+    -fx-border-color: transparent;
+}
+
+.assessment-table .table-row-cell {
+    -fx-cell-size: 48px;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: transparent transparent #E2E8F0 transparent;
+}
+
+.assessment-table .table-row-cell:odd {
+    -fx-background-color: #FAFBFC;
+}
+
+.assessment-table .table-row-cell:selected {
+    -fx-background-color: #EEF2FF;
+}
+
+.assessment-action-edit,
+.assessment-action-review,
+.assessment-action-view {
+    -fx-background-radius: 6px;
+    -fx-padding: 5 8;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+}
+
+.assessment-action-edit {
+    -fx-background-color: #EEF2FF;
+    -fx-text-fill: #4F46E5;
+}
+
+.assessment-action-review {
+    -fx-background-color: #FFFBEB;
+    -fx-text-fill: #B45309;
+}
+
+.assessment-action-view {
+    -fx-background-color: #ECFDF5;
+    -fx-text-fill: #047857;
+}
+
+.assessment-modal-overlay {
+    -fx-background-color: rgba(15, 23, 42, 0.58);
+}
+
+.assessment-form-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-padding: 24 30;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.20), 28, 0.16, 0, 10);
+}
+
+.assessment-form-scroll,
+.assessment-form-scroll > .viewport {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.assessment-form-scroll {
+    -fx-padding: 0;
+}
+
+.assessment-form-heading {
+    -fx-padding: 0 0 2 0;
+}
+
+.assessment-form-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #0F172A;
+}
+
+.assessment-close-button {
+    -fx-background-color: #F1F5F9;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #64748B;
+    -fx-font-size: 15px;
+    -fx-padding: 6 11;
+    -fx-cursor: hand;
+}
+
+.assessment-close-button:hover {
+    -fx-background-color: #E2E8F0;
+    -fx-text-fill: #0F172A;
+}
+
+.assessment-form-fields {
+    -fx-padding: 2 0 4 0;
+}
+
+.assessment-field-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #334155;
+}
+
+.assessment-form-input {
+    -fx-pref-height: 42px;
+    -fx-min-height: 42px;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 0 12px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #0F172A;
+}
+
+.assessment-form-input:focused {
+    -fx-border-color: #4F46E5;
+    -fx-border-width: 1.5px;
+    -fx-effect: dropshadow(gaussian, rgba(79, 70, 229, 0.12), 6, 0, 0, 1);
+}
+
+.assessment-form-input .text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 8px;
+    -fx-padding: 0 8px;
+    -fx-text-fill: #0F172A;
+    -fx-prompt-text-fill: #94A3B8;
+}
+
+.assessment-form-separator {
+    -fx-opacity: 0.7;
+}
+
+.assessment-form-separator .line {
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1 0 0 0;
+}
+
+.assessment-form-error,
+.assessment-form-success {
+    -fx-background-radius: 8px;
+    -fx-padding: 10 12;
+    -fx-font-size: 13px;
+}
+
+.assessment-form-error {
+    -fx-background-color: #FEF2F2;
+    -fx-text-fill: #B91C1C;
+}
+
+.assessment-form-success {
+    -fx-background-color: #ECFDF5;
+    -fx-text-fill: #065F46;
+}
+
+/* Mark-entry grid */
+.mark-entry .table-row-cell:odd {
+    -fx-background-color: #F8FAFC;
+}
+
+.mark-entry .table-row-cell:even {
+    -fx-background-color: #FFFFFF;
+}
+
+.mark-entry .table-row-cell:selected {
+    -fx-background-color: #EEF2FF;
+}
+
+.mark-entry .mark-score-cell {
+    -fx-alignment: CENTER-RIGHT;
+    -fx-font-family: "JetBrains Mono", "Courier New", monospace;
+    -fx-font-size: 14px;
+    -fx-text-fill: #0F172A;
+}
+
+.mark-entry .mark-score-editor {
+    -fx-alignment: CENTER-RIGHT;
+    -fx-font-family: "JetBrains Mono", "Courier New", monospace;
+}
+
+.mark-entry .grade-a,
+.mark-entry .grade-b,
+.mark-entry .grade-c,
+.mark-entry .grade-d,
+.mark-entry .grade-e,
+.mark-entry .grade-f {
+    -fx-alignment: CENTER;
+    -fx-font-family: "JetBrains Mono", "Courier New", monospace;
+    -fx-font-weight: 600;
+}
+
+.mark-entry .grade-a {
+    -fx-background-color: #ECFDF5;
+    -fx-text-fill: #047857;
+}
+
+.mark-entry .grade-b {
+    -fx-background-color: #EFF6FF;
+    -fx-text-fill: #1D4ED8;
+}
+
+.mark-entry .grade-c {
+    -fx-background-color: #FFFBEB;
+    -fx-text-fill: #B45309;
+}
+
+.mark-entry .grade-d {
+    -fx-background-color: #FFF7ED;
+    -fx-text-fill: #C2410C;
+}
+
+.mark-entry .grade-e {
+    -fx-background-color: #FEF2F2;
+    -fx-text-fill: #B91C1C;
+}
+
+.mark-entry .grade-f {
+    -fx-background-color: #FEE2E2;
+    -fx-text-fill: #991B1B;
+}
+
 /* Toast Notifications */
 .toast {
     -fx-background-radius: 8px;

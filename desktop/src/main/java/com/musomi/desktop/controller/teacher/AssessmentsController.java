@@ -19,11 +19,15 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  * Controller for /fxml/teacher/assessments.fxml.
@@ -66,8 +70,15 @@ public class AssessmentsController {
 
     @FXML private Button  createBtn;
     @FXML private VBox    listPane;
-    @FXML private VBox    rowsContainer;
-    @FXML private VBox    emptyState;
+    @FXML private TableView<Assessment> assessmentTable;
+    @FXML private TableColumn<Assessment, String> nameColumn;
+    @FXML private TableColumn<Assessment, String> classColumn;
+    @FXML private TableColumn<Assessment, String> subjectColumn;
+    @FXML private TableColumn<Assessment, String> topicColumn;
+    @FXML private TableColumn<Assessment, String> dateColumn;
+    @FXML private TableColumn<Assessment, String> maxMarksColumn;
+    @FXML private TableColumn<Assessment, String> statusColumn;
+    @FXML private TableColumn<Assessment, Assessment> actionsColumn;
 
     // =========================================================================
     // FXML — create / edit form panel
@@ -130,10 +141,73 @@ public class AssessmentsController {
 
     @FXML
     private void initialize() {
+        setupAssessmentTable();
         classCombo.getItems().addAll(CLASS_OPTIONS);
         subjectCombo.getItems().addAll(SUBJECT_OPTIONS);
         topicCombo.getItems().addAll(TOPIC_OPTIONS);
         refreshList();
+    }
+
+    private void setupAssessmentTable() {
+        nameColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getName()));
+        classColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getClassName()));
+        subjectColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getSubject()));
+        topicColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getTopic()));
+        dateColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getDate()));
+        maxMarksColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(String.valueOf(data.getValue().getMaxMarks())));
+        statusColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getStatus()));
+        statusColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+                if (empty || status == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    Label badge = new Label(status);
+                    badge.getStyleClass().add("Published".equals(status)
+                            ? "badge-published" : "badge-draft");
+                    setText(null);
+                    setGraphic(badge);
+                }
+            }
+        });
+        actionsColumn.setCellValueFactory(data ->
+                new SimpleObjectProperty<>(data.getValue()));
+        actionsColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(Assessment assessment, boolean empty) {
+                super.updateItem(assessment, empty);
+                if (empty || assessment == null) {
+                    setGraphic(null);
+                    return;
+                }
+
+                HBox actions = new HBox(6);
+                actions.setAlignment(Pos.CENTER_LEFT);
+                if ("Draft".equals(assessment.getStatus())) {
+                    Button edit = actionButton("Edit", "assessment-action-edit");
+                    edit.setOnAction(event -> openEditForm(assessment));
+                    Button review = actionButton("Review", "assessment-action-review");
+                    review.setOnAction(event -> openReviewPane(assessment));
+                    actions.getChildren().addAll(edit, review);
+                } else {
+                    Button view = actionButton("View", "assessment-action-view");
+                    view.setOnAction(event -> openViewPane(assessment));
+                    actions.getChildren().add(view);
+                }
+                setGraphic(actions);
+            }
+        });
+        assessmentTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        assessmentTable.setItems(javafx.collections.FXCollections.observableArrayList());
     }
 
     // =========================================================================
@@ -141,115 +215,13 @@ public class AssessmentsController {
     // =========================================================================
 
     private void refreshList() {
-        rowsContainer.getChildren().clear();
-
-        List<Assessment> assessments = AssessmentStore.getAssessments();
-        boolean hasRows = !assessments.isEmpty();
-        emptyState.setVisible(!hasRows);
-        emptyState.setManaged(!hasRows);
-
-        for (int i = 0; i < assessments.size(); i++) {
-            Assessment a = assessments.get(i);
-            boolean isEven = (i % 2 == 0);
-            rowsContainer.getChildren().add(buildRow(a, isEven));
-            if (i < assessments.size() - 1) {
-                Separator sep = new Separator();
-                rowsContainer.getChildren().add(sep);
-            }
-        }
+        assessmentTable.getItems().setAll(AssessmentStore.getAssessments());
     }
 
-    private HBox buildRow(Assessment a, boolean isEven) {
-        String rowBg = isEven ? "white" : "#FAFBFC";
-
-        HBox row = new HBox(0);
-        row.setAlignment(Pos.CENTER_LEFT);
-        row.setPadding(new Insets(14, 20, 14, 20));
-        row.setStyle("-fx-background-color: " + rowBg + ";");
-
-        // Name
-        Label nameLabel = new Label(a.getName());
-        nameLabel.setMinWidth(200);
-        nameLabel.setPrefWidth(200);
-        nameLabel.setStyle("-fx-font-size:13px;-fx-font-weight:600;-fx-text-fill:#0F172A;");
-
-        // Class
-        Label clsLabel   = cell(a.getClassName(), 100);
-        Label subLabel   = cell(a.getSubject(),   130);
-        Label topLabel   = cell(a.getTopic(),     150);
-        Label dateLabel  = cell(a.getDate(),      110);
-        Label marksLabel = cell(String.valueOf(a.getMaxMarks()), 90);
-
-        // Status badge
-        HBox statusCell = new HBox();
-        statusCell.setMinWidth(100);
-        statusCell.setPrefWidth(100);
-        statusCell.setAlignment(Pos.CENTER_LEFT);
-
-        Label statusBadge = new Label(a.getStatus());
-        if ("Published".equals(a.getStatus())) {
-            statusBadge.setStyle(
-                "-fx-background-color: #ECFDF5;" +
-                "-fx-text-fill: #047857;" +
-                "-fx-font-size: 12px;" +
-                "-fx-font-weight: 600;" +
-                "-fx-padding: 3 10;" +
-                "-fx-background-radius: 999px;");
-        } else {
-            statusBadge.setStyle(
-                "-fx-background-color: #FFF7ED;" +
-                "-fx-text-fill: #B45309;" +
-                "-fx-font-size: 12px;" +
-                "-fx-font-weight: 600;" +
-                "-fx-padding: 3 10;" +
-                "-fx-background-radius: 999px;");
-        }
-        statusCell.getChildren().add(statusBadge);
-
-        // Action buttons
-        HBox actionCell = new HBox(6);
-        actionCell.setMinWidth(180);
-        actionCell.setAlignment(Pos.CENTER_LEFT);
-
-        if ("Draft".equals(a.getStatus())) {
-            Button editBtn = actionButton("Edit", "#EEF2FF", "#4F46E5");
-            editBtn.setOnAction(e -> openEditForm(a));
-
-            Button reviewPublishBtn = actionButton("Review & Publish", "#FFF7ED", "#B45309");
-            reviewPublishBtn.setOnAction(e -> openReviewPane(a));
-
-            actionCell.getChildren().addAll(editBtn, reviewPublishBtn);
-        } else {
-            Button viewBtn = actionButton("View", "#F0FDF4", "#047857");
-            viewBtn.setOnAction(e -> openViewPane(a));
-            actionCell.getChildren().add(viewBtn);
-        }
-
-        row.getChildren().addAll(
-                nameLabel, clsLabel, subLabel, topLabel,
-                dateLabel, marksLabel, statusCell, actionCell);
-        return row;
-    }
-
-    private Button actionButton(String text, String bgColor, String textColor) {
+    private Button actionButton(String text, String styleClass) {
         Button b = new Button(text);
-        b.setStyle(
-            "-fx-background-color: " + bgColor + ";" +
-            "-fx-text-fill: " + textColor + ";" +
-            "-fx-font-size: 12px;" +
-            "-fx-font-weight: 600;" +
-            "-fx-background-radius: 6px;" +
-            "-fx-padding: 5 10;" +
-            "-fx-cursor: hand;");
+        b.getStyleClass().add(styleClass);
         return b;
-    }
-
-    private Label cell(String text, double minWidth) {
-        Label lbl = new Label(text);
-        lbl.setMinWidth(minWidth);
-        lbl.setPrefWidth(minWidth);
-        lbl.setStyle("-fx-font-size:13px;-fx-text-fill:#475569;");
-        return lbl;
     }
 
     // =========================================================================
@@ -322,7 +294,7 @@ public class AssessmentsController {
         subjectCombo.setValue(a.getSubject());
         topicCombo.setValue(a.getTopic());
         marksField.setText(String.valueOf(a.getMaxMarks()));
-        datePicker.setValue(null); // stored as string; leave for re-selection
+        datePicker.setValue(LocalDate.parse(a.getDate(), DISPLAY_FORMAT));
         hideMessages();
     }
 

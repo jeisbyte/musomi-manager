@@ -1,5 +1,7 @@
 package com.musomi.desktop.controller;
 
+import com.musomi.desktop.controller.teacher.AssessmentStore.Assessment;
+import com.musomi.desktop.controller.teacher.MarkEntryController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -77,10 +79,13 @@ public class MainLayoutController {
 
     @FXML
     private void showMarkEntry() {
+        openMarkEntry(null);
+    }
 
+    private void openMarkEntry(Assessment assessment) {
         setActiveButton(markEntryButton);
 
-        loadView("/fxml/teacher/mark-entry.fxml");
+        loadView("/fxml/teacher/mark-entry.fxml", assessment);
     }
 
 
@@ -192,6 +197,10 @@ public class MainLayoutController {
     // =========================================================
 
     private void loadView(String fxmlPath) {
+        loadView(fxmlPath, null);
+    }
+
+    private void loadView(String fxmlPath, Assessment assessment) {
 
         try {
 
@@ -204,6 +213,13 @@ public class MainLayoutController {
                     );
 
             Node view = loader.load();
+
+            if (loader.getController() instanceof DashboardController dashboardController) {
+                dashboardController.setOnOpenMarkEntry(this::openMarkEntry);
+            } else if (loader.getController() instanceof MarkEntryController markEntryController
+                    && assessment != null) {
+                markEntryController.setData(assessment);
+            }
 
             contentArea.getChildren().setAll(view);
 

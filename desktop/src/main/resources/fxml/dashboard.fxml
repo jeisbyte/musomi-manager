@@ -16,6 +16,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.musomi.desktop.controller.DashboardController"
             prefWidth="1000.0"
             prefHeight="630.0"
             style="-fx-background-color: #f7f8fc;">
@@ -125,7 +126,8 @@
                                   -fx-font-weight: bold;
                                   -fx-text-fill: #64748b;"/>
 
-                    <Label text="3"
+                    <Label fx:id="pendingMarksCount"
+                           text="0"
                            style="-fx-font-size: 28px;
                                   -fx-font-weight: bold;
                                   -fx-text-fill: #1e293b;"/>
@@ -438,7 +440,8 @@
                            style="-fx-font-weight: bold;
                                   -fx-text-fill: #4c1d95;"/>
 
-                    <Label text="You have 3 classes with pending marks for this term."
+                    <Label fx:id="pendingReminderText"
+                           text="Loading pending assessments..."
                            style="-fx-font-size: 12px;
                                   -fx-text-fill: #6b21a8;"/>
 
@@ -446,7 +449,9 @@
 
                 <Region HBox.hgrow="ALWAYS"/>
 
-                <Button text="Go to Mark Entry"
+                <Button fx:id="markEntryButton"
+                        text="Go to Mark Entry"
+                        onAction="#goToMarkEntry"
                         style="-fx-background-color: #6366f1;
                                -fx-background-radius: 8px;
                                -fx-text-fill: white;

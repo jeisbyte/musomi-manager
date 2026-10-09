@@ -7,8 +7,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
@@ -24,9 +27,9 @@
     <!-- ===================================================== -->
 
     <top>
-        <VBox spacing="5.0">
+        <VBox spacing="5.0" styleClass="assessment-page-header">
             <padding>
-                <Insets top="26.0" right="30.0" bottom="18.0" left="30.0"/>
+                <Insets top="12.0" right="16.0" bottom="16.0" left="16.0"/>
             </padding>
 
             <HBox alignment="CENTER_LEFT">
@@ -61,15 +64,15 @@
     <!-- ===================================================== -->
 
     <center>
-        <StackPane alignment="TOP_LEFT">
+        <StackPane alignment="TOP_LEFT" minWidth="0" minHeight="0">
 
             <!-- ──────────────────────────────────────────────────── -->
             <!-- PANEL 1: Assessment list                             -->
             <!-- ──────────────────────────────────────────────────── -->
 
-            <VBox fx:id="listPane" spacing="0.0">
+            <VBox fx:id="listPane" spacing="12.0" minWidth="0" minHeight="0">
                 <padding>
-                    <Insets top="0" right="30.0" bottom="30.0" left="30.0"/>
+                    <Insets top="0" right="16.0" bottom="16.0" left="16.0"/>
                 </padding>
 
                 <!-- Success toast (publish confirmation) -->
@@ -88,46 +91,31 @@
                     </VBox.margin>
                 </Label>
 
-                <!-- Table header -->
-                <HBox spacing="0"
-                      style="-fx-background-color: white;
-                             -fx-background-radius: 12px 12px 0 0;
-                             -fx-border-color: #E2E8F0;
-                             -fx-border-width: 1 1 0 1;
-                             -fx-padding: 12 20;">
-                    <Label text="Assessment"  minWidth="200" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
-                    <Label text="Class"       minWidth="100" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
-                    <Label text="Subject"     minWidth="130" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
-                    <Label text="Topic"       minWidth="150" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
-                    <Label text="Date"        minWidth="110" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
-                    <Label text="Max Marks"   minWidth="90"  style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
-                    <Label text="Status"      minWidth="100" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
-                    <Label text="Actions"     minWidth="180" style="-fx-font-size:12px;-fx-font-weight:700;-fx-text-fill:#64748B;"/>
-                </HBox>
-
-                <!-- Rows injected by controller -->
-                <VBox fx:id="rowsContainer"
-                      spacing="0"
-                      style="-fx-background-color: white;
-                             -fx-border-color: #E2E8F0;
-                             -fx-border-width: 0 1 1 1;
-                             -fx-background-radius: 0 0 12px 12px;"/>
-
-                <!-- Empty state -->
-                <VBox fx:id="emptyState"
-                      alignment="CENTER"
-                      spacing="12"
-                      style="-fx-background-color: white;
-                             -fx-background-radius: 0 0 12px 12px;
-                             -fx-border-color: #E2E8F0;
-                             -fx-border-width: 0 1 1 1;
-                             -fx-padding: 60 0;">
-                    <Label text="📋" style="-fx-font-size: 40px;"/>
-                    <Label text="No assessments yet"
-                           style="-fx-font-size: 16px;-fx-font-weight: 700;-fx-text-fill: #1e293b;"/>
-                    <Label text="Click '+ Create Assessment' to get started."
-                           style="-fx-font-size: 13px;-fx-text-fill: #64748B;"/>
-                </VBox>
+                <TableView fx:id="assessmentTable"
+                           minWidth="0"
+                           minHeight="180"
+                           VBox.vgrow="ALWAYS"
+                           styleClass="assessment-table">
+                    <placeholder>
+                        <VBox alignment="CENTER" spacing="8">
+                            <Label text="📋" style="-fx-font-size: 40px;"/>
+                            <Label text="No assessments yet"
+                                   style="-fx-font-size: 16px;-fx-font-weight: 600;-fx-text-fill: #0F172A;"/>
+                            <Label text="Click '+ Create Assessment' to get started."
+                                   style="-fx-font-size: 13px;-fx-text-fill: #64748B;"/>
+                        </VBox>
+                    </placeholder>
+                    <columns>
+                        <TableColumn fx:id="nameColumn" text="Assessment" prefWidth="190"/>
+                        <TableColumn fx:id="classColumn" text="Class" prefWidth="82"/>
+                        <TableColumn fx:id="subjectColumn" text="Subject" prefWidth="120"/>
+                        <TableColumn fx:id="topicColumn" text="Topic" prefWidth="105"/>
+                        <TableColumn fx:id="dateColumn" text="Date" prefWidth="100"/>
+                        <TableColumn fx:id="maxMarksColumn" text="Max" prefWidth="65"/>
+                        <TableColumn fx:id="statusColumn" text="Status" prefWidth="88"/>
+                        <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="150"/>
+                    </columns>
+                </TableView>
             </VBox>
 
 
@@ -138,141 +126,105 @@
             <VBox fx:id="formPane"
                   visible="false"
                   managed="false"
-                  style="-fx-background-color: rgba(15,23,42,0.45);"
-                  alignment="TOP_CENTER"
-                  StackPane.alignment="TOP_LEFT"
-                  prefWidth="10000" prefHeight="10000">
+                  styleClass="assessment-modal-overlay"
+                  alignment="CENTER"
+                  StackPane.alignment="CENTER"
+                  maxWidth="Infinity" maxHeight="Infinity">
 
                 <ScrollPane fitToWidth="true"
                             hbarPolicy="NEVER"
                             vbarPolicy="AS_NEEDED"
-                            maxWidth="660"
-                            style="-fx-background-color: transparent;
-                                   -fx-background: transparent;
-                                   -fx-border-color: transparent;">
+                            maxWidth="700"
+                            maxHeight="620"
+                            styleClass="assessment-form-scroll">
                     <VBox.margin>
-                        <Insets top="40" bottom="40"/>
+                        <Insets top="0" bottom="0"/>
                     </VBox.margin>
                     <content>
-                        <VBox spacing="22"
-                              maxWidth="660"
-                              style="-fx-background-color: white;
-                                     -fx-background-radius: 14px;
-                                     -fx-padding: 32 36;
-                                     -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.18),24,0,0,6);">
+                        <VBox spacing="14"
+                              maxWidth="700"
+                              styleClass="assessment-form-card">
 
-                            <HBox alignment="CENTER_LEFT">
+                            <HBox alignment="CENTER_LEFT" styleClass="assessment-form-heading">
                                 <Label fx:id="formTitle"
                                        text="Create Assessment"
-                                       style="-fx-font-size: 20px;
-                                              -fx-font-weight: 800;
-                                              -fx-text-fill: #0F172A;"/>
+                                       styleClass="assessment-form-title"/>
                                 <Region HBox.hgrow="ALWAYS"/>
                                 <Button text="✕"
                                         onAction="#handleCancelForm"
-                                        style="-fx-background-color: #F1F5F9;
-                                               -fx-text-fill: #64748B;
-                                               -fx-background-radius: 8px;
-                                               -fx-font-size: 15px;
-                                               -fx-padding: 4 10;
-                                               -fx-cursor: hand;"/>
+                                        styleClass="assessment-close-button"/>
                             </HBox>
-                            <Separator/>
+                            <Separator styleClass="assessment-form-separator"/>
 
                             <Label fx:id="errorLabel"
                                    visible="false" managed="false"
                                    wrapText="true"
-                                   style="-fx-background-color: #FEF2F2;
-                                          -fx-text-fill: #B91C1C;
-                                          -fx-font-size: 13px;
-                                          -fx-background-radius: 8px;
-                                          -fx-padding: 12 14;"/>
+                                   styleClass="assessment-form-error"/>
                             <Label fx:id="successLabel"
                                    visible="false" managed="false"
                                    wrapText="true"
-                                   style="-fx-background-color: #ECFDF5;
-                                          -fx-text-fill: #065F46;
-                                          -fx-font-size: 13px;
-                                          -fx-background-radius: 8px;
-                                          -fx-padding: 12 14;"/>
+                                   styleClass="assessment-form-success"/>
 
-                            <VBox spacing="6">
-                                <Label text="Assessment Name *"
-                                       style="-fx-font-size:13px;-fx-font-weight:600;-fx-text-fill:#374151;"/>
+                            <VBox spacing="6" styleClass="assessment-form-field">
+                                <Label text="Assessment name *" styleClass="assessment-field-label"/>
                                 <TextField fx:id="nameField"
                                            promptText="e.g. Mathematics Test 1"
-                                           style="-fx-font-size:14px;-fx-padding:10 12;
-                                                  -fx-background-radius:8px;
-                                                  -fx-border-color:#D1D5DB;-fx-border-radius:8px;
-                                                  -fx-border-width:1.5;-fx-background-color:white;"/>
+                                           maxWidth="Infinity"
+                                           styleClass="assessment-form-input"/>
                             </VBox>
 
-                            <HBox spacing="16">
-                                <VBox spacing="6" HBox.hgrow="ALWAYS">
-                                    <Label text="Class *"
-                                           style="-fx-font-size:13px;-fx-font-weight:600;-fx-text-fill:#374151;"/>
+                            <FlowPane hgap="16" vgap="14" prefWrapLength="580">
+                                <VBox spacing="6" prefWidth="280" styleClass="assessment-form-field">
+                                    <Label text="Class *" styleClass="assessment-field-label"/>
                                     <ComboBox fx:id="classCombo"
                                               promptText="Select class"
                                               maxWidth="Infinity"
-                                              style="-fx-font-size:14px;-fx-background-radius:8px;"/>
+                                              styleClass="assessment-form-input"/>
                                 </VBox>
-                                <VBox spacing="6" HBox.hgrow="ALWAYS">
-                                    <Label text="Subject *"
-                                           style="-fx-font-size:13px;-fx-font-weight:600;-fx-text-fill:#374151;"/>
+                                <VBox spacing="6" prefWidth="280" styleClass="assessment-form-field">
+                                    <Label text="Subject *" styleClass="assessment-field-label"/>
                                     <ComboBox fx:id="subjectCombo"
                                               promptText="Select subject"
                                               maxWidth="Infinity"
-                                              style="-fx-font-size:14px;-fx-background-radius:8px;"/>
+                                              styleClass="assessment-form-input"/>
                                 </VBox>
-                            </HBox>
+                        </FlowPane>
 
-                            <VBox spacing="6">
-                                <Label text="Topic *"
-                                       style="-fx-font-size:13px;-fx-font-weight:600;-fx-text-fill:#374151;"/>
+                            <VBox spacing="6" styleClass="assessment-form-field">
+                                <Label text="Topic *" styleClass="assessment-field-label"/>
                                 <ComboBox fx:id="topicCombo"
                                           promptText="Select topic"
                                           maxWidth="Infinity"
-                                          style="-fx-font-size:14px;-fx-background-radius:8px;"/>
+                                          styleClass="assessment-form-input"/>
                             </VBox>
 
-                            <HBox spacing="16">
-                                <VBox spacing="6" HBox.hgrow="ALWAYS">
-                                    <Label text="Assessment Date *"
-                                           style="-fx-font-size:13px;-fx-font-weight:600;-fx-text-fill:#374151;"/>
+                            <FlowPane hgap="16" vgap="14" prefWrapLength="580">
+                                <VBox spacing="6" prefWidth="280" styleClass="assessment-form-field">
+                                    <Label text="Assessment date *" styleClass="assessment-field-label"/>
                                     <DatePicker fx:id="datePicker"
                                                 promptText="Select date"
                                                 maxWidth="Infinity"
-                                                style="-fx-font-size:14px;-fx-background-radius:8px;"/>
+                                                styleClass="assessment-form-input"/>
                                 </VBox>
-                                <VBox spacing="6" HBox.hgrow="ALWAYS">
-                                    <Label text="Maximum Marks *"
-                                           style="-fx-font-size:13px;-fx-font-weight:600;-fx-text-fill:#374151;"/>
+                                <VBox spacing="6" prefWidth="280" styleClass="assessment-form-field">
+                                    <Label text="Maximum marks *" styleClass="assessment-field-label"/>
                                     <TextField fx:id="marksField"
                                                promptText="e.g. 40"
                                                maxWidth="Infinity"
-                                               style="-fx-font-size:14px;-fx-padding:10 12;
-                                                      -fx-background-radius:8px;
-                                                      -fx-border-color:#D1D5DB;-fx-border-radius:8px;
-                                                      -fx-border-width:1.5;-fx-background-color:white;"/>
+                                               styleClass="assessment-form-input"/>
                                 </VBox>
-                            </HBox>
+                            </FlowPane>
 
-                            <Separator/>
+                            <Separator styleClass="assessment-form-separator"/>
 
                             <HBox spacing="12" alignment="CENTER_RIGHT">
                                 <Button text="Cancel"
                                         onAction="#handleCancelForm"
-                                        style="-fx-background-color:#F1F5F9;-fx-text-fill:#475569;
-                                               -fx-font-size:14px;-fx-font-weight:600;
-                                               -fx-background-radius:8px;-fx-padding:10 22;
-                                               -fx-cursor:hand;"/>
+                                        styleClass="btn-secondary"/>
                                 <Button fx:id="saveDraftBtn"
                                         text="Save Draft"
                                         onAction="#handleSaveDraft"
-                                        style="-fx-background-color:#4F46E5;-fx-text-fill:white;
-                                               -fx-font-size:14px;-fx-font-weight:700;
-                                               -fx-background-radius:8px;-fx-padding:10 26;
-                                               -fx-cursor:hand;"/>
+                                        styleClass="btn-primary"/>
                             </HBox>
                         </VBox>
                     </content>
@@ -294,7 +246,7 @@
                                -fx-background: #f7f8fc;
                                -fx-border-color: transparent;"
                         StackPane.alignment="TOP_LEFT"
-                        prefWidth="10000" prefHeight="10000">
+                        maxWidth="Infinity" maxHeight="Infinity">
 
                 <content>
                     <VBox spacing="20">
@@ -340,7 +292,7 @@
                             <Separator/>
 
                             <!-- Details grid -->
-                            <HBox spacing="40">
+                            <FlowPane hgap="28" vgap="16">
                                 <VBox spacing="4">
                                     <Label text="Assessment"
                                            style="-fx-font-size:11px;-fx-font-weight:700;-fx-text-fill:#94A3B8;"/>
@@ -377,7 +329,7 @@
                                     <Label fx:id="reviewMaxMarksLabel"
                                            style="-fx-font-size:14px;-fx-font-weight:600;-fx-text-fill:#0F172A;"/>
                                 </VBox>
-                            </HBox>
+                            </FlowPane>
 
                             <Separator/>
 
@@ -451,7 +403,7 @@
                                -fx-background: #f7f8fc;
                                -fx-border-color: transparent;"
                         StackPane.alignment="TOP_LEFT"
-                        prefWidth="10000" prefHeight="10000">
+                        maxWidth="Infinity" maxHeight="Infinity">
 
                 <content>
                     <VBox spacing="20">
@@ -495,7 +447,7 @@
                             </HBox>
                             <Separator/>
 
-                            <HBox spacing="40">
+                            <FlowPane hgap="28" vgap="16">
                                 <VBox spacing="4">
                                     <Label text="ASSESSMENT"
                                            style="-fx-font-size:11px;-fx-font-weight:700;-fx-text-fill:#94A3B8;"/>
@@ -532,7 +484,7 @@
                                     <Label fx:id="viewMaxMarksLabel"
                                            style="-fx-font-size:14px;-fx-font-weight:600;-fx-text-fill:#0F172A;"/>
                                 </VBox>
-                            </HBox>
+                            </FlowPane>
 
                             <Separator/>
 

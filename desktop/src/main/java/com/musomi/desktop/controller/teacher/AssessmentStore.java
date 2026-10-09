@@ -77,7 +77,11 @@ public final class AssessmentStore {
         public void   setMark(String m) { this.mark = m; }
 
         public boolean hasValidMark(int maxMarks) {
-            if (mark == null || mark.trim().isEmpty()) return false;
+            return hasValidMark(mark, maxMarks);
+        }
+
+        public static boolean hasValidMark(String mark, int maxMarks) {
+            if (mark == null || mark.trim().isEmpty() || maxMarks <= 0) return false;
             try {
                 double v = Double.parseDouble(mark.trim());
                 return v >= 0 && v <= maxMarks;
@@ -87,7 +91,11 @@ public final class AssessmentStore {
         }
 
         public String computeGrade(int maxMarks) {
-            if (!hasValidMark(maxMarks)) return "";
+            return gradeFor(mark, maxMarks);
+        }
+
+        public static String gradeFor(String mark, int maxMarks) {
+            if (!hasValidMark(mark, maxMarks)) return "";
             double pct = (Double.parseDouble(mark.trim()) / maxMarks) * 100.0;
             if (pct >= 80) return "A";
             if (pct >= 70) return "B";
@@ -98,7 +106,11 @@ public final class AssessmentStore {
         }
 
         public String computeRemark(int maxMarks) {
-            switch (computeGrade(maxMarks)) {
+            return remarkFor(computeGrade(maxMarks));
+        }
+
+        public static String remarkFor(String grade) {
+            switch (grade) {
                 case "A": return "Excellent";
                 case "B": return "Very Good";
                 case "C": return "Good";
@@ -180,6 +192,19 @@ public final class AssessmentStore {
         return ASSESSMENTS;
     }
 
+    /** Returns assessments that are incomplete or have not yet been published. */
+    public static List<Assessment> getPendingAssessments() {
+        return ASSESSMENTS.stream()
+                .filter(AssessmentStore::isPending)
+                .toList();
+    }
+
+    /** An assessment remains pending until it is complete and published. */
+    public static boolean isPending(Assessment assessment) {
+        return assessment != null
+                && (!"Published".equals(assessment.getStatus()) || !allMarksComplete(assessment));
+    }
+
     /**
      * Returns the student mark list for the given assessment.
      * If no list exists yet, one is created with blank marks.
@@ -206,6 +231,9 @@ public final class AssessmentStore {
 
     /** Publishes the given assessment (must be Draft with all marks filled). */
     public static void publish(Assessment assessment) {
+        if (!allMarksComplete(assessment)) {
+            throw new IllegalStateException("All students must have a valid mark before publishing.");
+        }
         assessment.setStatus("Published");
     }
 
