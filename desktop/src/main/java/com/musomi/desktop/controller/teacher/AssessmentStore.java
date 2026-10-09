@@ -247,6 +247,31 @@ public final class AssessmentStore {
         return count;
     }
 
+    /** Returns the number of assessments with the exact status "Published". */
+    public static int countPublished() {
+        return (int) getAssessments().stream()
+                .filter(assessment -> "Published".equals(assessment.getStatus()))
+                .count();
+    }
+
+    /** Returns the number of distinct, non-blank class names across all assessments. */
+    public static int countDistinctClasses() {
+        return (int) getAssessments().stream()
+                .map(Assessment::getClassName)
+                .filter(className -> className != null && !className.isBlank())
+                .map(String::trim)
+                .distinct()
+                .count();
+    }
+
+    /**
+     * Returns the size of the mock student roster only.
+     * This mock-only count will be replaced by a real endpoint when the backend is available.
+     */
+    public static int mockRosterSize() {
+        return MOCK_STUDENTS.length;
+    }
+
     /** True if every student has a valid mark. */
     public static boolean allMarksComplete(Assessment assessment) {
         List<StudentMark> marks = getMarks(assessment);

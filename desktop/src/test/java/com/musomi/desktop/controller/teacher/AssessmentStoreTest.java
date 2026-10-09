@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -61,5 +62,65 @@ class AssessmentStoreTest {
 
         assessment.setStatus("Published");
         assertFalse(AssessmentStore.isPending(assessment));
+    }
+
+    @Test
+    void countsPublishedAssessmentsFromSeedData() {
+        assertTrue(AssessmentStore.countPublished() >= 1);
+    }
+
+    @Test
+    void returnsZeroWhenNoAssessmentsArePublished() {
+        List<Assessment> assessments = AssessmentStore.getAssessments();
+        List<Assessment> originalAssessments = new ArrayList<>(assessments);
+
+        try {
+            assessments.clear();
+            assessments.add(new Assessment(
+                    "Draft test", "S3 Blue", "Mathematics", "Algebra",
+                    "15 Sep 2026", 40, "Draft"));
+
+            assertEquals(0, AssessmentStore.countPublished());
+        } finally {
+            assessments.clear();
+            assessments.addAll(originalAssessments);
+        }
+    }
+
+    @Test
+    void countsThreeDistinctClassesInSeedData() {
+        assertEquals(3, AssessmentStore.countDistinctClasses());
+    }
+
+    @Test
+    void doesNotCountNullOrBlankClassNames() {
+        List<Assessment> assessments = AssessmentStore.getAssessments();
+        List<Assessment> originalAssessments = new ArrayList<>(assessments);
+
+        try {
+            assessments.clear();
+            assessments.add(new Assessment(
+                    "Class test", "S3 Blue", "Mathematics", "Algebra",
+                    "15 Sep 2026", 40, "Draft"));
+            assessments.add(new Assessment(
+                    "Null class test", null, "Mathematics", "Algebra",
+                    "15 Sep 2026", 40, "Draft"));
+            assessments.add(new Assessment(
+                    "Blank class test", "  ", "Mathematics", "Algebra",
+                    "15 Sep 2026", 40, "Draft"));
+            assessments.add(new Assessment(
+                    "Duplicate class test", " S3 Blue ", "Mathematics", "Algebra",
+                    "15 Sep 2026", 40, "Draft"));
+
+            assertEquals(1, AssessmentStore.countDistinctClasses());
+        } finally {
+            assessments.clear();
+            assessments.addAll(originalAssessments);
+        }
+    }
+
+    @Test
+    void returnsMockRosterSize() {
+        assertEquals(12, AssessmentStore.mockRosterSize());
     }
 }

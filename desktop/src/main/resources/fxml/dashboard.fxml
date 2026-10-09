@@ -38,7 +38,8 @@
 
             <VBox spacing="5.0">
 
-                <Label text="Good morning, John!"
+                <Label fx:id="greetingLabel"
+                       text="Good morning"
                        style="-fx-font-size: 26px;
                               -fx-font-weight: bold;
                               -fx-text-fill: #1e293b;"/>
@@ -72,7 +73,8 @@
                                   -fx-font-weight: bold;
                                   -fx-text-fill: #64748b;"/>
 
-                    <Label text="6"
+                    <Label fx:id="myClassesCount"
+                           text="6"
                            style="-fx-font-size: 28px;
                                   -fx-font-weight: bold;
                                   -fx-text-fill: #1e293b;"/>
@@ -99,12 +101,13 @@
                                   -fx-font-weight: bold;
                                   -fx-text-fill: #64748b;"/>
 
-                    <Label text="180"
+                    <Label fx:id="totalStudentsCount"
+                           text="180"
                            style="-fx-font-size: 28px;
                                   -fx-font-weight: bold;
                                   -fx-text-fill: #1e293b;"/>
 
-                    <Label text="Across all classes"
+                    <Label text="Mock roster (offline)"
                            style="-fx-font-size: 12px;
                                   -fx-text-fill: #64748b;"/>
 
@@ -154,7 +157,8 @@
                                   -fx-font-weight: bold;
                                   -fx-text-fill: #64748b;"/>
 
-                    <Label text="8"
+                    <Label fx:id="publishedAssessmentsCount"
+                           text="8"
                            style="-fx-font-size: 28px;
                                   -fx-font-weight: bold;
                                   -fx-text-fill: #1e293b;"/>
